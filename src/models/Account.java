@@ -1,15 +1,14 @@
 package models;
 
-public class Account
+public class Account extends DatabaseItem
 {
 	//Fields
-	private int id;
 	private double balance;
 	
 	//Constructor
 	public Account(int id, double balance)
 	{
-		this.id = id;
+		super(id);
 		this.balance = balance;
 	}
 	
@@ -25,14 +24,6 @@ public class Account
 	
 	//Getters
 	/**
-	 * Gets the ID
-	 * @return the ID
-	 */
-	public int getID()
-	{
-		return id;
-	}
-	/**
 	 * Gets the balance
 	 * @return the balance
 	 */
@@ -42,17 +33,6 @@ public class Account
 	}
 
 	//Setters
-	/**
-	 * Updates the ID.
-	 * @param id - Must be greater than zero.
-	 */
-	public void setID(int id)
-	{
-		if (id > 0)
-		{
-			this.id = id;
-		}
-	}
 	/**
 	 * Sets the balance with a new value.
 	 * @param balance
