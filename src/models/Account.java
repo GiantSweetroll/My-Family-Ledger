@@ -2,6 +2,10 @@ package models;
 
 public class Account extends DatabaseItem
 {
+	//Constants
+	public static final String ID = "acc_id",
+								BALANCE = "balance";
+	
 	//Fields
 	private double balance;
 	

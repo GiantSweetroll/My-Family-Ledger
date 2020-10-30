@@ -2,6 +2,9 @@ package models;
 
 public class User extends Person
 {
+	//Constants
+	public static final String ID = "user_id";
+	
 	//Fields
 	private int accountID, adminID;
 	

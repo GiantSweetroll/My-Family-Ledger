@@ -2,6 +2,10 @@ package models;
 
 public class Person extends DatabaseItem
 {
+	//Constants
+	public static final String FIRST_NAME = "firstName",
+								LAST_NAME = "lastName";
+	
 	//Fields
 	private String firstName, lastName;
 	

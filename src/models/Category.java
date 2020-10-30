@@ -2,6 +2,12 @@ package models;
 
 public class Category extends DatabaseItem
 {
+	//Constants
+	public static final String ID = "cat_id",
+								DESC = "desc",
+								NAME = "cat_name",
+								ADMIN_ID = "admin_id";
+	
 	//Fields
 	private int adminID;
 	private String desc, name;
