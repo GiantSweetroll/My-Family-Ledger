@@ -2,6 +2,10 @@ package models;
 
 public class AdminCategory extends DatabaseItem
 {
+	//Constants
+	public static final String ID = "ac_id",
+								ADMIN_ID = "admin_id",
+								CATEGORY_ID = "cat_id";
 
 	//Fields
 	private int adminID, categoryID;
