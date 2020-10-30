@@ -10,7 +10,7 @@ public class Transaction extends DatabaseItem
 								DATE_EDIT = "dateEdit",
 								AMOUNT = "amount",
 								CATEGORY_ID = "cat_id",
-								DESC = "desc",
+								DESC = "description",
 								LINK_RECEIPT = "linkReceipt",
 								USER_ID = "user_id";
 	
