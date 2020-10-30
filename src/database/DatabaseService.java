@@ -16,14 +16,14 @@ public class DatabaseService
 {
 	private static final String HOST = "jdbc:mysql://ourworks.systems/",
 								USERNAME = "GAR296",
-								PASSWORD = "YzQvWA";
-	public static final String DB_NAME = "MFL",
-								TABLE_ACCOUNT = "Account",
-								TABLE_ADMINS = "Admins",
-								TABLE_USERS = "Users",
-								TABLE_TRANSACTIONS = "Transactions",
-								TABLE_CATEGORIES = "Categories",
-								TABLE_ADMIN_CATEGORIES = "AdminCategories";
+								PASSWORD = "YvQzWA";
+	public static final String DB_NAME = "GAR296",
+								TABLE_ACCOUNT = "MFL_Account",
+								TABLE_ADMINS = "MFL_Admins",
+								TABLE_USERS = "MFL_Users",
+								TABLE_TRANSACTIONS = "MFL_Transactions",
+								TABLE_CATEGORIES = "MFL_Categories",
+								TABLE_ADMIN_CATEGORIES = "MFL_AdminCategories";
 	
 	private Connection c;
 	
@@ -146,8 +146,8 @@ public class DatabaseService
 										+ Transaction.AMOUNT + " decimal(65, 2) NOT NULL,"
 										+ Transaction.CATEGORY_ID + " int unsigned NOT NULL,"
 										+ Transaction.DESC + " mediumtext NOT NULL,"
-										+ Transaction.LINK_RECEIPT + " text(65535)"
-										+ Transaction.USER_ID + " int unsigned NOT NULL"
+										+ Transaction.LINK_RECEIPT + " text(65535),"
+										+ Transaction.USER_ID + " int unsigned NOT NULL,"
 										+ "primary key (" + Transaction.ID + "),"
 										+ "foreign key (" + Transaction.CATEGORY_ID + ") references " + TABLE_CATEGORIES + "(" + Category.ID + ") ON UPDATE CASCADE,"
 										+ "foreign key (" + Transaction.USER_ID + ") references " + TABLE_USERS + "(" + User.ID + ") ON UPDATE CASCADE)");
@@ -198,5 +198,10 @@ public class DatabaseService
 			System.err.println(ex.getMessage());
 			return null;
 		}
+	}
+	
+	public static void main (String args[])
+	{
+		DatabaseService ds = new DatabaseService();
 	}
 }
