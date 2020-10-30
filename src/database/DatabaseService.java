@@ -5,6 +5,13 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import models.Account;
+import models.Admin;
+import models.AdminCategory;
+import models.Category;
+import models.Transaction;
+import models.User;
+
 public class DatabaseService 
 {
 	private static final String HOST = "jdbc:mysql://ourworks.systems/",
@@ -72,40 +79,97 @@ public class DatabaseService
 	}
 	/**
 	 * Creates the tables if they do not exist yet
-	 * @throws SQLException
 	 */
-	private void createTables() throws SQLException
+	private void createTables()
 	{
-		//Movie table
-		PreparedStatement prep = this.prepStatement("CREATE TABLE if not exists " + TABLE_MOVIE + "("
-													+ "movieID int unsigned NOT NULL AUTO_INCREMENT,"
-													+ "movieName varchar(255) NOT NULL,"
-													+ "primary key (movieID))");
-		prep.execute();
+		PreparedStatement prep = null;
 		
-		//User table
-		prep = this.prepStatement("CREATE TABLE if not exists " + TABLE_USER + "("
-									+ "userID int unsigned not null AUTO_INCREMENT,"
-									+ "firstName varchar(255) not null,\r\n" + 
-										"lastName varchar(255),\r\n" + 
-										"username varchar(255) not null,\r\n" + 
-										"password varchar(255) not null,"
-									+ "primary key (userID))");
-		prep.execute();
+		try
+		{
+			//Admins table
+			prep = this.prepStatement("CREATE TABLE if not exists " + TABLE_ADMINS + "("
+										+ Admin.ID + " int unsigned NOT NULL AUTO_INCREMENT,"
+										+ Admin.FIRST_NAME + " varchar(255) NOT NULL,"
+										+ Admin.LAST_NAME + " varchar(255),"
+										+ "primary key (" + Admin.ID + "))");
+			prep.execute();
+			prep.close();
+			
+			//Categories table
+			prep = this.prepStatement("CREATE TABLE if not exists " + TABLE_CATEGORIES + "("
+										+ Category.ID + " int unsigned NOT NULL AUTO_INCREMENT,"
+										+ Category.NAME + " varchar(255) NOT NULL,"
+										+ Category.DESC + " mediumtext,"
+										+ Category.ADMIN_ID + " int unsigned,"
+										+ "primary key (" + Category.ID + "),"
+										+ "foreign key (" + Category.ADMIN_ID + ") references " + TABLE_ADMINS + "(" + Admin.ID + ") ON UPDATE CASCADE)");
+			prep.execute();
+			prep.close();
+			
+			//AdminCategories table
+			prep = this.prepStatement("CREATE TABLE if not exists " + TABLE_ADMIN_CATEGORIES + "("
+										+ AdminCategory.ID + " int unsigned NOT NULL AUTO_INCREMENT,"
+										+ AdminCategory.ADMIN_ID + " int unsigned not null,"
+										+ AdminCategory.CATEGORY_ID + " int unsigned not null,"
+										+ "primary key (" + AdminCategory.ID + "),"
+										+ "foreign key (" + AdminCategory.ADMIN_ID + ") references " + TABLE_ADMINS + "(" + Admin.ID + ") ON UPDATE CASCADE,"
+										+ "foreign key (" + AdminCategory.CATEGORY_ID + ") references " + TABLE_CATEGORIES + "(" + Category.ID + ") ON UPDATE CASCADE)");
+			prep.execute();
+			prep.close();
+			
+			//Accounts table
+			prep = this.prepStatement("CREATE TABLE if not exists " + TABLE_ACCOUNT + "("
+										+ Account.ID + " int unsigned NOT NULL AUTO_INCREMENT,"
+										+ Account.BALANCE + " decimal(65, 2) NOT NULL,"
+										+ "primary key (" + Account.ID + "))");
+			prep.execute();
+			prep.close();
+			
+			//Users table
+			prep = this.prepStatement("CREATE TABLE if not exists " + TABLE_USERS + "("
+										+ User.ID + " int unsigned NOT NULL AUTO_INCREMENT,"
+										+ User.FIRST_NAME + " varchar(255) NOT NULL,"
+										+ User.LAST_NAME + " varchar(255),"
+										+ User.ACCOUNT_ID + " int unsigned NOT NULL,"
+										+ User.ADMIN_ID + " int unsigned NOT NULL,"
+										+ "primary key (" + User.ID + "),"
+										+ "foreign key (" + User.ADMIN_ID + ") references " + TABLE_ADMINS + "(" + Admin.ID + ") ON UPDATE CASCADE,"
+										+ "foreign key (" + User.ACCOUNT_ID + ") references " + TABLE_ACCOUNT + "(" + Account.ID + ") ON UPDATE CASCADE)");
+			prep.execute();
+			prep.close();
+			
+			//Transactions table
+			prep = this.prepStatement("CREATE TABLE if not exists " + TABLE_TRANSACTIONS + "("
+										+ Transaction.ID + " int unsigned NOT NULL AUTO_INCREMENT,"
+										+ Transaction.DATE_INPUT + " Date NOT NULL,"
+										+ Transaction.DATE_EDIT + " Date NOT NULL,"
+										+ Transaction.AMOUNT + " decimal(65, 2) NOT NULL,"
+										+ Transaction.CATEGORY_ID + " int unsigned NOT NULL,"
+										+ Transaction.DESC + " mediumtext NOT NULL,"
+										+ Transaction.LINK_RECEIPT + " text(65535)"
+										+ Transaction.USER_ID + " int unsigned NOT NULL"
+										+ "primary key (" + Transaction.ID + "),"
+										+ "foreign key (" + Transaction.CATEGORY_ID + ") references " + TABLE_CATEGORIES + "(" + Category.ID + ") ON UPDATE CASCADE,"
+										+ "foreign key (" + Transaction.USER_ID + ") references " + TABLE_USERS + "(" + User.ID + ") ON UPDATE CASCADE)");
+			prep.execute();
+			prep.close();
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (prep != null)
+			{
+				try
+				{
+					prep.close();
+				}
+				catch(SQLException ex) {}
+			}
+		}
 		
-		//Review table
-		prep = this.prepStatement("CREATE TABLE if not exists " + TABLE_REVIEW + "("
-				+ "reviewID int unsigned not null AUTO_INCREMENT,\r\n" + 
-				"movieID int unsigned not null,\r\n" + 
-				"userID int unsigned not null,\r\n" + 
-				"description mediumtext,\r\n" + 
-				"ratingUser decimal(10, 1) not null,\r\n" + 
-				"primary key (reviewID),\r\n" + 
-				"foreign key (movieID) references Movie(movieID) on update cascade,\r\n" + 
-				"foreign key (userID) references User(userID) on update cascade)");
-		
-		prep.execute();
-		prep.close();
 	}
 	
 	//Public Methods
