@@ -12,8 +12,14 @@ public class User extends Person
 	public User(int id, int accountID, int adminID, String firstName, String lastName) 
 	{
 		super(id, firstName, lastName);
-		this.accountID = accountID;
-		this.adminID = adminID;
+		this.setAccountID(accountID);
+		this.setAdminID(adminID);
+	}
+	public User(int accountID, int adminID, String firstName, String lastName) 
+	{
+		super(firstName, lastName);
+		this.setAccountID(accountID);
+		this.setAdminID(adminID);
 	}
 	
 	//Getters
