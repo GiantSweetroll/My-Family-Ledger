@@ -4,7 +4,7 @@ public class Category extends DatabaseItem
 {
 	//Constants
 	public static final String ID = "cat_id",
-								DESC = "desc",
+								DESC = "description",
 								NAME = "cat_name",
 								ADMIN_ID = "admin_id";
 	
