@@ -3,7 +3,7 @@ package models;
 public class DatabaseItem 
 {
 	//Fields
-	protected int id;
+	protected int id = 0;
 	
 	//Constructor
 	public DatabaseItem(int id)
@@ -24,7 +24,7 @@ public class DatabaseItem
 	//Setters
 	/**
 	 * Updates the ID
-	 * @param id - the new ID
+	 * @param id - the new ID. Must be greater than zero.
 	 */
 	public void setID(int id)
 	{

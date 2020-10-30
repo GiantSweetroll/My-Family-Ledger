@@ -44,6 +44,28 @@ public class Transaction extends DatabaseItem
 		super(id);
 		this.init(categoryID, userID, dateInput, dateEdit, amount, desc, "");
 	}
+	public Transaction(int categoryID,
+						int userID, 
+						Date dateInput,
+						Date dateEdit, 
+						double amount, 
+						String desc)
+	{
+		super(0);
+		this.init(categoryID, userID, dateInput, dateEdit, amount, desc, "");
+	}
+	public Transaction(int categoryID, 
+						int userID,
+						Date dateInput, 
+						Date dateEdit, 
+						double amount,
+						String desc,
+						String linkReceipt) 
+	{
+		super(0);
+		this.init(categoryID, userID, dateInput, dateEdit, amount, desc, linkReceipt);
+	}
+	
 	
 	//Private Methods
 	private void init(int categoryID,
@@ -54,13 +76,13 @@ public class Transaction extends DatabaseItem
 						String desc,
 						String linkReceipt)
 	{
-		this.categoryID = categoryID;
-		this.userID = userID;
-		this.dateInput = dateInput;
-		this.dateEdit = dateEdit;
-		this.amount = amount;
-		this.desc = desc;
-		this.linkReceipt = linkReceipt;
+		this.setCategoryID(categoryID);
+		this.setUserID(userID);
+		this.setDateInput(dateInput);
+		this.setDateEdit(dateEdit);
+		this.setAmount(amount);
+		this.setDesc(desc);
+		this.setLinkReceipt(linkReceipt);
 	}
 	
 	//Public Methods

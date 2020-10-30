@@ -15,6 +15,11 @@ public class Account extends DatabaseItem
 		super(id);
 		this.balance = balance;
 	}
+	public Account(double balance)
+	{
+		super(0);
+		this.balance = balance;
+	}
 	
 	//Public Methods
 	/**

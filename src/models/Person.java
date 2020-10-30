@@ -15,6 +15,11 @@ public class Person extends DatabaseItem
 		super(id);
 		this.setFullName(firstName, lastName);
 	}
+	public Person(String firstName, String lastName) 
+	{
+		super(0);
+		this.setFullName(firstName, lastName);
+	}
 
 	//Getters
 	/**

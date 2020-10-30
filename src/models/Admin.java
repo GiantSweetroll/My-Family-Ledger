@@ -10,4 +10,8 @@ public class Admin extends Person
 	{
 		super(id, firstName, lastName);
 	}
+	public Admin(String firstName, String lastName) 
+	{
+		super(firstName, lastName);
+	}
 }

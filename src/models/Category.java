@@ -16,9 +16,16 @@ public class Category extends DatabaseItem
 	public Category(int id, int adminID, String desc, String name)
 	{
 		super(id);
-		this.adminID = adminID;
-		this.desc = desc;
-		this.name = name;
+		this.setAdminID(adminID);
+		this.setDesc(desc);
+		this.setName(name);
+	}
+	public Category(int adminID, String desc, String name)
+	{
+		super(0);
+		this.setAdminID(adminID);
+		this.setDesc(desc);
+		this.setName(name);
 	}
 
 	//Getters
