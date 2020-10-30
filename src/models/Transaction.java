@@ -4,6 +4,16 @@ import java.sql.Date;
 
 public class Transaction extends DatabaseItem
 {
+	//Constants
+	public static final String ID = "transaction_id",
+								DATE_INPUT = "dateInput",
+								DATE_EDIT = "dateEdit",
+								AMOUNT = "amount",
+								CATEGORY_ID = "cat_id",
+								DESC = "desc",
+								LINK_RECEIPT = "linkReceipt",
+								USER_ID = "user_id";
+	
 	//Fields
 	private int categoryID, userID;
 	private Date dateInput, dateEdit;
