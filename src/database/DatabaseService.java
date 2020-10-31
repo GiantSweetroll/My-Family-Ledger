@@ -199,6 +199,293 @@ public class DatabaseService
 			return null;
 		}
 	}
+	/**
+	 * Insert an Admin to the Admins table
+	 * @param admin - an instance of an Admin object
+	 */
+	public void insert(Admin admin)
+	{
+		PreparedStatement ps = null;
+		try
+		{		
+			if (admin.getID() <= 0)	//If no ID yet
+			{
+				ps = this.prepStatement("INSERT INTO " + TABLE_ADMINS + "("
+										+ Admin.FIRST_NAME + ", " + Admin.LAST_NAME +") values ("
+										+ "\'" + admin.getFirstName() + "\',"
+										+ "\'" + admin.getLastName() + "\'"
+										+ ")");
+			}
+			else
+			{
+				ps = this.prepStatement("INSERT INTO " + TABLE_ADMINS + " values (" 
+										+ admin.getID() + ", "
+										+ "\'" + admin.getFirstName() + "\',"
+										+ "\'" + admin.getLastName() + "\'"
+										+ ")");
+			}
+			
+			ps.execute();
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try 
+				{
+					ps.close();
+				}
+				catch (SQLException e) {}
+			}
+		}
+	}
+	/**
+	 * Insert a Category into the Categories table.
+	 * @param category - a Category object
+	 */
+	public void insert(Category category)
+	{
+		PreparedStatement ps = null;
+		try
+		{		
+			if (category.getID() <= 0)	//If no ID yet
+			{
+				ps = this.prepStatement("INSERT INTO " + TABLE_CATEGORIES + "("
+										+ Category.DESC + ", " + Category.NAME + ", " + Category.ADMIN_ID +") values ("
+										+ "\'" + category.getDesc() + "\',"
+										+ "\'" + category.getName() + "\',"
+										+ category.getAdminID()
+										+ ")");
+			}
+			else
+			{
+				ps = this.prepStatement("INSERT INTO " + TABLE_CATEGORIES + " values (" 
+										+ category.getID() + ", "
+										+ "\'" + category.getDesc() + "\',"
+										+ "\'" + category.getName() + "\',"
+										+ category.getAdminID()
+										+ ")");
+			}
+			
+			ps.execute();
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try 
+				{
+					ps.close();
+				}
+				catch (SQLException e) {}
+			}
+		}
+	}
+	/**
+	 * Insert an AdminCategory to the AdminCategories table
+	 * @param adminCategory - an AdminCategory object
+	 */
+	public void insert(AdminCategory adminCategory)
+	{
+		PreparedStatement ps = null;
+		try
+		{		
+			if (adminCategory.getID() <= 0)	//If no ID yet
+			{
+				ps = this.prepStatement("INSERT INTO " + TABLE_ADMIN_CATEGORIES + "("
+										+ AdminCategory.ADMIN_ID + ", " + AdminCategory.CATEGORY_ID +") values ("
+										+ adminCategory.getAdminID() + ","
+										+ adminCategory.getCategoryID()
+										+ ")");
+			}
+			else
+			{
+				ps = this.prepStatement("INSERT INTO " + TABLE_ADMIN_CATEGORIES + " values (" 
+										+ adminCategory.getID() + ", "
+										+ adminCategory.getAdminID() + ","
+										+ adminCategory.getCategoryID()
+										+ ")");
+			}
+			
+			ps.execute();
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try 
+				{
+					ps.close();
+				}
+				catch (SQLException e) {}
+			}
+		}
+	}
+	/**
+	 * Insert an Account in the Accounts table
+	 * @param account - an Account object
+	 */
+	public void insert(Account account)
+	{
+		PreparedStatement ps = null;
+		try
+		{		
+			if (account.getID() <= 0)	//If no ID yet
+			{
+				ps = this.prepStatement("INSERT INTO " + TABLE_ACCOUNT + "("
+										+ Account.BALANCE +") values ("
+										+ account.getBalance()
+										+ ")");
+			}
+			else
+			{
+				ps = this.prepStatement("INSERT INTO " + TABLE_ACCOUNT + " values (" 
+										+ account.getID() + ", "
+										+ account.getBalance()
+										+ ")");
+			}
+			
+			ps.execute();
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try 
+				{
+					ps.close();
+				}
+				catch (SQLException e) {}
+			}
+		}
+	}
+	/**
+	 * Insert a User to the Users table
+	 * @param user - a User object
+	 */
+	public void insert(User user)
+	{
+		PreparedStatement ps = null;
+		try
+		{		
+			if (user.getID() <= 0)	//If no ID yet
+			{
+				ps = this.prepStatement("INSERT INTO " + TABLE_USERS + "("
+										+ User.FIRST_NAME + ", " 
+										+ User.LAST_NAME + ", "
+										+ User.ACCOUNT_ID + ", " 
+										+ User.ADMIN_ID + ") values ("
+										+ "\'" + user.getFirstName() + "\',"
+										+ "\'" + user.getLastName() + "\',"
+										+ user.getAccountID() + ","
+										+ user.getAdminID()
+										+ ")");
+			}
+			else
+			{
+				ps = this.prepStatement("INSERT INTO " + TABLE_USERS + " values (" 
+										+ user.getID() + ", "
+										+ "\'" + user.getFirstName() + "\',"
+										+ "\'" + user.getLastName() + "\',"
+										+ user.getAccountID() + ","
+										+ user.getAdminID()
+										+ ")");
+			}
+			
+			ps.execute();
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try 
+				{
+					ps.close();
+				}
+				catch (SQLException e) {}
+			}
+		}
+	}
+	/**
+	 * Insert a Transaction into the Transaction table
+	 * @param transaction - a Transaction object
+	 */
+	public void insert(Transaction transaction)
+	{
+		PreparedStatement ps = null;
+		try
+		{		
+			if (transaction.getID() <= 0)	//If no ID yet
+			{
+				ps = this.prepStatement("INSERT INTO " + TABLE_TRANSACTIONS + "("
+										+ Transaction.DATE_INPUT + ", " 
+										+ Transaction.DATE_EDIT + ", "
+										+ Transaction.AMOUNT + ", " 
+										+ Transaction.CATEGORY_ID + ", " 
+										+ Transaction.DESC + ", " 
+										+ Transaction.LINK_RECEIPT + ", " 
+										+ Transaction.USER_ID + ") values ("
+										+ transaction.getDateInput() + ","
+										+ transaction.getDateEdit() + ","
+										+ transaction.getAmount() + ","
+										+ transaction.getCategoryID() + ","
+										+ "\'" + transaction.getDesc() + "\',"
+										+ "\'" + transaction.getLinkReceipt() + "\',"
+										+ transaction.getUserID()
+										+ ")");
+			}
+			else
+			{
+				ps = this.prepStatement("INSERT INTO " + TABLE_TRANSACTIONS + " values (" 
+										+ transaction.getID() + ", "
+										+ transaction.getDateInput() + ","
+										+ transaction.getDateEdit() + ","
+										+ transaction.getAmount() + ","
+										+ transaction.getCategoryID() + ","
+										+ "\'" + transaction.getDesc() + "\',"
+										+ "\'" + transaction.getLinkReceipt() + "\',"
+										+ transaction.getUserID()
+										+ ")");
+			}
+			
+			ps.execute();
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try 
+				{
+					ps.close();
+				}
+				catch (SQLException e) {}
+			}
+		}
+	}
 	
 	public static void main (String args[])
 	{
