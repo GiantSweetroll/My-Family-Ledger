@@ -486,6 +486,109 @@ public class DatabaseService
 			}
 		}
 	}
+	/**
+	 * Update an Admin record. This process updates all data in the record. It does not check for changes.
+	 * @param id - the id of the Admin record to be updated
+	 * @param admin - an Admin object with the new data
+	 */
+	public void update(int id, Admin admin)
+	{
+		PreparedStatement ps = null;
+		try
+		{
+			ps = this.prepStatement("UPDATE " + TABLE_ADMINS 
+									+ " SET "
+										+ Admin.ID + "=" + admin.getID() + ", "
+										+ Admin.FIRST_NAME + "=\'" + admin.getFirstName() + "\'," 
+										+ Admin.LAST_NAME + "=\'" + admin.getLastName() + "\'" 
+									+ " WHERE " + Admin.ID + "=" + id);
+			ps.execute();
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch(SQLException ex) {}
+			}
+		}
+	}
+	/**
+	 * Updates a record of a Category. This process updates all data in the record. It does not check for changes.
+	 * @param id - the id of the Category record to be updated
+	 * @param category - a Categroy object containing the new updated data
+	 */
+	public void update(int id, Category category)
+	{
+		PreparedStatement ps = null;
+		try
+		{
+			ps = this.prepStatement("UPDATE " + TABLE_CATEGORIES 
+									+ " SET "
+										+ Category.ID + "=" + category.getID() + ", "
+										+ Category.NAME + "=\'" + category.getName() + "\'," 
+										+ Category.DESC + "=\'" + category.getDesc() + "\'," 
+										+ Category.ADMIN_ID + "=" + category.getAdminID()
+									+ " WHERE " + Category.ID + "=" + id);
+			ps.execute();
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch(SQLException ex) {}
+			}
+		}
+	}
+	/**
+	 * Updates a record of an AdminCategory. This process updates all data in the record. It does not check for changes.
+	 * @param id - the id of the AdminCategory record to be updated
+	 * @param adminCat - an AdminCategory object containing the new updated data
+	 */
+	public void update(int id, AdminCategory adminCat)
+	{
+		PreparedStatement ps = null;
+		try
+		{
+			ps = this.prepStatement("UPDATE " + TABLE_CATEGORIES 
+									+ " SET "
+										+ AdminCategory.ID + "=" + adminCat.getID() + ", "
+										+ AdminCategory.CATEGORY_ID + "=" + adminCat.getCategoryID() + "," 
+										+ AdminCategory.ADMIN_ID + "=" + adminCat.getAdminID() + "," 
+									+ " WHERE " + AdminCategory.ID + "=" + id);
+			ps.execute();
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch(SQLException ex) {}
+			}
+		}
+	}
 	
 	public static void main (String args[])
 	{
