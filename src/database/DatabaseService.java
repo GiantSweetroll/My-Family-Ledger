@@ -3,7 +3,10 @@ package database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import models.Account;
 import models.Admin;
@@ -696,6 +699,324 @@ public class DatabaseService
 				catch(SQLException ex) {}
 			}
 		}
+	}
+	/**
+	 * Performs a select * operation on the Admins table.
+	 * @return a List containing Admin objects
+	 */
+	public List<Admin> getAllAdmins()
+	{
+		List<Admin> admins = new ArrayList<Admin>();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try
+		{
+			ps = this.prepStatement("SELECT * FROM " + TABLE_ADMINS);
+			rs = ps.executeQuery();
+			
+			//Loop through the result set
+			while (rs.next())
+			{
+				Admin admin = new Admin(rs.getInt(Admin.ID),
+										rs.getString(Admin.FIRST_NAME),
+										rs.getString(Admin.LAST_NAME));
+				admins.add(admin);
+			}
+			
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch(SQLException ex) {}
+			}
+			
+			if (rs != null)
+			{
+				try
+				{
+					rs.close();
+				}
+				catch(SQLException ex) {}
+			}
+		}
+		
+		return admins;
+	}
+	/**
+	 * Performs a select * operation on the Categories table.
+	 * @return a List containing Category objects
+	 */
+	public List<Category> getAllCategories()
+	{
+		List<Category> categories = new ArrayList<Category>();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try
+		{
+			ps = this.prepStatement("SELECT * FROM " + TABLE_CATEGORIES);
+			rs = ps.executeQuery();
+			
+			//Loop through the result set
+			while (rs.next())
+			{
+				Category cat = new Category(rs.getInt(Category.ID),
+											rs.getInt(Category.ADMIN_ID),
+											rs.getString(Category.DESC),
+											rs.getString(Category.NAME));
+				categories.add(cat);
+			}
+			
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch(SQLException ex) {}
+			}
+			
+			if (rs != null)
+			{
+				try
+				{
+					rs.close();
+				}
+				catch(SQLException ex) {}
+			}
+		}
+		
+		return categories;
+	}
+	/**
+	 * Performs a select * operation on the AdminCategories table.
+	 * @return a List containing AdminCategory objects
+	 */
+	public List<AdminCategory> getAllAdminCategories()
+	{
+		List<AdminCategory> adminCats = new ArrayList<AdminCategory>();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try
+		{
+			ps = this.prepStatement("SELECT * FROM " + TABLE_ADMIN_CATEGORIES);
+			rs = ps.executeQuery();
+			
+			//Loop through the result set
+			while (rs.next())
+			{
+				AdminCategory adminCat = new AdminCategory(rs.getInt(AdminCategory.ID), 
+															rs.getInt(AdminCategory.ADMIN_ID),
+															rs.getInt(AdminCategory.CATEGORY_ID));
+				adminCats.add(adminCat);
+			}
+			
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch(SQLException ex) {}
+			}
+			
+			if (rs != null)
+			{
+				try
+				{
+					rs.close();
+				}
+				catch(SQLException ex) {}
+			}
+		}
+		
+		return adminCats;
+	}
+	/**
+	 * Performs a select * operation on the Accounts table.
+	 * @return a List containing Account objects
+	 */
+	public List<Account> getAllAccounts()
+	{
+		List<Account> accounts = new ArrayList<Account>();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try
+		{
+			ps = this.prepStatement("SELECT * FROM " + TABLE_ACCOUNT);
+			rs = ps.executeQuery();
+			
+			//Loop through the result set
+			while (rs.next())
+			{
+				Account acc = new Account(rs.getInt(Account.ID), 
+											rs.getDouble(Account.BALANCE));
+				accounts.add(acc);
+			}
+			
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch(SQLException ex) {}
+			}
+			
+			if (rs != null)
+			{
+				try
+				{
+					rs.close();
+				}
+				catch(SQLException ex) {}
+			}
+		}
+		
+		return accounts;
+	}
+	/**
+	 * Performs a select * operation on the Users table.
+	 * @return a List containing User objects
+	 */
+	public List<User> getAllUsers()
+	{
+		List<User> users = new ArrayList<User>();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try
+		{
+			ps = this.prepStatement("SELECT * FROM " + TABLE_USERS);
+			rs = ps.executeQuery();
+			
+			//Loop through the result set
+			while (rs.next())
+			{
+				User user = new User(rs.getInt(User.ID),
+										rs.getInt(User.ACCOUNT_ID),
+										rs.getInt(User.ADMIN_ID),
+										rs.getString(User.FIRST_NAME),
+										rs.getString(User.LAST_NAME));
+				users.add(user);
+			}
+			
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch(SQLException ex) {}
+			}
+			
+			if (rs != null)
+			{
+				try
+				{
+					rs.close();
+				}
+				catch(SQLException ex) {}
+			}
+		}
+		
+		return users;
+	}
+	/**
+	 * Performs a select * operation on the Transactions table.
+	 * @return a List containing Transaction objects
+	 */
+	public List<Transaction> getAllTransactions()
+	{
+		List<Transaction> transactions = new ArrayList<Transaction>();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try
+		{
+			ps = this.prepStatement("SELECT * FROM " + TABLE_TRANSACTIONS);
+			rs = ps.executeQuery();
+			
+			//Loop through the result set
+			while (rs.next())
+			{
+				Transaction tr = new Transaction(rs.getInt(Transaction.ID),
+													rs.getInt(Transaction.USER_ID),
+													rs.getDate(Transaction.DATE_INPUT),
+													rs.getDate(Transaction.DATE_EDIT),
+													rs.getDouble(Transaction.AMOUNT),
+													rs.getString(Transaction.DESC),
+													rs.getString(Transaction.LINK_RECEIPT));
+				transactions.add(tr);
+			}
+			
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch(SQLException ex) {}
+			}
+			
+			if (rs != null)
+			{
+				try
+				{
+					rs.close();
+				}
+				catch(SQLException ex) {}
+			}
+		}
+		
+		return transactions;
 	}
 	
 	public static void main (String args[])
