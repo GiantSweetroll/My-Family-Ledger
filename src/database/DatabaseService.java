@@ -1,6 +1,7 @@
 package database;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -975,6 +976,184 @@ public class DatabaseService
 		try
 		{
 			ps = this.prepStatement("SELECT * FROM " + TABLE_TRANSACTIONS);
+			rs = ps.executeQuery();
+			
+			//Loop through the result set
+			while (rs.next())
+			{
+				Transaction tr = new Transaction(rs.getInt(Transaction.ID),
+													rs.getInt(Transaction.USER_ID),
+													rs.getDate(Transaction.DATE_INPUT),
+													rs.getDate(Transaction.DATE_EDIT),
+													rs.getDouble(Transaction.AMOUNT),
+													rs.getString(Transaction.DESC),
+													rs.getString(Transaction.LINK_RECEIPT));
+				transactions.add(tr);
+			}
+			
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch(SQLException ex) {}
+			}
+			
+			if (rs != null)
+			{
+				try
+				{
+					rs.close();
+				}
+				catch(SQLException ex) {}
+			}
+		}
+		
+		return transactions;
+	}
+	/**
+	 * Get all Transactions by the selected user.
+	 * @param userID - the user ID used to filter the results.
+	 * @return a List containing Transaction objects
+	 */
+	public List<Transaction> getAllTransactions(int userID)
+	{
+		List<Transaction> transactions = new ArrayList<Transaction>();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try
+		{
+			ps = this.prepStatement("SELECT * FROM " + TABLE_TRANSACTIONS + " WHERE " + Transaction.ID + " = " + userID);
+			rs = ps.executeQuery();
+			
+			//Loop through the result set
+			while (rs.next())
+			{
+				Transaction tr = new Transaction(rs.getInt(Transaction.ID),
+													rs.getInt(Transaction.USER_ID),
+													rs.getDate(Transaction.DATE_INPUT),
+													rs.getDate(Transaction.DATE_EDIT),
+													rs.getDouble(Transaction.AMOUNT),
+													rs.getString(Transaction.DESC),
+													rs.getString(Transaction.LINK_RECEIPT));
+				transactions.add(tr);
+			}
+			
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch(SQLException ex) {}
+			}
+			
+			if (rs != null)
+			{
+				try
+				{
+					rs.close();
+				}
+				catch(SQLException ex) {}
+			}
+		}
+		
+		return transactions;
+	}
+	/**
+	 * Get all Transactions by the selected user within the selected input date range (inclusive).
+	 * @param userID - the user ID used to filter the results.
+	 * @param dateMin - the lower bound Date object
+	 * @param dateMax - the upper bound Date object
+	 * @return a List containing Transaction objects
+	 */
+	public List<Transaction> getAllTransactions(int userID, Date dateMin, Date dateMax)
+	{
+		List<Transaction> transactions = new ArrayList<Transaction>();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try
+		{
+			ps = this.prepStatement("SELECT * FROM " + TABLE_TRANSACTIONS + " WHERE " + Transaction.ID + " = " + userID
+										+ " AND " + Transaction.DATE_INPUT + " >= " + dateMin
+										+ " AND " + Transaction.DATE_INPUT + " <= " + dateMax);
+			rs = ps.executeQuery();
+			
+			//Loop through the result set
+			while (rs.next())
+			{
+				Transaction tr = new Transaction(rs.getInt(Transaction.ID),
+													rs.getInt(Transaction.USER_ID),
+													rs.getDate(Transaction.DATE_INPUT),
+													rs.getDate(Transaction.DATE_EDIT),
+													rs.getDouble(Transaction.AMOUNT),
+													rs.getString(Transaction.DESC),
+													rs.getString(Transaction.LINK_RECEIPT));
+				transactions.add(tr);
+			}
+			
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch(SQLException ex) {}
+			}
+			
+			if (rs != null)
+			{
+				try
+				{
+					rs.close();
+				}
+				catch(SQLException ex) {}
+			}
+		}
+		
+		return transactions;
+	}
+	/**
+	 * Get all Transactions within the selected input date range (inclusive).
+	 * @param dateMin - the lower bound Date object
+	 * @param dateMax - the upper bound Date object
+	 * @return a List containing Transaction objects
+	 */
+	public List<Transaction> getAllTransactions(Date dateMin, Date dateMax)
+	{
+		List<Transaction> transactions = new ArrayList<Transaction>();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try
+		{
+			ps = this.prepStatement("SELECT * FROM " + TABLE_TRANSACTIONS 
+										+ " WHERE " + Transaction.DATE_INPUT + " >= " + dateMin
+										+ " AND " + Transaction.DATE_INPUT + " <= " + dateMax);
 			rs = ps.executeQuery();
 			
 			//Loop through the result set
