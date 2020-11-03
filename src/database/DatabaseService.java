@@ -569,8 +569,116 @@ public class DatabaseService
 									+ " SET "
 										+ AdminCategory.ID + "=" + adminCat.getID() + ", "
 										+ AdminCategory.CATEGORY_ID + "=" + adminCat.getCategoryID() + "," 
-										+ AdminCategory.ADMIN_ID + "=" + adminCat.getAdminID() + "," 
+										+ AdminCategory.ADMIN_ID + "=" + adminCat.getAdminID() 
 									+ " WHERE " + AdminCategory.ID + "=" + id);
+			ps.execute();
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch(SQLException ex) {}
+			}
+		}
+	}
+	/**
+	 * Updates a record of an Account. This process updates all data in the record. It does not check for changes.
+	 * @param id - the id of the Account record to be updated
+	 * @param adminCat - an Account object containing the new updated data
+	 */
+	public void update(int id, Account account)
+	{
+		PreparedStatement ps = null;
+		try
+		{
+			ps = this.prepStatement("UPDATE " + TABLE_ACCOUNT 
+									+ " SET "
+										+ Account.ID + "=" + account.getID() + ", "
+										+ Account.BALANCE + "=" + account.getBalance()
+									+ " WHERE " + Account.ID + "=" + id);
+			ps.execute();
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch(SQLException ex) {}
+			}
+		}
+	}
+	/**
+	 * Updates a record of an User. This process updates all data in the record. It does not check for changes.
+	 * @param id - the id of the User record to be updated
+	 * @param adminCat - an User object containing the new updated data
+	 */
+	public void update(int id, User user)
+	{
+		PreparedStatement ps = null;
+		try
+		{
+			ps = this.prepStatement("UPDATE " + TABLE_USERS
+									+ " SET "
+										+ User.ID + "=" + user.getID() + ", "
+										+ User.ACCOUNT_ID + "=" + user.getAccountID() + ","
+										+ User.ADMIN_ID + "=" + user.getAdminID() + ","
+										+ User.FIRST_NAME + "=\'" + user.getFirstName() + "\'," 
+										+ User.LAST_NAME + "=\'" + user.getLastName() + "\'" 
+									+ " WHERE " + User.ID + "=" + id);
+			ps.execute();
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch(SQLException ex) {}
+			}
+		}
+	}
+	/**
+	 * Updates a record of an Transaction. This process updates all data in the record. It does not check for changes.
+	 * @param id - the id of the Transaction record to be updated
+	 * @param adminCat - an Transaction object containing the new updated data
+	 */
+	public void update(int id, Transaction transaction)
+	{
+		PreparedStatement ps = null;
+		try
+		{
+			ps = this.prepStatement("UPDATE " + TABLE_TRANSACTIONS
+									+ " SET "
+										+ Transaction.ID + "=" + transaction.getID() + ", "
+										+ Transaction.USER_ID + "=" + transaction.getUserID() + ","
+										+ Transaction.CATEGORY_ID + "=" + transaction.getCategoryID() + ","
+										+ Transaction.AMOUNT + "=" + transaction.getAmount() + ","
+										+ Transaction.DATE_INPUT + "=" + transaction.getDateInput() + ","
+										+ Transaction.DATE_EDIT + "=" + transaction.getDateEdit() + ","
+										+ Transaction.DESC + "=\'" + transaction.getDesc() + "\'," 
+										+ Transaction.LINK_RECEIPT + "=\'" + transaction.getLinkReceipt() + "\'" 
+									+ " WHERE " + Transaction.ID + "=" + id);
 			ps.execute();
 		}
 		catch(SQLException ex)
