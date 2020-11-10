@@ -4,21 +4,41 @@ public class Person extends DatabaseItem
 {
 	//Constants
 	public static final String FIRST_NAME = "firstName",
-								LAST_NAME = "lastName";
+								LAST_NAME = "lastName",
+								EMAIL = "email",
+								PASSWORD = "password";
 	
 	//Fields
-	private String firstName, lastName;
+	private String firstName, lastName, email, password;
 	
 	//Constructor
 	public Person(int id, String firstName, String lastName) 
 	{
 		super(id);
 		this.setFullName(firstName, lastName);
+		this.setEmail("");
+		this.setPassword("");
 	}
 	public Person(String firstName, String lastName) 
 	{
 		super(0);
 		this.setFullName(firstName, lastName);
+		this.setEmail("");
+		this.setPassword("");
+	}
+	public Person(String firstName, String lastName, String email, String password)
+	{
+		super(0);
+		this.setFullName(firstName, lastName);
+		this.setEmail("");
+		this.setPassword("");
+	}
+	public Person(int id, String firstName, String lastName, String email, String password)
+	{
+		super(id);
+		this.setFullName(firstName, lastName);
+		this.setEmail("");
+		this.setPassword("");
 	}
 
 	//Getters
@@ -45,6 +65,22 @@ public class Person extends DatabaseItem
 	public String getFullName()
 	{
 		return this.firstName + " " + this.lastName;
+	}
+	/**
+	 * Get the Person's email.
+	 * @return a String of the email address.
+	 */
+	public String getEmail()
+	{
+		return this.email;
+	}
+	/**
+	 * Get the password associated with the Person
+	 * @return a String of the password.
+	 */
+	public String getPassword()
+	{
+		return this.password;
 	}
 	
 	//Setters
@@ -76,5 +112,21 @@ public class Person extends DatabaseItem
 	{
 		this.setFirstName(firstName);
 		this.setLastName(lastName);
+	}
+	/**
+	 * Set the email of the Person
+	 * @param email
+	 */
+	public void setEmail(String email)
+	{
+		this.email = email;
+	}
+	/**
+	 * Set the password of the Person
+	 * @param password
+	 */
+	public void setPassword(String password)
+	{
+		this.password = password;
 	}
 }
