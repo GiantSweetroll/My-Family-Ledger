@@ -13,6 +13,7 @@ import models.Account;
 import models.Admin;
 import models.AdminCategory;
 import models.Category;
+import models.Person;
 import models.Transaction;
 import models.User;
 
@@ -721,7 +722,9 @@ public class DatabaseService
 			{
 				Admin admin = new Admin(rs.getInt(Admin.ID),
 										rs.getString(Admin.FIRST_NAME),
-										rs.getString(Admin.LAST_NAME));
+										rs.getString(Admin.LAST_NAME),
+										rs.getString(Admin.EMAIL),
+										rs.getString(Admin.PASSWORD));
 				admins.add(admin);
 			}
 			
@@ -931,7 +934,9 @@ public class DatabaseService
 										rs.getInt(User.ACCOUNT_ID),
 										rs.getInt(User.ADMIN_ID),
 										rs.getString(User.FIRST_NAME),
-										rs.getString(User.LAST_NAME));
+										rs.getString(User.LAST_NAME),
+										rs.getString(User.EMAIL),
+										rs.getString(User.PASSWORD));
 				users.add(user);
 			}
 			
@@ -1196,6 +1201,85 @@ public class DatabaseService
 		}
 		
 		return transactions;
+	}
+	/**
+	 * 
+	 * @param email
+	 * @param password
+	 * @return
+	 */
+	public Person getLogin(String email, String password)
+	{
+		Person p = null;
+		
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try
+		{
+			//Check in admin first
+			ps = this.prepStatement("SELECT * FROM " + TABLE_ADMINS 
+									+ " WHERE " + Admin.EMAIL + " = " + email
+									+ " AND " + Admin.PASSWORD + " = " + password);
+			rs = ps.executeQuery();
+			//Check if any account in Admin matches the credentials
+			if (rs.next())
+			{
+				//If yes, return it
+				p = new Admin(rs.getInt(Admin.ID),
+								rs.getString(Admin.FIRST_NAME),
+								rs.getString(Admin.LAST_NAME),
+								rs.getString(Admin.EMAIL),
+								rs.getString(Admin.PASSWORD));
+			}
+			else
+			{
+				rs.close();
+				ps.close();
+				//If not check in User table
+				ps = this.prepStatement("SELECT * FROM " + TABLE_USERS 
+										+ " WHERE " + User.EMAIL + " = " + email
+										+ " AND " + User.PASSWORD + " = " + password);
+				rs = ps.executeQuery();
+				
+				if (rs.next())
+				{
+					p = new User(rs.getInt(User.ID),
+									rs.getInt(User.ACCOUNT_ID),
+									rs.getInt(User.ADMIN_ID),
+									rs.getString(User.FIRST_NAME),
+									rs.getString(User.LAST_NAME),
+									rs.getString(User.EMAIL),
+									rs.getString(User.PASSWORD));
+				}
+			}
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch(SQLException ex) {}
+			}
+			
+			if (rs != null)
+			{
+				try
+				{
+					rs.close();
+				}
+				catch(SQLException ex) {}
+			}
+		}
+		
+		return p;
 	}
 	
 	public static void main (String args[])
