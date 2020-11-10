@@ -23,13 +23,17 @@ public class User extends Person
 		this.setAccountID(accountID);
 		this.setAdminID(adminID);
 	}
-	public User(String firstName, String lastName, String email, String password)
+	public User(int accountID, int adminID, String firstName, String lastName, String email, String password)
 	{
 		super(firstName, lastName, email, password);
+		this.setAccountID(accountID);
+		this.setAdminID(adminID);
 	}
-	public User(int id, String firstName, String lastName, String email, String password)
+	public User(int id, int accountID, int adminID, String firstName, String lastName, String email, String password)
 	{
 		super(id, firstName, lastName, email, password);
+		this.setAccountID(accountID);
+		this.setAdminID(adminID);
 	}
 	
 	//Getters
