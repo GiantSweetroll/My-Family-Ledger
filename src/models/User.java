@@ -23,6 +23,14 @@ public class User extends Person
 		this.setAccountID(accountID);
 		this.setAdminID(adminID);
 	}
+	public User(String firstName, String lastName, String email, String password)
+	{
+		super(firstName, lastName, email, password);
+	}
+	public User(int id, String firstName, String lastName, String email, String password)
+	{
+		super(id, firstName, lastName, email, password);
+	}
 	
 	//Getters
 	/**
