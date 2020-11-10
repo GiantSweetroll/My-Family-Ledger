@@ -29,6 +29,11 @@ public class DatabaseService
 								TABLE_TRANSACTIONS = "MFL_Transactions",
 								TABLE_CATEGORIES = "MFL_Categories",
 								TABLE_ADMIN_CATEGORIES = "MFL_AdminCategories";
+	public static final int LESS_THAN = 0,
+							GREATER_THAN = 1,
+							EQUAL_TO = 2,
+							LESS_THAN_EQUAL = 3,
+							GREATER_THAN_EQUAL = 4;
 	
 	private Connection c;
 	
@@ -987,6 +992,7 @@ public class DatabaseService
 			while (rs.next())
 			{
 				Transaction tr = new Transaction(rs.getInt(Transaction.ID),
+													rs.getInt(Transaction.CATEGORY_ID),
 													rs.getInt(Transaction.USER_ID),
 													rs.getDate(Transaction.DATE_INPUT),
 													rs.getDate(Transaction.DATE_EDIT),
@@ -1044,6 +1050,7 @@ public class DatabaseService
 			while (rs.next())
 			{
 				Transaction tr = new Transaction(rs.getInt(Transaction.ID),
+													rs.getInt(Transaction.CATEGORY_ID),
 													rs.getInt(Transaction.USER_ID),
 													rs.getDate(Transaction.DATE_INPUT),
 													rs.getDate(Transaction.DATE_EDIT),
@@ -1105,6 +1112,7 @@ public class DatabaseService
 			while (rs.next())
 			{
 				Transaction tr = new Transaction(rs.getInt(Transaction.ID),
+													rs.getInt(Transaction.CATEGORY_ID),
 													rs.getInt(Transaction.USER_ID),
 													rs.getDate(Transaction.DATE_INPUT),
 													rs.getDate(Transaction.DATE_EDIT),
@@ -1165,6 +1173,7 @@ public class DatabaseService
 			while (rs.next())
 			{
 				Transaction tr = new Transaction(rs.getInt(Transaction.ID),
+													rs.getInt(Transaction.CATEGORY_ID),
 													rs.getInt(Transaction.USER_ID),
 													rs.getDate(Transaction.DATE_INPUT),
 													rs.getDate(Transaction.DATE_EDIT),
@@ -1203,10 +1212,100 @@ public class DatabaseService
 		return transactions;
 	}
 	/**
-	 * 
+	 * Perform a query to get all transactions with the specified User ID, date range, min/max value, and category.
+	 * @param userID
+	 * @param dateMin
+	 * @param dateMax
+	 * @param flag - Use either DatabaseService.LESS_THAN, DatabaseService.GREATER_THAN, DatabaseService.EQUAL_TO, DatabaseService.LESS_THAN_EQUAL, or DatabaseService.GREATER_THAN_EQUAL
+	 * @param value - Parse empty String "" to disable filter by value
+	 * @param category - Parse empty String "" to disable filter by category
+	 * @return
+	 */
+	public List<Transaction> getAllTransactions(int userID, Date dateMin, Date dateMax, int flag, double value, String category)
+	{
+		List<Transaction> transactions = new ArrayList<Transaction>();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String query = "SELECT * FROM " + TABLE_TRANSACTIONS + " WHERE " + Transaction.ID + " = " + userID
+						+ " AND " + Transaction.DATE_INPUT + " >= " + dateMin
+						+ " AND " + Transaction.DATE_INPUT + " <= " + dateMax;
+		if (flag == LESS_THAN)
+		{
+			query += " AND " + Transaction.AMOUNT + " < " + value;
+			
+		}
+		else if (flag == GREATER_THAN)
+		{
+			query += " AND " + Transaction.AMOUNT + " > " + value;
+		}
+		else if (flag == EQUAL_TO)
+		{
+			query += " AND " + Transaction.AMOUNT + " = " + value;
+		}
+		else if (flag == LESS_THAN_EQUAL)
+		{
+			query += " AND " + Transaction.AMOUNT + " <= " + value;
+		}
+		else if (flag == GREATER_THAN_EQUAL)
+		{
+			query += " AND " + Transaction.AMOUNT + " >= " + value;
+		}
+		
+		//TODO: Query for category name
+		
+		try
+		{
+			ps = this.prepStatement(query);
+			rs = ps.executeQuery();
+			
+			//Loop through the result set
+			while (rs.next())
+			{
+				Transaction tr = new Transaction(rs.getInt(Transaction.ID),
+													rs.getInt(Transaction.CATEGORY_ID),
+													rs.getInt(Transaction.USER_ID),
+													rs.getDate(Transaction.DATE_INPUT),
+													rs.getDate(Transaction.DATE_EDIT),
+													rs.getDouble(Transaction.AMOUNT),
+													rs.getString(Transaction.DESC),
+													rs.getString(Transaction.LINK_RECEIPT));
+				transactions.add(tr);
+			}
+			
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch(SQLException ex) {}
+			}
+			
+			if (rs != null)
+			{
+				try
+				{
+					rs.close();
+				}
+				catch(SQLException ex) {}
+			}
+		}
+		
+		return transactions;
+	}
+	/**
+	 * Get the login information of the either the Admin or the User. If there are no matches
+	 * with the provided credentials, returns null. Will check Admins table first before checking Users table.
 	 * @param email
 	 * @param password
-	 * @return
+	 * @return Either an Admin or User object. If no matches are found, returns null instead.
 	 */
 	public Person getLogin(String email, String password)
 	{
