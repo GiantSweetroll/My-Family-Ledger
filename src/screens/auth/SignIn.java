@@ -116,22 +116,22 @@ public class SignIn extends CenteredPage
 		//Add to panelCenter
 		Gbm.goToOrigin(c);
 		c.insets = new Insets(5, 80, 5, 80);
-		panelCenter.add(this.labLogo, c);
+		panelCenter.add(this.labLogo, c);			//Logo
 		Gbm.newGridLine(c);
 		c.insets = new Insets(5, 80, 25, 80);
-		panelCenter.add(this.labSignIn, c);
+		panelCenter.add(this.labSignIn, c);			//Sign In Label
 		Gbm.newGridLine(c);
 		c.insets = new Insets(5, 80, 5, 80);
 		c.fill = GridBagConstraints.HORIZONTAL;
-		panelCenter.add(this.tfEmail,c);
+		panelCenter.add(this.tfEmail,c);			//Email text field
 		Gbm.newGridLine(c);
-		panelCenter.add(this.tfPass, c);
+		panelCenter.add(this.tfPass, c);			//Password text field
 		Gbm.newGridLine(c);
-		panelCenter.add(this.butSignIn, c);
+		panelCenter.add(this.butSignIn, c);			//Sign in button
 		Gbm.newGridLine(c);
 		c.fill = GridBagConstraints.NONE;
 		c.insets = new Insets(20, 80, 50, 80);
-		panelCenter.add(this.labForgotPass, c);
+		panelCenter.add(this.labForgotPass, c);		//Forgot password label
 		//Add to panelMain
 		this.panelMain.add(panelTop, BorderLayout.NORTH);
 		this.panelMain.add(panelCenter, BorderLayout.CENTER);

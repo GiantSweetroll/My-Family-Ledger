@@ -92,13 +92,13 @@ public class SignUpOptions extends CenteredPage
 		//Add to panelCenter
 		Gbm.goToOrigin(c);
 		c.insets = new Insets(5, 80, 5, 80);
-		panelCenter.add(this.labLogo, c);
+		panelCenter.add(this.labLogo, c);			//Logo
 		Gbm.newGridLine(c);
 		c.insets = new Insets(5, 80, 25, 80);
-		panelCenter.add(this.labSignUp, c);
+		panelCenter.add(this.labSignUp, c);			//Sign Up label
 		Gbm.newGridLine(c);
 		c.insets = new Insets(5, 80, 50, 80);
-		panelCenter.add(panelOptions, c);
+		panelCenter.add(panelOptions, c);			//panelOptions
 		//Add to panelMain
 		panelMain.add(panelTop, BorderLayout.NORTH);
 		panelMain.add(panelCenter, BorderLayout.CENTER);
