@@ -7,8 +7,9 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,6 +21,7 @@ import javax.swing.plaf.FontUIResource;
 import giantsweetroll.gui.swing.Gbm;
 import shared.CenteredPage;
 import shared.Constants;
+import shared.LogoLabel;
 import shared.Methods;
 
 public class SignIn extends CenteredPage
@@ -55,7 +57,7 @@ public class SignIn extends CenteredPage
 	{
 		//Initialization
 		this.panelMain = new JPanel(new BorderLayout());
-		this.labLogo = new JLabel(new ImageIcon());	//TODO: Place app's icon
+		this.labLogo = new LogoLabel();
 		this.labSignIn = new JLabel("Sign In");
 		this.labSignUp = new JLabel("Sign Up");
 		this.tfEmail = new JTextField(10);
@@ -74,6 +76,33 @@ public class SignIn extends CenteredPage
 		this.labLogo.setBackground(Color.YELLOW);
 		this.labSignUp.setForeground(Constants.COLOR_HYPERLINK);
 		this.labSignUp.setFont(Constants.FONT_SMALLER);
+		this.labSignUp.addMouseListener(new MouseListener()
+				{
+					@Override
+					public void mouseClicked(MouseEvent arg0) 
+					{
+						// TODO Go to Sign Up page
+					}
+
+					@Override
+					public void mouseEntered(MouseEvent arg0)
+					{
+						//TODO: Make text underline
+					}
+
+					@Override
+					public void mouseExited(MouseEvent arg0) {
+						//TODO: Remove text underline
+						
+					}
+
+					@Override
+					public void mousePressed(MouseEvent arg0) {}
+
+					@Override
+					public void mouseReleased(MouseEvent arg0) {}
+					
+				});
 		this.labSignIn.setFont(Constants.FONT_SUB_TITLE);
 		this.butSignIn.setFont(Constants.FONT_SMALLER);
 		this.butSignIn.setBackground(Constants.COLOR_BUTTON_BASE);
