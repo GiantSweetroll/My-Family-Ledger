@@ -27,7 +27,7 @@ import shared.LogoLabel;
 import shared.Methods;
 import shared.TextFieldHintListener;
 
-public class SignUpAdmin extends CenteredPage
+public class SignUp extends CenteredPage
 {
 	/**
 	 * 
@@ -41,16 +41,19 @@ public class SignUpAdmin extends CenteredPage
 					labBack;
 	private JTextField tfFirstName,
 						tfLastName,
-						tfEmail;
+						tfEmail,
+						tfAdminID;
 	private JTextPane taTnC;
 	private JPasswordField tfPass, tfConfirmPass;
 	private JButton butSignUp;
+	private boolean asAdmin;
 	
 	//Constructor
-	public SignUpAdmin()
+	public SignUp(boolean asAdmin)
 	{
 		//Initialization
 		super();
+		this.asAdmin = asAdmin;
 		this.initCenter();
 		
 		//Properties
@@ -58,6 +61,14 @@ public class SignUpAdmin extends CenteredPage
 	}
 	
 	//Private Methods
+	private void initTFAdminID()
+	{
+		//Initialization
+		this.tfAdminID = new JTextField();
+		
+		//Properties
+		this.tfAdminID.getDocument().addDocumentListener(new TextFieldHintListener(this.tfAdminID, "Admin ID"));
+	}
 	private void initCenter()
 	{
 		//Initialization
@@ -77,6 +88,10 @@ public class SignUpAdmin extends CenteredPage
 		GridBagConstraints c = new GridBagConstraints();
 		StyledDocument doc = this.taTnC.getStyledDocument();
 		SimpleAttributeSet centerAtt = new SimpleAttributeSet();
+		if (!this.asAdmin)
+		{
+			this.initTFAdminID();
+		}
 		
 		//Properties
 		panelCenter.setBackground(Color.WHITE);
@@ -121,6 +136,11 @@ public class SignUpAdmin extends CenteredPage
 		panelCenter.add(this.tfPass, c);				//Password text field
 		Gbm.newGridLine(c);
 		panelCenter.add(this.tfConfirmPass, c);			//Confirm Password text field
+		if (!this.asAdmin)
+		{
+			Gbm.newGridLine(c);
+			panelCenter.add(this.tfAdminID,c);			//Admin ID
+		}
 		c.insets = new Insets(20, 100, 5, 100);
 		Gbm.newGridLine(c);
 		panelCenter.add(this.butSignUp, c);				//Sign up button
@@ -139,7 +159,7 @@ public class SignUpAdmin extends CenteredPage
 		
 		//Initialization
 		JFrame frame = new JFrame();
-		CenteredPage cp = new SignUpAdmin();
+		CenteredPage cp = new SignUp(false);
 		
 		//Properties
 		frame.setSize(700, 700);
