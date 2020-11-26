@@ -1,4 +1,4 @@
-package shared;
+package shared.screens;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import giantsweetroll.gui.swing.Gbm;
+import shared.Constants;
 
 public class CenteredPage extends JPanel
 {

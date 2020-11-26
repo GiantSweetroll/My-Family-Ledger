@@ -1,4 +1,4 @@
-package shared;
+package shared.screens;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -13,6 +13,7 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
 import giantsweetroll.gui.swing.TextAreaManager;
+import shared.Constants;
 
 public class SignUpOption extends JPanel
 {

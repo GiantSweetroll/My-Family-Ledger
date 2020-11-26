@@ -1,4 +1,4 @@
-package shared;
+package shared.screens;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
