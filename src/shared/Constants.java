@@ -12,6 +12,7 @@ public class Constants
 	public static final Color COLOR_OUT_OF_FOCUS = new Color(229, 233, 242);
 	public static final Color COLOR_HYPERLINK = new Color(0, 166, 255);
 	public static final Color COLOR_BUTTON_BASE = new Color(236, 64, 122);
+	public static final Color COLOR_TEXT_GRAY = new Color(129, 144, 165);
 	
 	//Insets
 	public static final Insets INSETS_GENERAL = new Insets(5, 5, 5, 5);
