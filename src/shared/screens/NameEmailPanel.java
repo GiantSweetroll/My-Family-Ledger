@@ -22,10 +22,11 @@ public class NameEmailPanel extends JPanel
 	public NameEmailPanel(String name, String email)
 	{
 		//Initialization
-		this.labName = new JLabel("Name");
-		this.labEmail = new JLabel("Email");
+		this.labName = new JLabel(name);
+		this.labEmail = new JLabel(email);
 		
 		//Properties
+		this.setOpaque(false);
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.labName.setFont(Constants.FONT_GENERAL_BOLD);
 		this.labEmail.setForeground(Constants.COLOR_TEXT_GRAY);
