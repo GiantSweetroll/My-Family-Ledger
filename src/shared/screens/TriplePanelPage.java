@@ -42,34 +42,37 @@ public class TriplePanelPage extends JPanel
 		
 		this.add(this.panelTop, BorderLayout.NORTH);
 	}
+	
 	/**
 	 * Set the center panels. The revalidate() and repaint() method will not be called.
 	 * If you have issues in displaying the new content try calling them.
 	 * If you only want to update the content of a specific panel, set the other values to null.
-	 * @param panel
+	 * @param left
+	 * @param center
+	 * @param right
 	 */
 	public void setCenterPanels(JPanel left, JPanel center, JPanel right)
 	{
+		this.panelWrapper.remove(this.panelLeft);
+		this.panelWrapper.remove(this.panelCenter);
+		this.panelWrapper.remove(this.panelRight);
 		if (left != null)
 		{
-			this.panelWrapper.remove(this.panelLeft);
 			this.panelLeft = left;
-			this.panelWrapper.add(this.panelLeft);
 		}
 		
 		if (center != null)
 		{
-			this.panelWrapper.remove(this.panelCenter);
 			this.panelCenter = center;
-			this.panelWrapper.add(this.panelCenter);
 		}
 		
 		if (right != null)
 		{
-			this.panelWrapper.remove(this.panelRight);
 			this.panelRight = right;
-			this.panelWrapper.add(this.panelRight);
 		}
+		this.panelWrapper.add(this.panelLeft);
+		this.panelWrapper.add(this.panelCenter);
+		this.panelWrapper.add(this.panelRight);
 	}
 	
 	//Private Methods
