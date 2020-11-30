@@ -3,6 +3,7 @@ package screens.input;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -77,11 +78,14 @@ public class TransferFunds extends TriplePanelPage
 		this.butTf = new JButton("Transfer");
 		JPanel panelButtons = new JPanel(new GridLayout(0, 2));
 		JPanel panelInput = new JPanel();
-		JPanel panelCenter = new JPanel(new GridBagLayout());
+		JPanel panelContent = new JPanel(new GridBagLayout());
+		JPanel panelCenter = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		JPanel panelLeft = new JPanel();
+		JPanel panelRight = new JPanel();
 		GridBagConstraints c = new GridBagConstraints();
 		
 		//Properties
-		this.panelTransfer.setLayout(new BorderLayout());
+		this.panelTransfer.setLayout(new BorderLayout(5, 50));
 		this.panelTransfer.setBackground(Color.WHITE);
 		this.labTransfer.setFont(Constants.FONT_TITLE);
 		this.labTransfer.setHorizontalAlignment(SwingConstants.CENTER);
@@ -93,7 +97,10 @@ public class TransferFunds extends TriplePanelPage
 		panelButtons.setBackground(Color.WHITE);
 		panelInput.setLayout(new BoxLayout(panelInput, BoxLayout.Y_AXIS));
 		panelInput.setBackground(Color.WHITE);
-		panelCenter.setBackground(Color.WHITE);
+		panelContent.setBackground(Color.WHITE);
+		panelCenter.setOpaque(false);
+		panelLeft.setOpaque(false);
+		panelRight.setOpaque(false);
 		
 		///Add to panel
 		//Add to panelButtons
@@ -108,15 +115,20 @@ public class TransferFunds extends TriplePanelPage
 		panelInput.add(Box.createRigidArea(new Dimension(0, 20)));
 		panelInput.add(this.tfNotes);
 		panelInput.add(Box.createRigidArea(new Dimension(0, 50)));
-		//Add to panelCenter
+		//Add to panelContent
 		Gbm.goToOrigin(c);
 		c.fill = GridBagConstraints.HORIZONTAL;
-		panelCenter.add(panelInput, c);				//panelCenter
+		c.insets = Constants.INSETS_GENERAL;
+		panelContent.add(panelInput, c);			//panelInput
 		Gbm.newGridLine(c);
-		panelCenter.add(panelButtons, c);			//panelButtons
+		panelContent.add(panelButtons, c);			//panelButtons
+		//Add to panelCenter
+		panelCenter.add(panelContent);
 		//Add to panelTransfer
 		this.panelTransfer.add(this.labTransfer, BorderLayout.NORTH);
 		this.panelTransfer.add(panelCenter, BorderLayout.CENTER);
+		this.panelTransfer.add(panelRight, BorderLayout.EAST);
+		this.panelTransfer.add(panelLeft, BorderLayout.WEST);
 	}
 	
 	//Testing
