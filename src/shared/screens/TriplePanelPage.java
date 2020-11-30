@@ -20,7 +20,8 @@ public class TriplePanelPage extends JPanel
 					panelLeft,
 					panelCenter,
 					panelRight,
-					panelWrapper;
+					panelWrapper,
+					panelTopParent;
 	
 	//Constructor
 	public TriplePanelPage()
@@ -36,11 +37,11 @@ public class TriplePanelPage extends JPanel
 	 */
 	public void setPanelTop(JPanel panel)
 	{
-		this.remove(this.panelTop);
+		this.panelTopParent.remove(this.panelTop);
 		
 		this.panelTop = panel;
 		
-		this.add(this.panelTop, BorderLayout.NORTH);
+		this.panelTopParent.add(this.panelTop, BorderLayout.CENTER);
 	}
 	
 	/**
@@ -88,22 +89,42 @@ public class TriplePanelPage extends JPanel
 		this.panelLeft = panelLeft;
 		this.panelRight = panelRight;
 		this.panelWrapper = new JPanel(new GridLayout(0, 3, 10, 10));
+		this.panelTopParent = new JPanel(new BorderLayout(10, 0));
+		JPanel p1 = new JPanel();
+		JPanel p2 = new JPanel();
+		JPanel p3 = new JPanel();
+		JPanel p4 = new JPanel();
+		JPanel p5 = new JPanel();
+		JPanel p6 = new JPanel();
 		
 		//Properties
-		this.setLayout(new BorderLayout());
+		this.setLayout(new BorderLayout(10, 3));
 		this.setBackground(outOfFocus);
+		this.panelWrapper.setOpaque(false);
+		this.panelTopParent.setOpaque(false);
+		p1.setOpaque(false);
+		p2.setOpaque(false);
+		p3.setOpaque(false);
+		p4.setOpaque(false);
+		p5.setOpaque(false);
+		p6.setOpaque(false);
 		
 		///Add to panel
 		//Add to Wrapper
 		this.panelWrapper.add(this.panelLeft);
 		this.panelWrapper.add(this.panelCenter);
 		this.panelWrapper.add(this.panelRight);
+		//Add to panelTopParent
+		this.panelTopParent.add(p1, BorderLayout.NORTH);
+		this.panelTopParent.add(p2, BorderLayout.WEST);
+		this.panelTopParent.add(this.panelCenter, BorderLayout.CENTER);
+		this.panelTopParent.add(p3, BorderLayout.EAST);
 		//Add to main panel
-		this.add(this.panelTop, BorderLayout.NORTH);
+		this.add(this.panelTopParent, BorderLayout.NORTH);
 		this.add(this.panelWrapper, BorderLayout.CENTER);
-		this.add(new JPanel(), BorderLayout.WEST);
-		this.add(new JPanel(), BorderLayout.EAST);
-		this.add(new JPanel(), BorderLayout.SOUTH);
+		this.add(p4, BorderLayout.WEST);
+		this.add(p5, BorderLayout.EAST);
+		this.add(p6, BorderLayout.SOUTH);
 	}
 	
 	//Testing
