@@ -58,12 +58,17 @@ public class TransferFunds extends TriplePanelPage
 	{
 		super();
 		//Initialization
+		this.person = person;
+		this.panelAcc = new AccountPanel();
 		this.initPanelTransfer();
+		this.initPanelReceivers();
+		this.initPanelPrev();
 		
 		//Properties
-		this.setCenterPanels(null, this.panelTransfer, null);
+		this.setCenterPanels(this.panelReceivers, this.panelTransfer, this.panelPrev);
+		this.setPanelTop(this.panelAcc);
 	}
-	
+
 	//Private methods
 	private void initPanelTransfer()
 	{
@@ -129,6 +134,55 @@ public class TransferFunds extends TriplePanelPage
 		this.panelTransfer.add(panelCenter, BorderLayout.CENTER);
 		this.panelTransfer.add(panelRight, BorderLayout.EAST);
 		this.panelTransfer.add(panelLeft, BorderLayout.WEST);
+	}
+	private void initPanelReceivers()
+	{
+		//Initialization
+		this.panelReceivers = new RoundedPanel(false);
+		this.labReceiverHeader = new JLabel("Receivers");
+		this.labClickSelect = new JLabel("Click to select");
+		JPanel panelTop = new JPanel(new BorderLayout());
+		
+		//Properties
+		this.panelReceivers.setLayout(new BorderLayout(5, 50));
+		this.panelReceivers.setBackground(Color.WHITE);
+		this.labReceiverHeader.setFont(Constants.FONT_SUB_TITLE);
+		this.labReceiverHeader.setHorizontalAlignment(SwingConstants.CENTER);
+		this.labClickSelect.setFont(Constants.FONT_SMALLER);
+		this.labClickSelect.setHorizontalAlignment(SwingConstants.CENTER);
+		this.labClickSelect.setForeground(Constants.COLOR_TEXT_GRAY);
+		panelTop.setOpaque(false);
+		
+		///Add to panel
+		//Add to panelTop
+		panelTop.add(this.labReceiverHeader, BorderLayout.NORTH);
+		panelTop.add(this.labClickSelect, BorderLayout.SOUTH);
+		//Add to panelRecievers
+		this.panelReceivers.add(panelTop, BorderLayout.NORTH);
+	}
+	private void initPanelPrev()
+	{
+		//Initialization
+		this.panelPrev = new RoundedPanel(false);
+		this.labPrev = new JLabel ("Previous Transfers");
+		this.labLastTf = new JLabel ("Your last 5 transfers");
+		JPanel panelTop = new JPanel(new BorderLayout());
+		
+		//Properties
+		this.panelPrev.setBackground(Color.WHITE);
+		this.labPrev.setFont(Constants.FONT_SUB_TITLE);
+		this.labPrev.setHorizontalAlignment(SwingConstants.CENTER);
+		this.labLastTf.setFont(Constants.FONT_SMALLER);
+		this.labLastTf.setForeground(Constants.COLOR_TEXT_GRAY);
+		this.labLastTf.setHorizontalAlignment(SwingConstants.CENTER);
+		panelTop.setOpaque(false);
+		
+		///Add to panel
+		//add to panelTop
+		panelTop.add(this.labPrev, BorderLayout.NORTH);
+		panelTop.add(this.labLastTf, BorderLayout.SOUTH);
+		//Add to panelPrev
+		this.panelPrev.add(panelTop, BorderLayout.NORTH);
 	}
 	
 	//Testing
