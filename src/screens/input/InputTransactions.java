@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,7 +30,10 @@ public class InputTransactions extends TriplePanelPage{
 					panelInput, 
 					panelReceipt;
 	private JLabel labelPrevTrans,
-					labelLastTs;
+					labelLastTs,
+					labelInput,
+					labelReceipt;
+	private JComboBox cbCategory;
 	
 	public InputTransactions(Person person) 
 	{
@@ -74,12 +78,47 @@ public class InputTransactions extends TriplePanelPage{
 	
 	private void initPanelInput()
 	{
+		//Initialization
+		this.panelInput = new RoundedPanel(false);
+		this.labelInput = new JLabel("Input");
+		JPanel panelTop = new JPanel(new BorderLayout());
+		JPanel panelContent = new JPanel(new BorderLayout());
 		
+		String categories[] = { "Food", "Transport", "Household" };
+		this.cbCategory = new JComboBox(categories);
+		
+		//Properties
+		this.panelInput.setBackground(Color.WHITE);
+		this.labelInput.setFont(Constants.FONT_SUB_TITLE);
+		this.labelInput.setHorizontalAlignment(SwingConstants.CENTER);
+		panelTop.setOpaque(false);
+		panelContent.setOpaque(false);
+		
+		//Add to panelTop
+		panelTop.add(this.labelInput, BorderLayout.NORTH);
+		panelContent.add(this.cbCategory, BorderLayout.NORTH);
+		//Add to panelInput
+		this.panelInput.add(panelTop, BorderLayout.NORTH);
+		this.panelInput.add(panelContent, BorderLayout.SOUTH);
 	}
 	
 	private void initPanelReceipt()
 	{
+		//Initialization
+		this.panelReceipt = new RoundedPanel(false);
+		this.labelReceipt = new JLabel("Receipt");
+		JPanel panelTop = new JPanel(new BorderLayout());
 		
+		//Properties
+		this.panelReceipt.setBackground(Color.WHITE);
+		this.labelReceipt.setFont(Constants.FONT_SUB_TITLE);
+		this.labelReceipt.setHorizontalAlignment(SwingConstants.CENTER);
+		panelTop.setOpaque(false);
+		
+		//Add to panelTop
+		panelTop.add(this.labelReceipt, BorderLayout.NORTH);
+		//Add to panelInput
+		this.panelReceipt.add(panelTop, BorderLayout.NORTH);
 	}
 	
 	public static void main(String args[])
