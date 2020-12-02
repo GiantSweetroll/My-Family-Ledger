@@ -2,12 +2,17 @@ package screens.input;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.FontUIResource;
 
@@ -34,6 +39,7 @@ public class InputTransactions extends TriplePanelPage{
 					labelInput,
 					labelReceipt;
 	private JComboBox cbCategory;
+	private JTextField inputItem, inputPrice;
 	
 	public InputTransactions(Person person) 
 	{
@@ -60,6 +66,7 @@ public class InputTransactions extends TriplePanelPage{
 		JPanel panelTop = new JPanel(new BorderLayout());
 		
 		//Properties
+		this.panelPrevTrans.setLayout(new BorderLayout(5, 50));
 		this.panelPrevTrans.setBackground(Color.WHITE);
 		this.labelPrevTrans.setFont(Constants.FONT_SUB_TITLE);
 		this.labelPrevTrans.setHorizontalAlignment(SwingConstants.CENTER);
@@ -81,25 +88,35 @@ public class InputTransactions extends TriplePanelPage{
 		//Initialization
 		this.panelInput = new RoundedPanel(false);
 		this.labelInput = new JLabel("Input");
+		this.inputItem = new JTextField(10);
+		this.inputPrice = new JTextField(10);
 		JPanel panelTop = new JPanel(new BorderLayout());
+		JPanel panelCenter = new JPanel(new FlowLayout());
 		JPanel panelContent = new JPanel(new BorderLayout());
 		
 		String categories[] = { "Food", "Transport", "Household" };
 		this.cbCategory = new JComboBox(categories);
 		
 		//Properties
+		this.panelInput.setLayout(new BorderLayout());
 		this.panelInput.setBackground(Color.WHITE);
 		this.labelInput.setFont(Constants.FONT_SUB_TITLE);
 		this.labelInput.setHorizontalAlignment(SwingConstants.CENTER);
 		panelTop.setOpaque(false);
+		panelCenter.setOpaque(false);
 		panelContent.setOpaque(false);
 		
-		//Add to panelTop
+		//Add to panels
 		panelTop.add(this.labelInput, BorderLayout.NORTH);
+		panelTop.add(Box.createRigidArea(new Dimension(0, 40)), BorderLayout.SOUTH);
 		panelContent.add(this.cbCategory, BorderLayout.NORTH);
+		panelContent.add(this.inputItem, BorderLayout.CENTER);
+		panelContent.add(this.inputPrice, BorderLayout.SOUTH);
+		panelCenter.add(panelContent);
+		
 		//Add to panelInput
-		this.panelInput.add(panelTop, BorderLayout.NORTH);
-		this.panelInput.add(panelContent, BorderLayout.SOUTH);
+		panelInput.add(panelTop, BorderLayout.NORTH);
+		panelInput.add(panelCenter, BorderLayout.CENTER);
 	}
 	
 	private void initPanelReceipt()
