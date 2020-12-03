@@ -1,32 +1,29 @@
-package screens.auth;
+package screens.menu;
 
-import java.awt.BorderLayout; 
+
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.plaf.FontUIResource;
 
 import models.Person;
-import screens.input.TransferFunds;
 import shared.Constants;
 import shared.Methods;
 import shared.screens.AccountPanel;
 import shared.components.AppButton;
 import shared.screens.LogoLabel;
 
-public class Menu{
+public class Menu extends JPanel{
 	
 	private static final long serialVersionUID = -4877032747183645341L;
 
@@ -34,24 +31,25 @@ public class Menu{
 	private Person person;
 	private AppButton butTransfer, 
 					butHistory, 
-					butReport, butExit;
+					butReport, butExit,
+					butInput;
 	private AccountPanel panelAcc;
-	
-	private static JPanel MainPanel;
 	private LogoLabel logo;
 	private JLabel logoDesc;
 	
-	public Menu()
+	public Menu ()
 	{
-
-		this.initMenu();
+		super();
+		this.setLayout(new BorderLayout());
+		//this.initMenuAdmin();
+		this.initMenuUser();
 		
 	}
 	
-	private void initMenu()
+	private void initMenuAdmin()
 	{
 		//Initialization
-		this.MainPanel = new JPanel(new BorderLayout());
+		
 		this.butHistory = new AppButton("History");
 		this.butTransfer = new AppButton("Transfer");
 		this.butReport = new AppButton("Report");
@@ -62,16 +60,16 @@ public class Menu{
 		JPanel panelButton = new JPanel();
 		JPanel panelCenter = new JPanel();
 		JPanel panelBottom = new JPanel();
+		JPanel mainPanel = new JPanel(new BorderLayout());
+		JScrollPane scrollpane = new JScrollPane(mainPanel);
 		this.panelAcc = new AccountPanel();
-		
-		
-	
 		
 		//Properties 
 		panelTop.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		panelButton.setLayout(new FlowLayout(FlowLayout.CENTER,200,200));
 		panelCenter.setLayout(new BoxLayout(panelCenter, BoxLayout.Y_AXIS));
 		panelBottom.setLayout(new FlowLayout(FlowLayout.CENTER));
+		mainPanel.setLayout(new BorderLayout());
 		this.butTransfer.setBackground(Constants.COLOR_BUTTON_YELLOW);
 		this.butTransfer.setFont(Constants.FONT_GENERAL_BOLD);
 		this.butTransfer.setPreferredSize(new Dimension(220,150));
@@ -83,9 +81,6 @@ public class Menu{
 		this.butReport.setPreferredSize(new Dimension(220,150));
 		this.butExit.setBackground(Constants.COLOR_BUTTON_BASE);
 		this.logoDesc.setAlignmentX(Component.CENTER_ALIGNMENT);
-		
-		
-	
 		
 		
 		//Add to panelTop 
@@ -106,11 +101,70 @@ public class Menu{
 		//Add to panelBottom 
 		panelBottom.add(butExit);
 		
+		//Add to MainPanel
+		mainPanel.add(panelTop,BorderLayout.NORTH);
+		mainPanel.add(panelCenter,BorderLayout.CENTER);
+		mainPanel.add(panelBottom,BorderLayout.SOUTH);	
+		
+		this.add(scrollpane);
+		
+	}
+	
+	private void initMenuUser() {
+		this.butHistory = new AppButton("History");
+		this.butInput = new AppButton("Input");
+		this.butExit = new AppButton("Exit");
+		this.logo = new LogoLabel();
+		this.logoDesc = new JLabel("Our Funds Motto or smth");
+		this.panelAcc = new AccountPanel();
+		
+		JPanel panelTop = new JPanel();
+		JPanel panelButton = new JPanel();
+		JPanel panelCenter = new JPanel();
+		JPanel panelBottom = new JPanel();
+		JPanel mainPanel = new JPanel();
+		JScrollPane scrollpane = new JScrollPane(mainPanel);
+		
+		
+		//Properties 
+		panelTop.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		panelButton.setLayout(new FlowLayout(FlowLayout.CENTER,200,200));
+		panelCenter.setLayout(new BoxLayout(panelCenter, BoxLayout.Y_AXIS));
+		panelBottom.setLayout(new FlowLayout(FlowLayout.CENTER));
+		mainPanel.setLayout(new BorderLayout());
+		this.butInput.setBackground(Constants.COLOR_BUTTON_YELLOW);
+		this.butInput.setFont(Constants.FONT_GENERAL_BOLD);
+		this.butInput.setPreferredSize(new Dimension(220,150));
+		this.butHistory.setBackground(Constants.COLOR_BUTTON_YELLOW);
+		this.butHistory.setFont(Constants.FONT_GENERAL_BOLD);
+		this.butHistory.setPreferredSize(new Dimension(220,150));
+		this.butExit.setBackground(Constants.COLOR_BUTTON_BASE);
+		this.logoDesc.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		
+		//Add to panelTop 
+		panelTop.add(panelAcc);
+		
+		//Add to panelButton 
+		panelButton.add(butInput);
+		panelButton.add(butHistory);
+		
+		//Add to panelCenter
+		panelCenter.add(logo);
+		panelCenter.add(Box.createRigidArea(new Dimension(0,20)));
+		panelCenter.add(logoDesc);
+		panelCenter.add(Box.createRigidArea(new Dimension(0,0)));
+		panelCenter.add(panelButton);
+		
+		//Add to panelBottom 
+		panelBottom.add(butExit);
 		
 		//Add to MainPanel
-		MainPanel.add(panelTop,BorderLayout.NORTH);
-		MainPanel.add(panelCenter,BorderLayout.CENTER);
-		MainPanel.add(panelBottom,BorderLayout.SOUTH);
+		mainPanel.add(panelTop,BorderLayout.NORTH);
+		mainPanel.add(panelCenter,BorderLayout.CENTER);
+		mainPanel.add(panelBottom,BorderLayout.SOUTH);
+		this.add(scrollpane);
+		
 		
 	}
 	
@@ -122,7 +176,7 @@ public class Menu{
 		
 		//Initialization
 		JFrame frame = new JFrame();
-		Menu menu = new Menu();
+		Menu mn = new Menu();
 		
 		//Properties
 		frame.setSize(700, 700);
@@ -130,10 +184,8 @@ public class Menu{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		//Add to frame
-		frame.add(MainPanel);
+		frame.add(mn);
 		
 		frame.setVisible(true);
 	}
 }
-
-
