@@ -55,8 +55,8 @@ public class MyProfilePage extends CenteredPage{
 		
 	}
 	
-	private void init() {
-		this.mainPanel = new JPanel(new BorderLayout());
+	private void init() { 
+		this.mainPanel = new JPanel(new BorderLayout()); 
 		this.myProfileLabel = new JLabel("My Profile");
 		this.usernameLabel = new JLabel("Username");
 		this.lastNameLabel = new JLabel("Last Name");
@@ -69,14 +69,14 @@ public class MyProfilePage extends CenteredPage{
 		GridBagConstraints c = new GridBagConstraints();
 		
 		topPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		topPanel.setBackground(Color.BLUE);
+		topPanel.setBackground(Color.WHITE);
 		
 		centerPanel.setLayout(new GridBagLayout());
 		centerPanel.setBackground(Color.WHITE);
 		
-		this.closeIconLabel.setMinimumSize(new Dimension(100, 25));
-		this.closeIconLabel.setPreferredSize(new Dimension(100, 25));
-		this.closeIconLabel.setMaximumSize(new Dimension(100, 25));
+		this.closeIconLabel.setMinimumSize(new Dimension(25, 25));
+		this.closeIconLabel.setPreferredSize(new Dimension(25, 25));
+		this.closeIconLabel.setMaximumSize(new Dimension(25, 25));
 		
 		this.myProfileLabel.setFont(Constants.FONT_SUB_TITLE);
 		
@@ -99,7 +99,7 @@ public class MyProfilePage extends CenteredPage{
 		this.okButton.setBackground(Constants.COLOR_BUTTON_BASE);
 		this.okButton.setForeground(Color.WHITE);
 		
-		topPanel.add(myProfileLabel);
+		topPanel.add(closeIconLabel);
 		
 		Gbm.goToOrigin(c);
 		c.insets = new Insets(5, 80, 30, 80);
