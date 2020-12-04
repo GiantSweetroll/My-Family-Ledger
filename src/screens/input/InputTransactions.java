@@ -5,6 +5,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -94,8 +97,20 @@ public class InputTransactions extends TriplePanelPage{
 		JPanel panelCenter = new JPanel(new FlowLayout());
 		JPanel panelContent = new JPanel(new BorderLayout());
 		
-		String categories[] = { "Food", "Transport", "Household" };
-		this.cbCategory = new JComboBox(categories);
+		//make combo box
+		String categories[] = { "Select Item", "Food", "Transport", "Household" };
+		this.cbCategory = new JComboBox<String>(categories);
+		cbCategory.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                // Get the source of the component, which is our combo box.
+                JComboBox cbCategory = (JComboBox) event.getSource();
+                // Print the selected items and the action command.
+                Object selected = cbCategory.getSelectedItem();
+                System.out.println("Selected Item  = " + selected);
+                String command = event.getActionCommand();
+                System.out.println("Action Command = " + command);
+            }
+		});
 		
 		//Properties
 		this.panelInput.setLayout(new BorderLayout());
