@@ -117,7 +117,7 @@ public class TriplePanelPage extends JPanel
 		//Add to panelTopParent
 		this.panelTopParent.add(p1, BorderLayout.NORTH);
 		this.panelTopParent.add(p2, BorderLayout.WEST);
-		this.panelTopParent.add(this.panelCenter, BorderLayout.CENTER);
+		this.panelTopParent.add(this.panelTop, BorderLayout.CENTER);
 		this.panelTopParent.add(p3, BorderLayout.EAST);
 		//Add to main panel
 		this.add(this.panelTopParent, BorderLayout.NORTH);
