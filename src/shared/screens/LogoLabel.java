@@ -3,6 +3,8 @@ package shared.screens;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+import giantsweetroll.ImageManager;
+
 public class LogoLabel extends JLabel
 {
 
@@ -13,6 +15,8 @@ public class LogoLabel extends JLabel
 	
 	public LogoLabel()
 	{
-		super(new ImageIcon());		//TODO: Replace with our actual logo
+		super();		//TODO: Replace with our actual logo
+		
+		this.setIcon(new ImageIcon(ImageManager.scaleImage(ImageManager.getImage("/resources/logo.png"), 300, 300)));
 	}
 }
