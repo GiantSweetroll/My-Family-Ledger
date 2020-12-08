@@ -14,6 +14,7 @@ public class Constants
 	public static final Color COLOR_BUTTON_BASE = new Color(236, 64, 122);
 	public static final Color COLOR_TEXT_GRAY = new Color(129, 144, 165);
 	public static final Color COLOR_BUTTON_YELLOW = new Color(246, 196, 68);
+	public static final Color COLOR_SELECTED = new Color(119, 211, 83);
 	
 	//Insets
 	public static final Insets INSETS_GENERAL = new Insets(5, 5, 5, 5);
