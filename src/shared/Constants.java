@@ -32,4 +32,7 @@ public class Constants
 
 	//Date Format
 	public static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
+	
+	//ComboBox texts
+	public static final String[] COMBO_BOX_OPERANDS = {"=", "<", ">", "<=", ">="};
 }
