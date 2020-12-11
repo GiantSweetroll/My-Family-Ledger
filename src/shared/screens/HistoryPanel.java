@@ -27,19 +27,19 @@ public class HistoryPanel extends JPanel
 	 */
 	private static final long serialVersionUID = -2967299059046868489L;
 	//Fields
-	protected JPanel panelTop, 
+	private JPanel panelTop, 
 						panelFilters,
 						panelTable,
 						panelButtons,
 						panelFilterComp;
-	protected JButton butResetFilter,
+	private JButton butResetFilter,
 						butBack,
 						butRefresh;
-	protected JLabel labelFilter;
-	protected AccountPanel panelAcc;
-	protected Person person;
-	protected JTable table;
-	protected JScrollPane scrollTable;
+	private JLabel labelFilter;
+	private AccountPanel panelAcc;
+	private Person person;
+	private JTable table;
+	private JScrollPane scrollTable;
 	
 	//Constructor
 	public HistoryPanel(Person person)
