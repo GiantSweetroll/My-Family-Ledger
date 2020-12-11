@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -90,15 +91,14 @@ public class InputTransactions extends TriplePanelPage{
 	{
 		//Initialization
 		this.panelInput = new RoundedPanel(false);
+		JPanel panelContent = new JPanel();
+		BoxLayout boxlayout = new BoxLayout(panelContent, BoxLayout.Y_AXIS);
 		this.labelInput = new JLabel("Input");
-		this.inputItem = new JTextField(10);
-		this.inputPrice = new JTextField(10);
-		JPanel panelTop = new JPanel(new BorderLayout());
-		JPanel panelCenter = new JPanel(new FlowLayout());
-		JPanel panelContent = new JPanel(new BorderLayout());
-		
+		this.inputItem = new JTextField("Item/Service Name", 10);
+		this.inputPrice = new JTextField("Price (Rp.)", 10);
+
 		//make combo box
-		String categories[] = { "Select Item", "Food", "Transport", "Household" };
+		String categories[] = { "Select Category", "Food", "Transport", "Household" };
 		this.cbCategory = new JComboBox<String>(categories);
 		cbCategory.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
@@ -107,31 +107,33 @@ public class InputTransactions extends TriplePanelPage{
                 // Print the selected items and the action command.
                 Object selected = cbCategory.getSelectedItem();
                 System.out.println("Selected Item  = " + selected);
-                String command = event.getActionCommand();
-                System.out.println("Action Command = " + command);
             }
 		});
 		
 		//Properties
 		this.panelInput.setLayout(new BorderLayout());
+		panelContent.setLayout(boxlayout);
+		panelContent.setOpaque(false);
 		this.panelInput.setBackground(Color.WHITE);
 		this.labelInput.setFont(Constants.FONT_SUB_TITLE);
 		this.labelInput.setHorizontalAlignment(SwingConstants.CENTER);
-		panelTop.setOpaque(false);
-		panelCenter.setOpaque(false);
-		panelContent.setOpaque(false);
+		this.inputItem.setFont(Constants.FONT_SMALLER);
+		this.inputItem.setForeground(Constants.COLOR_TEXT_GRAY);
+		this.inputPrice.setFont(Constants.FONT_SMALLER);
+		this.inputPrice.setForeground(Constants.COLOR_TEXT_GRAY);
+		this.cbCategory.setFont(Constants.FONT_SMALLER);
 		
 		//Add to panels
-		panelTop.add(this.labelInput, BorderLayout.NORTH);
-		panelTop.add(Box.createRigidArea(new Dimension(0, 40)), BorderLayout.SOUTH);
-		panelContent.add(this.cbCategory, BorderLayout.NORTH);
-		panelContent.add(this.inputItem, BorderLayout.CENTER);
-		panelContent.add(this.inputPrice, BorderLayout.SOUTH);
-		panelCenter.add(panelContent);
-		
-		//Add to panelInput
-		panelInput.add(panelTop, BorderLayout.NORTH);
-		panelInput.add(panelCenter, BorderLayout.CENTER);
+		//panelContent.add(this.labelInput);
+		panelContent.add(Box.createRigidArea(new Dimension(0, 40)));
+		panelContent.add(this.cbCategory);
+		panelContent.add(this.inputItem);
+		panelContent.add(this.inputPrice);
+		panelContent.add(Box.createRigidArea(new Dimension(0, 550)));
+		this.panelInput.add(this.labelInput, BorderLayout.NORTH);
+		this.panelInput.add(Box.createRigidArea(new Dimension(50, 0)), BorderLayout.WEST);
+		this.panelInput.add(panelContent, BorderLayout.CENTER);
+		this.panelInput.add(Box.createRigidArea(new Dimension(50, 0)), BorderLayout.EAST);
 	}
 	
 	private void initPanelReceipt()
