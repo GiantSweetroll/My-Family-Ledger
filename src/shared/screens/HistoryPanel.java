@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -113,8 +114,40 @@ public class HistoryPanel extends JPanel
 	{
 		return this.table;
 	}
+	/**
+	 * Set the action when the "Reset Filter" button is clicked.
+	 * @param a an ActionListener object
+	 */
+	public void setWhenResetFilterClicked(ActionListener a)
+	{
+		this.setAction(this.butResetFilter, a);
+	}
+	/**
+	 * Set the action when the "Back" button is clicked.
+	 * @param a an ActionListener object.
+	 */
+	public void setWhenBackButtonClicked(ActionListener a)
+	{
+		this.setAction(this.butBack, a);
+	}
+	/**
+	 * Set the action when the "Refresh" button is clicked.
+	 * @param a an ActionListener object.
+	 */
+	public void setWhenRefreshButtonClicked(ActionListener a)
+	{
+		this.setAction(this.butRefresh, a);
+	}
 	
 	//private methods
+	private void setAction(JButton button, ActionListener a)
+	{
+		//Remove previous action listeners
+		Methods.removeActionListeners(button);
+		
+		//Add new action listener
+		button.addActionListener(a);
+	}
 	private void initPanelTop()
 	{
 		//Initialization
