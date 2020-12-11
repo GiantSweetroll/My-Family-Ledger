@@ -1,19 +1,28 @@
 package screens.history;
 
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
+import javax.swing.plaf.FontUIResource;
 
+import giantsweetroll.gui.swing.Gbm;
 import models.Person;
 import shared.Constants;
+import shared.Methods;
 import shared.screens.HistoryPanel;
 import shared.screens.SimpleUserTile;
 
@@ -25,7 +34,12 @@ public class TransferHistory extends HistoryPanel
 	 */
 	private static final long serialVersionUID = 5307084475379946087L;
 	//Fields
-	private JLabel labValue, labReceiver, labDateFrom, labDateTo;
+	private JLabel labValue, 
+					labReceiver, 
+					labDateFrom, 
+					labDateTo,
+					labFrom,
+					labTo;
 	private JComboBox<String> comboOperand;
 	private JTextField tfValue;
 	private JScrollPane scrollReceiver;
@@ -36,7 +50,9 @@ public class TransferHistory extends HistoryPanel
 	//Constructor
 	public TransferHistory(Person person)
 	{
+		//Initialization
 		super(person);
+		this.initFilters();
 	}
 	
 	//Public methods
@@ -49,7 +65,11 @@ public class TransferHistory extends HistoryPanel
 		//Clear data
 		for (SimpleUserTile tile : this.receiverTiles)
 		{
-			this.panelReceivers.remove(tile);
+			try
+			{
+				this.panelReceivers.remove(tile);
+			}
+			catch(NullPointerException ex) {}
 		}
 		this.receiverTiles.clear();
 		this.persons.clear();
@@ -74,9 +94,12 @@ public class TransferHistory extends HistoryPanel
 		this.panelReceivers = new JPanel(new GridLayout(0, 1, 1, 3));
 		this.persons = new ArrayList<Person>();
 		this.receiverTiles = new ArrayList<SimpleUserTile>();
+		this.scrollReceiver = new JScrollPane(this.panelReceivers);
 		
 		//Properties
 		this.panelReceivers.setOpaque(false);
+		this.scrollReceiver.getViewport().setOpaque(false);
+		this.scrollReceiver.setOpaque(false);
 	}
 	private void initFilters()
 	{
@@ -86,12 +109,73 @@ public class TransferHistory extends HistoryPanel
 		this.comboOperand = new JComboBox<String>(Constants.COMBO_BOX_OPERANDS);
 		this.tfValue = new JTextField(10);
 		this.labReceiver = new JLabel("Receiver");
-		this.labDateFrom = new JLabel(Constants.DATE_FORMAT.format(LocalDateTime.now()));
-		this.labDateTo = new JLabel(Constants.DATE_FORMAT.format(LocalDateTime.now()));
+		this.labFrom = new JLabel("From");
+		this.labDateFrom = new JLabel(Constants.LOCAL_DATE_FORMATTER.format(LocalDateTime.now()));
+		this.labTo = new JLabel("To");
+		this.labDateTo = new JLabel(Constants.LOCAL_DATE_FORMATTER.format(LocalDateTime.now()));
 		JSeparator sep = new JSeparator(JSeparator.HORIZONTAL);
-		JPanel panel = new JPanel();
+		JPanel panelTop = new JPanel(new GridBagLayout());
+		JPanel panelBelow = new JPanel();
+		JPanel panelFilter = new JPanel(new BorderLayout());
+		GridBagConstraints c = new GridBagConstraints();
 		
 		//Properties
+		this.labDateFrom.setForeground(Constants.COLOR_HYPERLINK);
+		this.labDateTo.setForeground(Constants.COLOR_HYPERLINK);
+		panelTop.setOpaque(false);
+		panelBelow.setOpaque(false);
+		panelBelow.setLayout(new BoxLayout(panelBelow, BoxLayout.Y_AXIS));
+		panelFilter.setOpaque(false);
 		
+		///Add to panel
+		//Add to panelTop
+		Gbm.goToOrigin(c);
+		c.insets = Constants.INSETS_GENERAL;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		panelTop.add(this.labFrom, c);				//From label
+		Gbm.nextGridColumn(c);
+		c.gridwidth = 2;
+		panelTop.add(this.labDateFrom, c);			//From Date
+		c.gridwidth = 1;
+		Gbm.newGridLine(c);
+		panelTop.add(this.labTo, c);				//To label
+		Gbm.nextGridColumn(c);
+		c.gridwidth = 2;
+		panelTop.add(this.labDateTo, c);			//To Date
+		Gbm.newGridLine(c);
+		c.gridwidth = 1;
+		panelTop.add(this.labValue, c);				//Value label
+		Gbm.nextGridColumn(c);
+		panelTop.add(this.comboOperand, c);			//Operand combobox
+		Gbm.nextGridColumn(c);
+		panelTop.add(this.tfValue, c);				//Value text field
+		//Add to panelBelow
+		panelBelow.add(this.labReceiver, c);
+		panelBelow.add(sep, c);
+		panelBelow.add(this.scrollReceiver, c);
+		//Add to panelFilter
+		panelFilter.add(panelTop, BorderLayout.NORTH);
+		panelFilter.add(panelBelow, BorderLayout.SOUTH);
+		//Display filter panel
+		this.setFilterPanel(panelFilter);
+	}
+
+	//Testing
+	public static void main(String args[])
+	{
+		Methods.setUIFont(new FontUIResource(Constants.FONT_TYPE_GENERAL, Font.PLAIN, Constants.FONT_GENERAL_SIZE));
+		//Initialization
+		JFrame frame = new JFrame();
+		TransferHistory th = new TransferHistory(new Person("Person", "Hai"));
+		
+		//Properties
+		frame.setSize(500, 500);
+		frame.setLocationRelativeTo(null);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		//Add to frame
+		frame.add(th);
+		
+		frame.setVisible(true);
 	}
 }

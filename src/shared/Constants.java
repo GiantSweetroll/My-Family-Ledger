@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 
 import giantsweetroll.numbers.GNumbers;
 
@@ -32,6 +33,7 @@ public class Constants
 
 	//Date Format
 	public static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
+	public static final DateTimeFormatter LOCAL_DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/YYYY");
 	
 	//ComboBox texts
 	public static final String[] COMBO_BOX_OPERANDS = {"=", "<", ">", "<=", ">="};
