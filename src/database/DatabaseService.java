@@ -19,16 +19,16 @@ import models.User;
 
 public class DatabaseService 
 {
-	private static final String HOST = "jdbc:mysql://ourworks.systems/",
-								USERNAME = "GAR296",
-								PASSWORD = "YvQzWA";
-	public static final String DB_NAME = "GAR296",
-								TABLE_ACCOUNT = "MFL_Account",
-								TABLE_ADMINS = "MFL_Admins",
-								TABLE_USERS = "MFL_Users",
-								TABLE_TRANSACTIONS = "MFL_Transactions",
-								TABLE_CATEGORIES = "MFL_Categories",
-								TABLE_ADMIN_CATEGORIES = "MFL_AdminCategories";
+	private static final String HOST = "jdbc:mysql://localhost:3306/",
+								USERNAME = "root",
+								PASSWORD = "";
+	public static final String DB_NAME = "OurFunds",
+								TABLE_ACCOUNT = "OF_Account",
+								TABLE_ADMINS = "OF_Admins",
+								TABLE_USERS = "OF_Users",
+								TABLE_TRANSACTIONS = "OF_Transactions",
+								TABLE_CATEGORIES = "OF_Categories",
+								TABLE_ADMIN_CATEGORIES = "OF_AdminCategories";
 	public static final int LESS_THAN = 0,
 							GREATER_THAN = 1,
 							EQUAL_TO = 2,
@@ -1299,6 +1299,43 @@ public class DatabaseService
 		}
 		
 		return transactions;
+	}
+	/**
+	 * Get a category name from category id in the transaction table
+	 */
+	public String getCategoryName(int categoryId) {
+		String categoryName = "";
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String query = "SELECT cat_name FROM " + TABLE_CATEGORIES + " INNER JOIN " + TABLE_TRANSACTIONS 
+						+ " ON MFL_Categories.cat_id = MFL_Transactions.cat_id WHERE MFL_Categories.cat_id = " 
+						+ categoryId;
+		
+		try
+		{
+			ps = this.prepStatement(query);
+			rs = ps.executeQuery();
+			
+			rs.next();
+			categoryName = rs.getString(1);
+			
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch(SQLException ex) {}
+			}
+		}
+		return categoryName;
 	}
 	/**
 	 * Get the login information of the either the Admin or the User. If there are no matches
