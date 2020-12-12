@@ -86,6 +86,28 @@ public class TransferHistory extends HistoryPanel
 		this.repaint();
 	}
 	
+	//Overridden Methods
+	@Override
+	public void resetFilters()
+	{
+		this.dateFrom.resetDefaults();
+		this.dateTo.resetDefaults();
+		this.tfValue.setText("");
+	}
+	@Override
+	public void backButtonPressed() 
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void refreshButtonPressed() 
+	{
+		// TODO Auto-generated method stub
+		
+	}
+	
 	//Private methods
 	private void initPanelReceivers()
 	{
