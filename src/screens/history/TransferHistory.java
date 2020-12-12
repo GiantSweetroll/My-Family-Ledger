@@ -4,11 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -23,6 +21,8 @@ import models.Person;
 import shared.Constants;
 import shared.Methods;
 import shared.components.DatePicker;
+import shared.components.ListTile;
+import shared.components.ListView;
 import shared.components.SimpleUserTile;
 import shared.screens.HistoryPanel;
 
@@ -41,10 +41,10 @@ public class TransferHistory extends HistoryPanel
 	private JComboBox<String> comboOperand;
 	private JTextField tfValue;
 	private JScrollPane scrollReceiver;
-	private JPanel panelReceivers;
 	private List<Person> persons;
-	private List<SimpleUserTile> receiverTiles;
+	private List<ListTile> receiverTiles;
 	private DatePicker dateFrom, dateTo;
+	private ListView listView;
 	
 	//Constructor
 	public TransferHistory(Person person)
@@ -62,14 +62,6 @@ public class TransferHistory extends HistoryPanel
 	public void updateReceivers(List<Person> persons)
 	{
 		//Clear data
-		for (SimpleUserTile tile : this.receiverTiles)
-		{
-			try
-			{
-				this.panelReceivers.remove(tile);
-			}
-			catch(NullPointerException ex) {}
-		}
 		this.receiverTiles.clear();
 		this.persons.clear();
 		
@@ -79,8 +71,8 @@ public class TransferHistory extends HistoryPanel
 		{
 			SimpleUserTile tile = new SimpleUserTile(person);
 			this.receiverTiles.add(tile);
-			this.panelReceivers.add(tile);
 		}
+		this.listView.updateData(this.receiverTiles);
 		
 		this.revalidate();
 		this.repaint();
@@ -112,13 +104,12 @@ public class TransferHistory extends HistoryPanel
 	private void initPanelReceivers()
 	{
 		//Initialization
-		this.panelReceivers = new JPanel(new GridLayout(0, 1, 1, 3));
+		this.listView = new ListView();
 		this.persons = new ArrayList<Person>();
-		this.receiverTiles = new ArrayList<SimpleUserTile>();
-		this.scrollReceiver = new JScrollPane(this.panelReceivers);
+		this.receiverTiles = new ArrayList<ListTile>();
+		this.scrollReceiver = new JScrollPane(this.listView);
 		
 		//Properties
-		this.panelReceivers.setOpaque(false);
 		this.scrollReceiver.getViewport().setOpaque(false);
 		this.scrollReceiver.setOpaque(false);
 	}
@@ -136,21 +127,21 @@ public class TransferHistory extends HistoryPanel
 		this.dateTo = new DatePicker();
 		JSeparator sep = new JSeparator(JSeparator.HORIZONTAL);
 		JPanel panelTop = new JPanel(new GridBagLayout());
-		JPanel panelBelow = new JPanel();
+//		JPanel panelBelow = new JPanel();
 		JPanel panelFilter = new JPanel(new BorderLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		
 		//Properties
 		panelTop.setOpaque(false);
-		panelBelow.setOpaque(false);
-		panelBelow.setLayout(new BoxLayout(panelBelow, BoxLayout.Y_AXIS));
+//		panelBelow.setOpaque(false);
+//		panelBelow.setLayout(new BoxLayout(panelBelow, BoxLayout.Y_AXIS));
 		panelFilter.setOpaque(false);
 		
 		///Add to panel
 		//Add to panelTop
 		Gbm.goToOrigin(c);
 		c.insets = Constants.INSETS_GENERAL;
-		c.fill = GridBagConstraints.HORIZONTAL;
+		c.fill = GridBagConstraints.BOTH;
 		panelTop.add(this.labFrom, c);				//From label
 		Gbm.nextGridColumn(c);
 		c.gridwidth = 2;
@@ -168,16 +159,21 @@ public class TransferHistory extends HistoryPanel
 		panelTop.add(this.comboOperand, c);			//Operand combobox
 		Gbm.nextGridColumn(c);
 		panelTop.add(this.tfValue, c);				//Value text field
+		Gbm.newGridLine(c);
+		c.gridwidth = 3;
+		panelTop.add(this.labReceiver, c);			//Receivers
+		Gbm.newGridLine(c);
+		panelTop.add(sep, c);						//Separator
+		Gbm.newGridLine(c);
+		panelTop.add(this.scrollReceiver, c);		//Receiver scroll pane
 		//Add to panelBelow
-		if (this.persons.size() > 0)
-		{
-			panelBelow.add(this.labReceiver, c);
-			panelBelow.add(sep, c);
-			panelBelow.add(this.scrollReceiver, c);
-		}
+//		panelBelow.add(this.labReceiver);
+//		panelBelow.add(sep);
+//		panelBelow.add(this.scrollReceiver);
+//		panelBelow.add(Box.createRigidArea(new Dimension(5, 5)));
 		//Add to panelFilter
 		panelFilter.add(panelTop, BorderLayout.NORTH);
-		panelFilter.add(panelBelow, BorderLayout.SOUTH);
+//		panelFilter.add(panelBelow, BorderLayout.SOUTH);
 		//Display filter panel
 		this.setFilterPanel(panelFilter);
 	}
