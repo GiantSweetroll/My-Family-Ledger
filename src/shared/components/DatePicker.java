@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.Properties;
 
 import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import org.jdatepicker.impl.JDatePanelImpl;
@@ -36,7 +37,7 @@ public class DatePicker extends JPanel
 		//Load properties
 		try
 		{
-			this.properties.load(new FileReader("Text.properties"));
+			this.properties.load(this.getClass().getResourceAsStream("/org/jdatepicker/i18n/Text.properties"));
 		} 
 		catch (IOException e)
 		{
@@ -92,5 +93,23 @@ public class DatePicker extends JPanel
 	public Date getSelectedDate()
 	{
 		return (Date)this.picker.getModel().getValue();
+	}
+	
+	//Testing
+	public static void main(String args[])
+	{
+		//Initialization
+		JFrame frame = new JFrame();
+		DatePicker picker = new DatePicker();
+		
+		//Properties
+		frame.setSize(500, 500);
+		frame.setLocationRelativeTo(null);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		//Add to frame
+		frame.add(picker);
+		
+		frame.setVisible(true);
 	}
 }
