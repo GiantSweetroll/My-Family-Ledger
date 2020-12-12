@@ -17,8 +17,9 @@ import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 
 import shared.Constants;
+import shared.GUIListener;
 
-public class DatePicker extends JPanel
+public class DatePicker extends JPanel implements GUIListener
 {
 	/**
 	 * 
@@ -71,9 +72,8 @@ public class DatePicker extends JPanel
 											});
 		
 		//Properties
-		LocalDateTime date = LocalDateTime.now();		//Current Date
 		this.setOpaque(false);
-		this.picker.getModel().setDate(date.getYear(), date.getMonthValue()-1, date.getDayOfMonth());
+		this.resetDefaults();
 		this.picker.getModel().setSelected(true);
 		
 		//Add to panel
@@ -96,6 +96,14 @@ public class DatePicker extends JPanel
 	public Date getSelectedDate()
 	{
 		return (Date)this.picker.getModel().getValue();
+	}
+	
+	//Overridden Methods
+	@Override
+	public void resetDefaults() 
+	{
+		LocalDateTime date = LocalDateTime.now();		//Current Date
+		this.picker.getModel().setDate(date.getYear(), date.getMonthValue()-1, date.getDayOfMonth());
 	}
 	
 	//Testing
