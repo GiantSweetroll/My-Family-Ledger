@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
@@ -20,7 +21,7 @@ import models.Person;
 import shared.Constants;
 import shared.Methods;
 
-public class HistoryPanel extends JPanel
+public abstract class HistoryPanel extends JPanel
 {
 
 	/**
@@ -62,6 +63,27 @@ public class HistoryPanel extends JPanel
 		this.setLayout(new BorderLayout(3, 3));
 		this.setBackground(Color.GRAY);
 		this.panelAcc.setAccount(person);
+		this.butResetFilter.addActionListener(new ActionListener()
+				{
+					public void actionPerformed(ActionEvent e)
+					{
+						resetFilters();
+					}
+				});
+		this.butBack.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				backButtonPressed();
+			}
+		});
+		this.butRefresh.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				refreshButtonPressed();
+			}
+		});
 		panelContent.setOpaque(false);
 		panelLeft.setOpaque(false);
 		panelRight.setOpaque(false);
@@ -138,6 +160,20 @@ public class HistoryPanel extends JPanel
 	{
 		this.setAction(this.butRefresh, a);
 	}
+	
+	//Abstract Methods
+	/**
+	 * Method used to reset the filter components.
+	 */
+	public abstract void resetFilters();
+	/**
+	 * Operation to be done when the "Back" button is pressed.
+	 */
+	public abstract void backButtonPressed();
+	/**
+	 * Operation to be done when the "Refresh" button is pressed.
+	 */
+	public abstract void refreshButtonPressed();
 	
 	//private methods
 	private void setAction(JButton button, ActionListener a)
@@ -254,7 +290,33 @@ public class HistoryPanel extends JPanel
 		Methods.setUIFont(new FontUIResource(Constants.FONT_TYPE_GENERAL, Font.PLAIN, Constants.FONT_GENERAL_SIZE));
 		//Initialization
 		JFrame frame = new JFrame();
-		HistoryPanel hp = new HistoryPanel(new Person("Person", "Hai"));
+		HistoryPanel hp = new HistoryPanel(new Person("Person", "Hai"))
+				{
+					/**
+					 * 
+					 */
+					private static final long serialVersionUID = -2614895861225591903L;
+
+					@Override
+					public void resetFilters()
+					{
+						System.out.println("Reset filters...");
+					}
+
+					@Override
+					public void backButtonPressed() 
+					{
+						System.out.println("Back button pressed....");
+						
+					}
+
+					@Override
+					public void refreshButtonPressed() 
+					{
+						System.out.println("Refresh button pressed...");
+						
+					}
+				};
 		
 		//Properties
 		frame.setSize(500, 500);
