@@ -1,7 +1,6 @@
 package shared.components;
 
 import java.awt.FlowLayout;
-import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Calendar;
