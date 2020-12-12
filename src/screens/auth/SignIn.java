@@ -21,8 +21,8 @@ import javax.swing.plaf.FontUIResource;
 import giantsweetroll.gui.swing.Gbm;
 import shared.Constants;
 import shared.Methods;
+import shared.components.LogoLabel;
 import shared.screens.CenteredPage;
-import shared.screens.LogoLabel;
 
 public class SignIn extends CenteredPage
 {

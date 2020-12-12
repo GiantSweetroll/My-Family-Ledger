@@ -24,8 +24,8 @@ import giantsweetroll.gui.swing.Gbm;
 import shared.Constants;
 import shared.Methods;
 import shared.TextFieldHintListener;
+import shared.components.LogoLabel;
 import shared.screens.CenteredPage;
-import shared.screens.LogoLabel;
 
 public class SignUp extends CenteredPage
 {

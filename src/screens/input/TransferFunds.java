@@ -23,8 +23,8 @@ import giantsweetroll.gui.swing.Gbm;
 import models.Person;
 import shared.Constants;
 import shared.Methods;
+import shared.components.NameEmailPanel;
 import shared.screens.AccountPanel;
-import shared.screens.NameEmailPanel;
 import shared.screens.RoundedPanel;
 import shared.screens.TriplePanelPage;
 

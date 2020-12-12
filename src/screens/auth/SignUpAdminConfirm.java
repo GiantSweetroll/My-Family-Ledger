@@ -17,8 +17,8 @@ import giantsweetroll.gui.swing.Gbm;
 import giantsweetroll.gui.swing.TextAreaManager;
 import shared.Constants;
 import shared.Methods;
+import shared.components.LogoLabel;
 import shared.screens.CenteredPage;
-import shared.screens.LogoLabel;
 
 public class SignUpAdminConfirm extends CenteredPage
 {

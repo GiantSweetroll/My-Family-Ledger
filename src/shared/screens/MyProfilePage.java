@@ -30,9 +30,9 @@ import giantsweetroll.gui.swing.Gbm;
 import screens.auth.SignIn;
 import shared.Constants;
 import shared.Methods;
+import shared.components.LogoLabel;
 import shared.screens.CenteredPage;
 import giantsweetroll.ImageManager;
-import shared.screens.LogoLabel;
 
 public class MyProfilePage extends CenteredPage{
 	

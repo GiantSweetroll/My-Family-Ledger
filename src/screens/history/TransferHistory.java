@@ -23,8 +23,8 @@ import giantsweetroll.gui.swing.Gbm;
 import models.Person;
 import shared.Constants;
 import shared.Methods;
+import shared.components.SimpleUserTile;
 import shared.screens.HistoryPanel;
-import shared.screens.SimpleUserTile;
 
 public class TransferHistory extends HistoryPanel
 {

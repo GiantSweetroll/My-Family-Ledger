@@ -18,8 +18,8 @@ import javax.swing.plaf.FontUIResource;
 import giantsweetroll.gui.swing.Gbm;
 import shared.Constants;
 import shared.Methods;
+import shared.components.LogoLabel;
 import shared.screens.CenteredPage;
-import shared.screens.LogoLabel;
 import shared.screens.SignUpOption;
 
 public class SignUpOptions extends CenteredPage

@@ -1,4 +1,4 @@
-package shared.screens;
+package shared.components;
 
 import models.Person;
 

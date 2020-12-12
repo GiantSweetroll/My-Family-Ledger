@@ -1,4 +1,4 @@
-package shared.screens;
+package shared.components;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;

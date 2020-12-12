@@ -21,7 +21,7 @@ import shared.Constants;
 import shared.Methods;
 import shared.screens.AccountPanel;
 import shared.components.AppButton;
-import shared.screens.LogoLabel;
+import shared.components.LogoLabel;
 
 public class Menu extends JPanel{
 	

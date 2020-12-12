@@ -1,4 +1,4 @@
-package shared.screens;
+package shared.components;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -16,6 +16,7 @@ import javax.swing.plaf.FontUIResource;
 
 import shared.Constants;
 import shared.Methods;
+import shared.screens.RoundedPanel;
 
 public class ListTile extends RoundedPanel implements MouseListener
 {
