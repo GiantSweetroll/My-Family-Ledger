@@ -10,12 +10,14 @@ import java.awt.Font;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.plaf.FontUIResource;
 
+import giantsweetroll.ImageManager;
 import models.Person;
 import shared.Constants;
 import shared.Methods;
@@ -35,27 +37,40 @@ public class Menu extends JPanel{
 					butInput;
 	private AccountPanel panelAcc;
 	private LogoLabel logo;
-	private JLabel logoDesc;
+	private JLabel logoDesc, 
+					historyIconLabel, historyLabel,
+					transferIconLabel, transferLabel,
+					reportIconLabel, reportLabel;
+	ImageIcon historyicon = createImageIcon("/resources/history_icon.png", "History");
+	ImageIcon transfericon = createImageIcon("/resources/transfer_icon.png", "Transfer");
+	ImageIcon reporticon = createImageIcon("/resources/report_icon.png", "Report");
 	
 	public Menu ()
 	{
 		super();
 		this.setLayout(new BorderLayout());
 		//this.initMenuAdmin();
-		this.initMenuUser();
-		
+		this.initMenuUser();	
 	}
 	
 	private void initMenuAdmin()
 	{
 		//Initialization
-		
-		this.butHistory = new AppButton("History");
-		this.butTransfer = new AppButton("Transfer");
-		this.butReport = new AppButton("Report");
+		this.butHistory = new AppButton();
+		this.butTransfer = new AppButton();
+		this.butReport = new AppButton();
 		this.butExit = new AppButton("Exit");
 		this.logo = new LogoLabel();
 		this.logoDesc = new JLabel("Our Funds Motto or smth");
+		this.historyIconLabel = new JLabel(historyicon);
+		this.historyLabel = new JLabel("History");
+		this.transferIconLabel = new JLabel(transfericon);
+		this.transferLabel = new JLabel("Transfer");
+		this.reportIconLabel = new JLabel(reporticon);
+		this.reportLabel = new JLabel("Report");
+		JPanel panelHistoryBtn = new JPanel();
+		JPanel panelTransferBtn = new JPanel();
+		JPanel panelReportBtn = new JPanel();
 		JPanel panelTop = new JPanel();
 		JPanel panelButton = new JPanel();
 		JPanel panelCenter = new JPanel();
@@ -65,11 +80,18 @@ public class Menu extends JPanel{
 		this.panelAcc = new AccountPanel();
 		
 		//Properties 
+		panelHistoryBtn.setLayout(new BoxLayout(panelHistoryBtn,BoxLayout.Y_AXIS));
+		panelHistoryBtn.setOpaque(false);
+		panelTransferBtn.setLayout(new BoxLayout(panelTransferBtn,BoxLayout.Y_AXIS));
+		panelTransferBtn.setOpaque(false);
+		panelReportBtn.setLayout(new BoxLayout(panelReportBtn,BoxLayout.Y_AXIS));
+		panelReportBtn.setOpaque(false);
 		panelTop.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		panelButton.setLayout(new FlowLayout(FlowLayout.CENTER,200,200));
 		panelCenter.setLayout(new BoxLayout(panelCenter, BoxLayout.Y_AXIS));
 		panelBottom.setLayout(new FlowLayout(FlowLayout.CENTER));
 		mainPanel.setLayout(new BorderLayout());
+		
 		this.butTransfer.setBackground(Constants.COLOR_BUTTON_YELLOW);
 		this.butTransfer.setFont(Constants.FONT_GENERAL_BOLD);
 		this.butTransfer.setPreferredSize(new Dimension(220,150));
@@ -81,10 +103,30 @@ public class Menu extends JPanel{
 		this.butReport.setPreferredSize(new Dimension(220,150));
 		this.butExit.setBackground(Constants.COLOR_BUTTON_BASE);
 		this.logoDesc.setAlignmentX(Component.CENTER_ALIGNMENT);
-		
-		
+		this.historyIconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		this.historyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		this.transferIconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		this.transferLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		this.reportIconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		this.reportLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+	
 		//Add to panelTop 
 		panelTop.add(panelAcc);
+		
+		//Add to History Button
+		panelHistoryBtn.add(historyIconLabel);
+		panelHistoryBtn.add(historyLabel);
+		butHistory.add(panelHistoryBtn);
+		
+		//Add to Transfer Button
+		panelTransferBtn.add(transferIconLabel);
+		panelTransferBtn.add(transferLabel);
+		butTransfer.add(panelTransferBtn);
+		
+		//Add to Report Button
+		panelReportBtn.add(reportIconLabel);
+		panelReportBtn.add(reportLabel);
+		butReport.add(panelReportBtn);
 		
 		//Add to panelButton
 		panelButton.add(butTransfer);
@@ -166,6 +208,16 @@ public class Menu extends JPanel{
 		this.add(scrollpane);
 		
 		
+	}
+	
+	private ImageIcon createImageIcon(String path, String description) {
+		java.net.URL imgURL = getClass().getResource(path);
+		if (imgURL != null) {
+			return new ImageIcon(ImageManager.scaleImage((new ImageIcon(imgURL, description)).getImage(), 64, 64));
+		} else {
+			System.err.println("Couldn't find file: " + path);
+			return null;
+		}
 	}
 	
 	
