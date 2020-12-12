@@ -40,10 +40,12 @@ public class Menu extends JPanel{
 	private JLabel logoDesc, 
 					historyIconLabel, historyLabel,
 					transferIconLabel, transferLabel,
-					reportIconLabel, reportLabel;
+					reportIconLabel, reportLabel,
+					inputIconLabel, inputLabel;
 	ImageIcon historyicon = createImageIcon("/resources/history_icon.png", "History");
 	ImageIcon transfericon = createImageIcon("/resources/transfer_icon.png", "Transfer");
 	ImageIcon reporticon = createImageIcon("/resources/report_icon.png", "Report");
+	ImageIcon inputicon = createImageIcon("/resources/input_icon.png", "Report");
 	
 	public Menu ()
 	{
@@ -153,13 +155,19 @@ public class Menu extends JPanel{
 	}
 	
 	private void initMenuUser() {
-		this.butHistory = new AppButton("History");
-		this.butInput = new AppButton("Input");
+		this.butHistory = new AppButton();
+		this.butInput = new AppButton();
 		this.butExit = new AppButton("Exit");
 		this.logo = new LogoLabel();
 		this.logoDesc = new JLabel("Our Funds Motto or smth");
 		this.panelAcc = new AccountPanel();
+		this.historyIconLabel = new JLabel(historyicon);
+		this.historyLabel = new JLabel("History");
+		this.inputIconLabel = new JLabel(inputicon);
+		this.inputLabel = new JLabel("Input");
 		
+		JPanel panelHistoryBtn = new JPanel();
+		JPanel panelInputBtn = new JPanel();
 		JPanel panelTop = new JPanel();
 		JPanel panelButton = new JPanel();
 		JPanel panelCenter = new JPanel();
@@ -169,6 +177,10 @@ public class Menu extends JPanel{
 		
 		
 		//Properties 
+		panelHistoryBtn.setLayout(new BoxLayout(panelHistoryBtn,BoxLayout.Y_AXIS));
+		panelHistoryBtn.setOpaque(false);
+		panelInputBtn.setLayout(new BoxLayout(panelInputBtn,BoxLayout.Y_AXIS));
+		panelInputBtn.setOpaque(false);
 		panelTop.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		panelButton.setLayout(new FlowLayout(FlowLayout.CENTER,200,200));
 		panelCenter.setLayout(new BoxLayout(panelCenter, BoxLayout.Y_AXIS));
@@ -182,7 +194,20 @@ public class Menu extends JPanel{
 		this.butHistory.setPreferredSize(new Dimension(220,150));
 		this.butExit.setBackground(Constants.COLOR_BUTTON_BASE);
 		this.logoDesc.setAlignmentX(Component.CENTER_ALIGNMENT);
+		this.historyIconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		this.historyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		this.inputIconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		this.inputLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
+		//Add to History Button
+		panelHistoryBtn.add(historyIconLabel);
+		panelHistoryBtn.add(historyLabel);
+		butHistory.add(panelHistoryBtn);
+		
+		//Add to Input Button
+		panelInputBtn.add(inputIconLabel);
+		panelInputBtn.add(inputLabel);
+		butInput.add(panelInputBtn);
 		
 		//Add to panelTop 
 		panelTop.add(panelAcc);
