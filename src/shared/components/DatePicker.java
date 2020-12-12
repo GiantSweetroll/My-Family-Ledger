@@ -3,6 +3,7 @@ package shared.components;
 import java.awt.FlowLayout;
 import java.io.IOException;
 import java.text.ParseException;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
@@ -69,8 +70,11 @@ public class DatePicker extends JPanel
 											}
 											});
 		
-		//panel properties
+		//Properties
+		LocalDateTime date = LocalDateTime.now();		//Current Date
 		this.setOpaque(false);
+		this.picker.getModel().setDate(date.getYear(), date.getMonthValue()-1, date.getDayOfMonth());
+		this.picker.getModel().setSelected(true);
 		
 		//Add to panel
 		this.add(this.picker);
