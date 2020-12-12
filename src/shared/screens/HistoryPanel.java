@@ -59,7 +59,7 @@ public class HistoryPanel extends JPanel
 		JPanel p2 = new JPanel();
 		
 		//Properties
-		this.setLayout(new BorderLayout(10, 0));
+		this.setLayout(new BorderLayout(3, 3));
 		this.setBackground(Color.GRAY);
 		this.panelAcc.setAccount(person);
 		panelContent.setOpaque(false);
