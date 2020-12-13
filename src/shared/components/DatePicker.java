@@ -2,10 +2,10 @@ package shared.components;
 
 import java.awt.FlowLayout;
 import java.io.IOException;
+import java.sql.Date;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Properties;
 
 import javax.swing.JFormattedTextField;
@@ -91,7 +91,7 @@ public class DatePicker extends JPanel implements GUIListener
 	}
 	/**
 	 * Get the selected date
-	 * @return a java.util.Date object
+	 * @return a sql.Date object
 	 */
 	public Date getSelectedDate()
 	{
