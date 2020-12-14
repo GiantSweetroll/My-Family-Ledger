@@ -1,7 +1,7 @@
 package screens.menu;
 
 
-import java.awt.BorderLayout;
+import java.awt.BorderLayout; 
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -47,17 +47,19 @@ public class Menu extends JPanel{
 	ImageIcon reporticon = createImageIcon("/resources/report_icon.png", "Report");
 	ImageIcon inputicon = createImageIcon("/resources/input_icon.png", "Report");
 	
-	public Menu ()
+	public Menu (Person person)
 	{
 		super();
+		this.person = person;
 		this.setLayout(new BorderLayout());
-		//this.initMenuAdmin();
-		this.initMenuUser();	
+		this.initMenuAdmin(person);
+		//this.initMenuUser();	
 	}
 	
-	private void initMenuAdmin()
+	private void initMenuAdmin(Person person)
 	{
 		//Initialization
+		this.person = person;
 		this.butHistory = new AppButton();
 		this.butTransfer = new AppButton();
 		this.butReport = new AppButton();
@@ -113,6 +115,7 @@ public class Menu extends JPanel{
 		this.reportLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 	
 		//Add to panelTop 
+		panelAcc.setAccount(person);
 		panelTop.add(panelAcc);
 		
 		//Add to History Button
@@ -253,7 +256,8 @@ public class Menu extends JPanel{
 		
 		//Initialization
 		JFrame frame = new JFrame();
-		Menu mn = new Menu();
+		Person Person1 = new Person("Jocelyn", "Thiojaya");
+		Menu mn = new Menu(Person1);
 		
 		//Properties
 		frame.setSize(700, 700);
