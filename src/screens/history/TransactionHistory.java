@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -26,6 +27,7 @@ import org.jdatepicker.impl.UtilDateModel;
 
 import models.Person;
 import shared.Constants;
+import shared.Methods;
 import shared.screens.HistoryPanel;
 
 public class TransactionHistory extends HistoryPanel{
@@ -81,8 +83,7 @@ public class TransactionHistory extends HistoryPanel{
 		this.tfValue = new JTextField("Enter Value", 10);
 		
 		//make combo box for equality signs
-		String signs[] = { "Select", "=", "<", ">" };
-		this.cbEquals = new JComboBox<String>(signs);
+		this.cbEquals = new JComboBox<String>(Constants.COMBO_BOX_OPERANDS);
 		cbEquals.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 // Get the source of the component, which is our combo box.
@@ -130,7 +131,7 @@ public class TransactionHistory extends HistoryPanel{
 		panelCenter.add(this.cbCategory);
 		this.filters.add(panelTop);
 		this.filters.add(panelCenter);
-		this.filters.add(Box.createRigidArea(new Dimension(0, 400)));
+		this.filters.add(Box.createRigidArea(new Dimension(0, 500)));
 		
 	}
 
@@ -154,6 +155,7 @@ public class TransactionHistory extends HistoryPanel{
 	
 	public static void main(String args[])
 	{
+		Methods.setUIFont(new FontUIResource(Constants.FONT_TYPE_GENERAL, Font.PLAIN, Constants.FONT_GENERAL_SIZE));
 		//Initialization
 		JFrame frame = new JFrame();
 		Person person = new Person("Jocelyn", "Thiojaya");
@@ -167,6 +169,26 @@ public class TransactionHistory extends HistoryPanel{
 		//Add to frame
 		frame.add(th);
 		frame.setVisible(true);
+	}
+
+	@Override
+	public void resetFilters() {
+		// TODO Auto-generated method stub
+		this.tfValue.setText("");
+		this.cbCategory.setSelectedIndex(0);
+		this.cbEquals.setSelectedIndex(0);
+	}
+
+	@Override
+	public void backButtonPressed() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void refreshButtonPressed() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
