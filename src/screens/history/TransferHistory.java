@@ -77,6 +77,19 @@ public class TransferHistory extends HistoryPanel
 		this.revalidate();
 		this.repaint();
 	}
+	/**
+	 * Disables all selected receivers.
+	 */
+	public void deselectAllReceivers()
+	{
+		for (ListTile tile : this.receiverTiles)
+		{
+			if (tile instanceof SimpleUserTile)
+			{
+				((SimpleUserTile)tile).setSelected(false);
+			}
+		}
+	}
 	
 	//Overridden Methods
 	@Override
@@ -84,6 +97,8 @@ public class TransferHistory extends HistoryPanel
 	{
 		this.dateFrom.resetDefaults();
 		this.dateTo.resetDefaults();
+		this.comboOperand.setSelectedIndex(0);
+		this.deselectAllReceivers();
 		this.tfValue.setText("");
 	}
 	@Override
