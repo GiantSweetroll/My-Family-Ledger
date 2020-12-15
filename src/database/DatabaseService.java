@@ -151,8 +151,8 @@ public class DatabaseService
 			//Transactions table
 			prep = this.prepStatement("CREATE TABLE if not exists " + TABLE_TRANSACTIONS + "("
 										+ Transaction.ID + " int unsigned NOT NULL AUTO_INCREMENT,"
-										+ Transaction.DATE_INPUT + " Date NOT NULL,"
-										+ Transaction.DATE_EDIT + " Date NOT NULL,"
+										+ Transaction.DATE_INPUT + " date NOT NULL,"
+										+ Transaction.DATE_EDIT + " date NOT NULL,"
 										+ Transaction.AMOUNT + " decimal(65, 2) NOT NULL,"
 										+ Transaction.CATEGORY_ID + " int unsigned NOT NULL,"
 										+ Transaction.DESC + " mediumtext NOT NULL,"
@@ -455,8 +455,8 @@ public class DatabaseService
 										+ Transaction.DESC + ", " 
 										+ Transaction.LINK_RECEIPT + ", " 
 										+ Transaction.USER_ID + ") values ("
-										+ transaction.getDateInput() + ","
-										+ transaction.getDateEdit() + ","
+										+ "\'" + transaction.getDateInput() + "\',"
+										+ "\'" + transaction.getDateEdit() + "\',"
 										+ transaction.getAmount() + ","
 										+ transaction.getCategoryID() + ","
 										+ "\'" + transaction.getDesc() + "\',"
@@ -468,8 +468,8 @@ public class DatabaseService
 			{
 				ps = this.prepStatement("INSERT INTO " + TABLE_TRANSACTIONS + " values (" 
 										+ transaction.getID() + ", "
-										+ transaction.getDateInput() + ","
-										+ transaction.getDateEdit() + ","
+										+ "\'" + transaction.getDateInput().toString() + "\',"
+										+ "\'" + transaction.getDateEdit().toString() + "\',"
 										+ transaction.getAmount() + ","
 										+ transaction.getCategoryID() + ","
 										+ "\'" + transaction.getDesc() + "\',"
@@ -1308,7 +1308,7 @@ public class DatabaseService
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String query = "SELECT cat_name FROM " + TABLE_CATEGORIES + " INNER JOIN " + TABLE_TRANSACTIONS 
-						+ " ON MFL_Categories.cat_id = MFL_Transactions.cat_id WHERE MFL_Categories.cat_id = " 
+						+ " ON OF_Categories.cat_id = OF_Transactions.cat_id WHERE OF_Categories.cat_id = " 
 						+ categoryId;
 		
 		try
@@ -1337,6 +1337,42 @@ public class DatabaseService
 		}
 		return categoryName;
 	}
+	
+//	public String getCategoryName(categoryId) {
+//		String categoryName = "";
+//		PreparedStatement ps = null;
+//		ResultSet rs = null;
+//		String query = "SELECT cat_name FROM " + TABLE_CATEGORIES + " INNER JOIN " + TABLE_TRANSACTIONS 
+//						+ " ON OF_Categories.cat_id = OF_Transactions.cat_id WHERE OF_Categories.cat_id = " 
+//						+ categoryId;
+//		
+//		try
+//		{
+//			ps = this.prepStatement(query);
+//			rs = ps.executeQuery();
+//			
+//			rs.next();
+//			categoryName = rs.getString(1);
+//			
+//		}
+//		catch(SQLException ex)
+//		{
+//			System.err.println(ex.getMessage());
+//		}
+//		finally
+//		{
+//			if (ps != null)
+//			{
+//				try
+//				{
+//					ps.close();
+//				}
+//				catch(SQLException ex) {}
+//			}
+//		}
+//		return categoryName;
+//	}
+	
 	/**
 	 * Get the login information of the either the Admin or the User. If there are no matches
 	 * with the provided credentials, returns null. Will check Admins table first before checking Users table.
@@ -1420,6 +1456,26 @@ public class DatabaseService
 	
 	public static void main (String args[])
 	{
+		String dateString = "2020-12-12";
+		Date date1 = Date.valueOf(dateString);
+		long millis = System.currentTimeMillis();
+		Date date2 = new Date(millis);
+//		System.out.println(date1);
+//		System.out.println(date2);
+		
 		DatabaseService ds = new DatabaseService();
+		Account acc1 = new Account(3, 2000000);
+		Admin admin1 = new Admin(1, "Gardyan", "Akbar");
+		User user1 = new User(3, acc1.getID(), admin1.getID(), "William", "Tok", "wtok@gmail.com", "lel");
+		Category category1 = new Category(3, admin1.getID(), "Clothes???", "Clothes");
+		AdminCategory adminc1 = new AdminCategory(3, admin1.getID(), category1.getID());
+		Transaction transaction1 = new Transaction(3, category1.getID(), 2, date1, date2, 800000, "Buy 3 T-Shirts", "hehe receipt lol");
+		
+//		ds.insert(acc1);
+//		ds.insert(admin1);
+//		ds.insert(user1);
+//		ds.insert(category1);
+//		ds.insert(adminc1);
+//		ds.insert(transaction1);
 	}
 }
