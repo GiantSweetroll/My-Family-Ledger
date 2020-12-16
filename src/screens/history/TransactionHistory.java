@@ -1,9 +1,7 @@
 package screens.history;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -21,14 +19,11 @@ import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-import org.jdatepicker.impl.JDatePanelImpl;
-import org.jdatepicker.impl.JDatePickerImpl;
-import org.jdatepicker.impl.UtilDateModel;
-
 import models.Person;
 import shared.Constants;
 import shared.Methods;
 import shared.screens.HistoryPanel;
+import shared.components.DatePicker;
 
 public class TransactionHistory extends HistoryPanel{
 	
@@ -47,6 +42,7 @@ public class TransactionHistory extends HistoryPanel{
 						cbEquals;
 	private JTextField tfValue;
 	private JTable tableTrans;
+	private DatePicker dateFrom, dateTo;
 	
 	String[][] data = {
 			{"01/01/01", "Food", "Gardyan", "1000000", "google.com", "none", "none"},
@@ -81,6 +77,8 @@ public class TransactionHistory extends HistoryPanel{
 		this.labelPrice = new JLabel("Price (Rp.)");
 		this.labelCategory = new JLabel("Category");
 		this.tfValue = new JTextField("Enter Value", 10);
+		this.dateFrom = new DatePicker();
+		this.dateTo = new DatePicker();
 		
 		//make combo box for equality signs
 		this.cbEquals = new JComboBox<String>(Constants.COMBO_BOX_OPERANDS);
@@ -123,7 +121,9 @@ public class TransactionHistory extends HistoryPanel{
 		
 		//Add to Panels
 		panelTop.add(this.labelFrom);
+		panelTop.add(this.dateFrom);
 		panelTop.add(this.labelTo);
+		panelTop.add(this.dateTo);
 		panelCenter.add(this.labelPrice);
 		panelCenter.add(this.cbEquals);
 		panelCenter.add(this.tfValue);
