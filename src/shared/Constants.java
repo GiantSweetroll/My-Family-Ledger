@@ -7,6 +7,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 
+import javax.swing.ImageIcon;
+
+import giantsweetroll.ImageManager;
 import giantsweetroll.numbers.GNumbers;
 
 public class Constants
@@ -38,4 +41,7 @@ public class Constants
 	
 	//ComboBox texts
 	public static final String[] COMBO_BOX_OPERANDS = {"=", "<", ">", "<=", ">="};
+	
+	//Icons
+	public static final ImageIcon ICON_DELETE = new ImageIcon(ImageManager.scaleImage(ImageManager.getImageIcon(Constants.class.getResource("/resources/trash.png")).getImage(), 15, 15));
 }
