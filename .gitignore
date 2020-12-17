@@ -58,3 +58,4 @@ bin/shared/screens/SimpleUserTile.class
 bin/shared/screens/TransactionTile.class
 bin/shared/screens/TriplePanelPage.class
 bin/shared/TextFieldHintListener.class
+*.class
