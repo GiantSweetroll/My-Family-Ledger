@@ -33,21 +33,6 @@ public class CategoryTable extends JTable implements MouseListener
 	//Fields
 	private String[][] tableData;
 	private List<Category> categories;
-	private IconActionEditor deleteEditor = new IconActionEditor(this.categories, Constants.ICON_DELETE)
-	{
-
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = -748913286904372148L;
-
-		@Override
-		public void clickedAction() 
-		{
-			System.out.println("Pressed category ID: " + categories.get(this.getSelectedIndex()).getID());
-		}
-
-	};
 	
 	//Constructor
 	public CategoryTable(String[][] data, String[] headers, List<Category> categories)
