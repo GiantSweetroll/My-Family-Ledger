@@ -1,11 +1,14 @@
 package shared.components;
 
+import java.awt.Color;
 import java.awt.Component;
 
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
+
+import shared.Constants;
 
 public class IconCellRenderer extends JLabel implements TableCellRenderer
 {
@@ -19,23 +22,23 @@ public class IconCellRenderer extends JLabel implements TableCellRenderer
 	public IconCellRenderer(Icon icon)
 	{
 		super(icon);
+		
+		this.setOpaque(true);
 	}
 	
 	//Overridden Methods
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object obj, boolean selected, boolean focused, int row,
 			int col)
-	{
-		if (obj == null)
+	{	
+		//Table row color pattern
+		if (row%2==1)
 		{
-			this.setText("");
+			this.setBackground(Color.WHITE);
 		}
 		else
 		{
-			if (obj instanceof Icon)
-			{
-				this.setIcon((Icon)obj);
-			}
+			this.setBackground(Constants.COLOR_TABLE_EVEN_ROW);
 		}
 		
 		return this;
