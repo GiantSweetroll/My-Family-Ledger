@@ -20,6 +20,7 @@ import javax.swing.plaf.FontUIResource;
 import models.Person;
 import shared.Constants;
 import shared.Methods;
+import shared.components.AppButton;
 
 public abstract class HistoryPanel extends JPanel
 {
@@ -34,7 +35,7 @@ public abstract class HistoryPanel extends JPanel
 						panelTable,
 						panelButtons,
 						panelFilterComp;
-	private JButton butResetFilter,
+	private AppButton butResetFilter,
 						butBack,
 						butRefresh;
 	private JLabel labelFilter;
@@ -210,7 +211,7 @@ public abstract class HistoryPanel extends JPanel
 		//Initialization
 		this.panelFilters = new RoundedPanel(false);
 		this.labelFilter = new JLabel("Filters");
-		this.butResetFilter = new JButton("Reset Filters");
+		this.butResetFilter = new AppButton("Reset Filters");
 		this.panelFilterComp = new JPanel();
 		JSeparator sep = new JSeparator(SwingConstants.HORIZONTAL);
 		JPanel panelButton = new JPanel(new BorderLayout());
@@ -223,8 +224,6 @@ public abstract class HistoryPanel extends JPanel
 		this.panelFilterComp.setOpaque(false);
 		this.labelFilter.setFont(Constants.FONT_SUB_TITLE);
 		this.labelFilter.setHorizontalAlignment(SwingConstants.CENTER);
-		this.butResetFilter.setBackground(Constants.COLOR_BUTTON_BASE);
-		this.butResetFilter.setForeground(Color.WHITE);
 		panelButton.setOpaque(false);
 		p1.setOpaque(false);
 		p2.setOpaque(false);
@@ -243,18 +242,14 @@ public abstract class HistoryPanel extends JPanel
 	{
 		//Initialization
 		this.panelButtons = new RoundedPanel(false);
-		this.butBack = new JButton("Back");
-		this.butRefresh = new JButton("Refresh");
+		this.butBack = new AppButton("Back");
+		this.butRefresh = new AppButton("Refresh");
 		JPanel panelLeft = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JPanel panelRight = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		
 		//Properties
 		this.panelButtons.setBackground(Color.WHITE);
 		this.panelButtons.setLayout(new BorderLayout());
-		this.butBack.setBackground(Constants.COLOR_BUTTON_BASE);
-		this.butBack.setForeground(Color.WHITE);
-		this.butRefresh.setBackground(Constants.COLOR_BUTTON_BASE);
-		this.butRefresh.setForeground(Color.WHITE);
 		panelLeft.setOpaque(false);
 		panelRight.setOpaque(false);
 		
