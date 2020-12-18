@@ -2,10 +2,13 @@ package shared;
 
 import java.awt.event.ActionListener;
 import java.util.Enumeration;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
+
+import models.Category;
 
 public class Methods 
 {
@@ -41,5 +44,24 @@ public class Methods
 				button.removeActionListener(al);
 			}
 		}
+	}
+	
+	/**
+	 * Converts a list of category into data that can be represented in JTable
+	 * @param list a List containing Category
+	 * @return a 2D String array
+	 */
+	public static String[][] convertCategoryToTableRowData(List<Category> list)
+	{
+		String[][] arr = new String[list.size()][3];
+		
+		for (int i=0; i<list.size(); i++)
+		{
+			arr[i][0] = Integer.toString(list.get(i).getID());
+			arr[i][1] = list.get(i).getName();
+			arr[i][2] = "";		//Make it empty because not needed (only to make columns the same as header)
+		}
+		
+		return arr;
 	}
 }
