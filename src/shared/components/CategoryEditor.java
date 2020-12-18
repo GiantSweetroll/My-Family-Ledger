@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -11,7 +14,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.FontUIResource;
@@ -37,9 +39,17 @@ public class CategoryEditor extends JPanel
 	private JTextField tf;
 	private JButton butAdd, butSave;
 	private Admin admin;
-	private JTable table;
+	private CategoryTable table;
 	private List<Category> categories;
 	private List<Integer> toBeSavedIndexes;
+	//Interfaces
+	private ActionListener addCatListener = new ActionListener()
+			{
+				public void actionPerformed(ActionEvent e)
+				{
+					addCategory();
+				}
+			};
 	
 	//Constructor
 	public CategoryEditor(Admin admin)
@@ -48,11 +58,12 @@ public class CategoryEditor extends JPanel
 		super();
 		this.admin = admin;
 		this.labTitle = new JLabel("My Categories");
-		this.table = new JTable();
+		this.table = new CategoryTable();
 		this.scrollTable = ScrollPaneManager.generateDefaultScrollPane(this.table, 10, 10);
 		this.tf = new JTextField(10);
 		this.butAdd = new JButton("Add");
 		this.butSave = new JButton("Save");
+		this.categories = new ArrayList<Category>();
 		GridBagConstraints c = new GridBagConstraints();
 		GridBagConstraints c2 = new GridBagConstraints();
 		JPanel panel = new JPanel(new GridBagLayout());
@@ -65,6 +76,7 @@ public class CategoryEditor extends JPanel
 		this.labTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		this.butAdd.setBackground(Constants.COLOR_BUTTON_BASE);
 		this.butAdd.setForeground(Color.WHITE);
+		this.butAdd.addActionListener(this.addCatListener);
 		this.butSave.setBackground(Constants.COLOR_BUTTON_BASE);
 		this.butSave.setForeground(Color.WHITE);
 		panel.setOpaque(false);
@@ -115,7 +127,10 @@ public class CategoryEditor extends JPanel
 	//Private methods
 	private void addCategory()
 	{
-		//TODO: Add category operation
+		//TODO: Use SQL to generate ID
+		this.categories.add(new Category(this.categories.size()+1, 1, "", this.tf.getText().trim()));		//Add to category list
+		this.table.updateData(this.categories);		//Update the table model
+		this.tf.setText("");		//Empty the text field
 	}
 	private void saveChanges()
 	{
