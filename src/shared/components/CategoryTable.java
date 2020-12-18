@@ -1,7 +1,5 @@
 package shared.components;
 
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
@@ -12,17 +10,15 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.plaf.FontUIResource;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 
 import giantsweetroll.gui.swing.ScrollPaneManager;
 import models.Category;
+import models.DatabaseItem;
 import shared.Constants;
 import shared.Methods;
 
-public class CategoryTable extends JTable implements MouseListener
+public class CategoryTable extends AbstractLedgerTable implements MouseListener
 {
 
 	/**
@@ -30,8 +26,6 @@ public class CategoryTable extends JTable implements MouseListener
 	 */
 	private static final long serialVersionUID = 4951447617549379299L;
 	//Fields
-	private String[][] tableData;
-	private List<Category> categories;
 	//Constants
 	private final String[] HEADERS = {"ID", "Name", ""};
 	
@@ -52,11 +46,10 @@ public class CategoryTable extends JTable implements MouseListener
 	 * Updates the table with new data. It will create a new TableModel to display the updated data.
 	 * @param categories
 	 */
-	public void updateData(List<Category> categories)
+	@Override
+	public void updateData(List<? extends DatabaseItem> categories)
 	{
-		this.categories = categories;
-		this.tableData = Methods.convertCategoryToTableRowData(this.categories);
-		this.setModel(new DefaultTableModel(this.tableData, this.HEADERS));
+		this.updateData(categories, Methods.convertCategoryToTableRowData((List<Category>) categories), HEADERS);
 		
 		//Apply icon renderer
 		if (this.tableData.length > 0)
@@ -66,33 +59,6 @@ public class CategoryTable extends JTable implements MouseListener
 	}
 	
 	//Overridden Methods
-	@Override
-	public Component prepareRenderer(TableCellRenderer r, int row, int col)
-	{
-		Component c = super.prepareRenderer(r, row, col);
-		
-		//Table row color pattern
-		if (row%2==1)
-		{
-			c.setBackground(Color.WHITE);
-		}
-		else
-		{
-			c.setBackground(Constants.COLOR_TABLE_EVEN_ROW);
-		}
-		
-		return c;
-	}
-	
-	/*
-	 * Resizes the table cells width to its preferred size or the viewport size, whichever is greater
-	 */
-	@Override
-	public boolean getScrollableTracksViewportWidth()
-	{
-		return this.getPreferredSize().width < this.getParent().getWidth();
-	}
-	
 	/**
 	 * Only allow edit on the second column
 	 */
@@ -119,7 +85,7 @@ public class CategoryTable extends JTable implements MouseListener
 		{
 			//TODO: Delete category operation
 			int selectedIndex = this.convertRowIndexToModel(row);
-			System.out.println("Pressed category ID: " + categories.get(selectedIndex).getID());
+			System.out.println("Pressed category ID: " + this.data.get(selectedIndex).getID());
 		}
 	}
 
@@ -142,9 +108,6 @@ public class CategoryTable extends JTable implements MouseListener
 		this.updateData(categories);
 		
 		//Properties
-		this.setBackground(Color.WHITE);
-		this.setAutoCreateRowSorter(true);
-		this.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 //		this.getTableHeader().setBorder(BorderFactory.createRaisedBevelBorder());
 		this.setTableHeader(null);		//Remove table headers
 		this.addMouseListener(this);
