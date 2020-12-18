@@ -11,6 +11,7 @@ import javax.swing.ImageIcon;
 
 import giantsweetroll.ImageManager;
 import giantsweetroll.numbers.GNumbers;
+import shared.components.IconCellRenderer;
 
 public class Constants
 {
@@ -45,4 +46,7 @@ public class Constants
 	
 	//Icons
 	public static final ImageIcon ICON_DELETE = new ImageIcon(ImageManager.scaleImage(ImageManager.getImageIcon(Constants.class.getResource("/resources/trash.png")).getImage(), 15, 15));
+	
+	//Renderers
+	public static final IconCellRenderer RENDERER_DELETE = new IconCellRenderer(Constants.ICON_DELETE);
 }
