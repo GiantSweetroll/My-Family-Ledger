@@ -9,7 +9,6 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -121,9 +120,11 @@ public class CategoryTable extends JTable implements MouseListener
 		this.setBackground(Color.WHITE);
 		this.setAutoCreateRowSorter(true);
 		this.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		this.getTableHeader().setBorder(BorderFactory.createRaisedBevelBorder());
+//		this.getTableHeader().setBorder(BorderFactory.createRaisedBevelBorder());
+		this.setTableHeader(null);
 		this.addMouseListener(this);
-		//Apply label renderer
+		this.setRowHeight(50);
+		//Apply icon renderer
 		this.getColumnModel().getColumn(this.tableData[0].length-1).setCellRenderer(new IconCellRenderer(Constants.ICON_DELETE));
 	}
 	
