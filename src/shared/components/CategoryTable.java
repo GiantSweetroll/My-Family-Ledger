@@ -57,6 +57,12 @@ public class CategoryTable extends JTable implements MouseListener
 		this.categories = categories;
 		this.tableData = Methods.convertCategoryToTableRowData(this.categories);
 		this.setModel(new DefaultTableModel(this.tableData, this.HEADERS));
+		
+		//Apply icon renderer
+		if (this.tableData.length > 0)
+		{
+			this.getColumnModel().getColumn(this.tableData[0].length-1).setCellRenderer(new IconCellRenderer(Constants.ICON_DELETE));
+		}
 	}
 	
 	//Overridden Methods
@@ -143,11 +149,6 @@ public class CategoryTable extends JTable implements MouseListener
 		this.setTableHeader(null);		//Remove table headers
 		this.addMouseListener(this);
 		this.setRowHeight(50);
-		//Apply icon renderer
-		if (this.tableData.length > 0)
-		{
-			this.getColumnModel().getColumn(this.tableData[0].length-1).setCellRenderer(new IconCellRenderer(Constants.ICON_DELETE));
-		}
 	}
 	
 	//Testing
