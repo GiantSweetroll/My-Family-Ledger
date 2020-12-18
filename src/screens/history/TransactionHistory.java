@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
@@ -76,7 +77,7 @@ public class TransactionHistory extends HistoryPanel{
 		this.labelTo = new JLabel("To");
 		this.labelPrice = new JLabel("Price (Rp.)");
 		this.labelCategory = new JLabel("Category");
-		this.tfValue = new JTextField("Enter Value", 10);
+		this.tfValue = new JTextField("");
 		this.dateFrom = new DatePicker();
 		this.dateTo = new DatePicker();
 		
@@ -108,14 +109,20 @@ public class TransactionHistory extends HistoryPanel{
 		//Properties
 		this.filters.setLayout(boxlayout);
 		this.filters.setBackground(Color.WHITE);
-		this.labelFrom.setFont(Constants.FONT_SMALLER);
-		this.labelTo.setFont(Constants.FONT_SMALLER);
-		this.labelPrice.setFont(Constants.FONT_SMALLER);
-		this.labelCategory.setFont(Constants.FONT_SMALLER);
+		this.labelFrom.setFont(Constants.FONT_GENERAL);
+		this.labelTo.setFont(Constants.FONT_GENERAL);
+		this.labelPrice.setFont(Constants.FONT_GENERAL);
+		this.labelCategory.setFont(Constants.FONT_GENERAL);
 		this.tfValue.setFont(Constants.FONT_SMALLER);
 		this.tfValue.setForeground(Constants.COLOR_TEXT_GRAY);
 		this.cbCategory.setFont(Constants.FONT_SMALLER);
 		this.cbEquals.setFont(Constants.FONT_SMALLER);
+		
+		this.labelFrom.setBorder(BorderFactory.createEmptyBorder(0,10,0,0));
+		this.labelTo.setBorder(BorderFactory.createEmptyBorder(0,10,0,0));
+		this.labelPrice.setBorder(BorderFactory.createEmptyBorder(0,10,0,0));
+		this.labelCategory.setBorder(BorderFactory.createEmptyBorder(0,10,0,0));
+		
 		panelTop.setOpaque(false);
 		panelCenter.setOpaque(false);
 		
@@ -150,7 +157,7 @@ public class TransactionHistory extends HistoryPanel{
 		this.tableTrans.setFont(Constants.FONT_SMALLER);
 		this.tableTrans.setPreferredScrollableViewportSize(new Dimension(500, 220));
 	    this.tableTrans.setFillsViewportHeight(true);
-	    this.tableTrans.setRowHeight(20);
+	    this.tableTrans.setRowHeight(30);
 	}
 	
 	public static void main(String args[])
