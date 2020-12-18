@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.plaf.FontUIResource;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
 import giantsweetroll.gui.swing.ScrollPaneManager;
@@ -31,12 +32,31 @@ public class CategoryTable extends JTable implements MouseListener
 	//Fields
 	private String[][] tableData;
 	private List<Category> categories;
+	//Constants
+	private final String[] HEADERS = {"ID", "Name", ""};
 	
-	//Constructor
-	public CategoryTable(String[][] data, String[] headers, List<Category> categories)
+	//Constructors
+	public CategoryTable(List<Category> categories)
 	{
-		super(data, headers);
-		this.init(data, categories);
+		super();
+		this.init(categories);
+	}
+	public CategoryTable()
+	{
+		super();
+		this.init(new ArrayList<Category>());
+	}
+	
+	//Public methods
+	/**
+	 * Updates the table with new data. It will create a new TableModel to display the updated data.
+	 * @param categories
+	 */
+	public void updateData(List<Category> categories)
+	{
+		this.categories = categories;
+		this.tableData = Methods.convertCategoryToTableRowData(this.categories);
+		this.setModel(new DefaultTableModel(this.tableData, this.HEADERS));
 	}
 	
 	//Overridden Methods
@@ -110,22 +130,24 @@ public class CategoryTable extends JTable implements MouseListener
 	public void mouseReleased(MouseEvent arg0) {}
 	
 	//Private Methods
-	private void init(String[][] data, List<Category> categories)
+	private void init(List<Category> categories)
 	{
 		//Initialization
-		this.tableData = data;
-		this.categories = categories;
+		this.updateData(categories);
 		
 		//Properties
 		this.setBackground(Color.WHITE);
 		this.setAutoCreateRowSorter(true);
 		this.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 //		this.getTableHeader().setBorder(BorderFactory.createRaisedBevelBorder());
-		this.setTableHeader(null);
+		this.setTableHeader(null);		//Remove table headers
 		this.addMouseListener(this);
 		this.setRowHeight(50);
 		//Apply icon renderer
-		this.getColumnModel().getColumn(this.tableData[0].length-1).setCellRenderer(new IconCellRenderer(Constants.ICON_DELETE));
+		if (this.tableData.length > 0)
+		{
+			this.getColumnModel().getColumn(this.tableData[0].length-1).setCellRenderer(new IconCellRenderer(Constants.ICON_DELETE));
+		}
 	}
 	
 	//Testing
@@ -134,19 +156,16 @@ public class CategoryTable extends JTable implements MouseListener
 		Methods.setUIFont(new FontUIResource(Constants.FONT_TYPE_GENERAL, Font.PLAIN, Constants.FONT_GENERAL_SIZE));
 		//Initialization
 		JFrame frame = new JFrame();
-		String[][] data = {{"230190", "Apple", ""}, 
-							{"34000", "Window", ""},
-							{"34002", "Bambi", ""}};
-		String[] headers = {"ID", "Category", ""};
 		List<Category> categories = new ArrayList<Category>();
 		categories.add(new Category(230190, 1, "desc1", "Apple"));
 		categories.add(new Category(34000, 1, "desc2", "Window"));
 		categories.add(new Category(34002, 1, "desc3", "Bambi"));
-		CategoryTable table = new CategoryTable(data, headers, categories);
+		CategoryTable table = new CategoryTable();
 		JLabel label = new JLabel(Constants.ICON_DELETE);
 		JScrollPane scroll = ScrollPaneManager.generateDefaultScrollPane(table);
 		
 		//Properties
+		table.updateData(categories);
 		frame.setSize(700, 700);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
