@@ -18,7 +18,6 @@ import javax.swing.plaf.FontUIResource;
 import javax.swing.table.TableCellRenderer;
 
 import giantsweetroll.gui.swing.ScrollPaneManager;
-import legacy.IconActionEditor;
 import models.Category;
 import shared.Constants;
 import shared.Methods;
@@ -54,7 +53,7 @@ public class CategoryTable extends JTable implements MouseListener
 		}
 		else
 		{
-			c.setBackground(new Color(249, 250, 252));
+			c.setBackground(Constants.COLOR_TABLE_EVEN_ROW);
 		}
 		
 		return c;
