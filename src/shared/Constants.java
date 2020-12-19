@@ -46,6 +46,7 @@ public class Constants
 	
 	//Icons
 	public static final ImageIcon ICON_DELETE = new ImageIcon(ImageManager.scaleImage(ImageManager.getImageIcon(Constants.class.getResource("/resources/trash.png")).getImage(), 15, 15));
+	public static final ImageIcon ICON_EDIT = new ImageIcon(ImageManager.scaleImage(ImageManager.getImageIcon(Constants.class.getResource("/resources/editicon.svg.png")).getImage(), 15, 15));
 	
 	//Renderers
 	public static final IconCellRenderer RENDERER_DELETE = new IconCellRenderer(Constants.ICON_DELETE);
