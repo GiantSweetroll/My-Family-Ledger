@@ -1,7 +1,7 @@
 package screens.menu;
 
 
-import java.awt.BorderLayout; 
+import java.awt.BorderLayout;   
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -22,12 +22,12 @@ import javax.swing.plaf.FontUIResource;
 
 import giantsweetroll.ImageManager;
 import models.Person;
-import screens.input.TransferFunds;
 import shared.Constants;
 import shared.Methods;
 import shared.screens.AccountPanel;
 import shared.components.AppButton;
 import shared.components.LogoLabel;
+
 
 public class Menu extends JPanel{
 	
@@ -38,19 +38,22 @@ public class Menu extends JPanel{
 	private AppButton butTransfer, 
 					butHistory, 
 					butReport, butExit,
-					butInput;
+					butInput, butCategories;
 	private AccountPanel panelAcc;
 	private LogoLabel logo;
 	private JLabel logoDesc, 
 					historyIconLabel, historyLabel,
 					transferIconLabel, transferLabel,
 					reportIconLabel, reportLabel,
-					inputIconLabel, inputLabel;
+					inputIconLabel, inputLabel,
+					addCatIconLabel, addCatLabel;
 	private boolean asAdmin;
 	ImageIcon historyicon = createImageIcon("/resources/history_icon.png", "History");
 	ImageIcon transfericon = createImageIcon("/resources/transfer_icon.png", "Transfer");
 	ImageIcon reporticon = createImageIcon("/resources/report_icon.png", "Report");
-	ImageIcon inputicon = createImageIcon("/resources/input_icon.png", "Report");
+	ImageIcon inputicon = createImageIcon("/resources/input_icon.png", "Input");
+	ImageIcon categoriesicon = createImageIcon("/resources/categories_icon.png","Categories");
+	
 	
 	public Menu (Person person, boolean asAdmin)
 	{
@@ -81,6 +84,7 @@ public class Menu extends JPanel{
 		this.butHistory = new AppButton();
 		this.butTransfer = new AppButton();
 		this.butReport = new AppButton();
+		this.butCategories = new AppButton();
 		this.butExit = new AppButton("Exit");
 		this.logo = new LogoLabel();
 		this.logoDesc = new JLabel("Our Funds Motto or smth");
@@ -90,9 +94,12 @@ public class Menu extends JPanel{
 		this.transferLabel = new JLabel("Transfer");
 		this.reportIconLabel = new JLabel(reporticon);
 		this.reportLabel = new JLabel("Report");
+		this.addCatIconLabel = new JLabel(categoriesicon);
+		this.addCatLabel = new JLabel ("   Categories");
 		JPanel panelHistoryBtn = new JPanel();
 		JPanel panelTransferBtn = new JPanel();
 		JPanel panelReportBtn = new JPanel();
+		JPanel panelCategoriesBtn = new JPanel();
 		JPanel panelTop = new JPanel();
 		JPanel panelButton = new JPanel();
 		JPanel panelCenter = new JPanel();
@@ -108,6 +115,8 @@ public class Menu extends JPanel{
 		panelTransferBtn.setOpaque(false);
 		panelReportBtn.setLayout(new BoxLayout(panelReportBtn,BoxLayout.Y_AXIS));
 		panelReportBtn.setOpaque(false);
+		panelCategoriesBtn.setLayout(new BoxLayout(panelCategoriesBtn,BoxLayout.X_AXIS));
+		panelCategoriesBtn.setOpaque(false);
 		panelTop.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		panelButton.setLayout(new FlowLayout(FlowLayout.CENTER,200,200));
 		panelCenter.setLayout(new BoxLayout(panelCenter, BoxLayout.Y_AXIS));
@@ -128,7 +137,8 @@ public class Menu extends JPanel{
 		this.butTransfer.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
-				System.out.println("");
+				
+				
 			}
 		});
 		
@@ -145,6 +155,23 @@ public class Menu extends JPanel{
 		this.butReport.setBackground(Constants.COLOR_BUTTON_YELLOW);
 		this.butReport.setFont(Constants.FONT_GENERAL_BOLD);
 		this.butReport.setPreferredSize(new Dimension(220,150));
+		this.butReport.addActionListener( new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent evt) {
+				System.out.println("");
+			}
+		});
+		
+		this.butCategories.setBackground(Constants.COLOR_BUTTON_YELLOW);
+		this.butCategories.setFont(Constants.FONT_GENERAL_BOLD);
+		this.butCategories.setAlignmentX(Component.CENTER_ALIGNMENT);
+		this.butCategories.addActionListener( new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent evt) {
+				System.out.println("");
+			}
+		});
+
 		
 		this.butExit.setBackground(Constants.COLOR_BUTTON_BASE);
 		this.butExit.addActionListener( new ActionListener() {
@@ -175,6 +202,11 @@ public class Menu extends JPanel{
 		panelReportBtn.add(reportLabel);
 		butReport.add(panelReportBtn);
 		
+		//Add to Categories button 
+		panelCategoriesBtn.add(addCatIconLabel);
+		panelCategoriesBtn.add(addCatLabel);
+		butCategories.add(panelCategoriesBtn);
+		
 		//Add to panelButton
 		panelButton.add(butTransfer);
 		panelButton.add(butHistory);
@@ -186,8 +218,10 @@ public class Menu extends JPanel{
 		panelCenter.add(logoDesc);
 		panelCenter.add(Box.createRigidArea(new Dimension(0,0)));
 		panelCenter.add(panelButton);
+		panelCenter.add(butCategories);
 		
 		//Add to panelBottom 
+		panelBottom.add(Box.createRigidArea(new Dimension(0,20)));
 		panelBottom.add(butExit);
 		
 		//Add to MainPanel
@@ -217,8 +251,9 @@ public class Menu extends JPanel{
 		JPanel panelTop = new JPanel();
 		JPanel panelButton = new JPanel();
 		JPanel panelCenter = new JPanel();
-		JPanel panelBottom = new JPanel();
+		JPanel panelBottom = new JPanel(); 
 		JPanel mainPanel = new JPanel();
+		JPanel panelCategories = new JPanel();
 		JScrollPane scrollpane = new JScrollPane(mainPanel);
 		
 		
@@ -231,6 +266,7 @@ public class Menu extends JPanel{
 		panelButton.setLayout(new FlowLayout(FlowLayout.CENTER,200,200));
 		panelCenter.setLayout(new BoxLayout(panelCenter, BoxLayout.Y_AXIS));
 		panelBottom.setLayout(new FlowLayout(FlowLayout.CENTER));
+		panelCategories.setLayout(new FlowLayout(FlowLayout.CENTER));
 		mainPanel.setLayout(new BorderLayout());
 		this.logoDesc.setAlignmentX(Component.CENTER_ALIGNMENT);
 		this.historyIconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -272,6 +308,9 @@ public class Menu extends JPanel{
 		panelButton.add(butInput);
 		panelButton.add(butHistory);
 		
+		//Add to panelCategories
+		panelCategories.add(butCategories);
+		
 		//Add to panelCenter
 		panelCenter.add(logo);
 		panelCenter.add(Box.createRigidArea(new Dimension(0,20)));
@@ -308,7 +347,7 @@ public class Menu extends JPanel{
 		//Initialization
 		JFrame frame = new JFrame();
 		Person Person1 = new Person("Adam", "Smith");
-		Menu mn = new Menu(Person1,false);
+		Menu mn = new Menu(Person1,true);
 		
 		//Properties
 		frame.setSize(700, 700);
