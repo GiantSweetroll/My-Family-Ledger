@@ -54,7 +54,7 @@ public class CategoryTable extends AbstractLedgerTable implements MouseListener
 		//Apply icon renderer
 		if (this.tableData.length > 0)
 		{
-			this.getColumnModel().getColumn(this.tableData[0].length-1).setCellRenderer(new IconCellRenderer(Constants.ICON_DELETE));
+			this.getColumnModel().getColumn(this.tableData[0].length-1).setCellRenderer(Constants.RENDERER_DELETE);
 		}
 	}
 	
