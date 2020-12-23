@@ -19,10 +19,12 @@ import javax.swing.JTextField;
 import javax.swing.plaf.FontUIResource;
 
 import giantsweetroll.gui.swing.Gbm;
+import main.Main;
 import shared.Constants;
 import shared.Methods;
 import shared.components.HintPasswordField;
 import shared.components.HintTextField;
+import shared.components.HyperlinkLabel;
 import shared.components.LogoLabel;
 import shared.screens.CenteredPage;
 
@@ -61,7 +63,7 @@ public class SignIn extends CenteredPage
 		this.panelMain = new JPanel(new BorderLayout());
 		this.labLogo = new LogoLabel(LogoLabel.SMALL);
 		this.labSignIn = new JLabel("Sign In");
-		this.labSignUp = new JLabel("Sign Up");
+		this.labSignUp = new HyperlinkLabel("Sign Up");
 		this.tfEmail = new HintTextField("Email");
 		this.tfPass = new HintPasswordField("Password");
 		this.butSignIn = new JButton("Sign in");
@@ -76,27 +78,20 @@ public class SignIn extends CenteredPage
 		panelCenter.setLayout(new GridBagLayout());
 		panelCenter.setBackground(Color.WHITE);
 		this.labLogo.setBackground(Color.YELLOW);
-		this.labSignUp.setForeground(Constants.COLOR_HYPERLINK);
 		this.labSignUp.setFont(Constants.FONT_SMALLER);
 		this.labSignUp.addMouseListener(new MouseListener()
 				{
 					@Override
 					public void mouseClicked(MouseEvent arg0) 
 					{
-						// TODO Go to Sign Up page
+						Main.changeScreen(new SignUpOptions());
 					}
 
 					@Override
-					public void mouseEntered(MouseEvent arg0)
-					{
-						//TODO: Make text underline
-					}
+					public void mouseEntered(MouseEvent arg0){}
 
 					@Override
-					public void mouseExited(MouseEvent arg0) {
-						//TODO: Remove text underline
-						
-					}
+					public void mouseExited(MouseEvent arg0) {}
 
 					@Override
 					public void mousePressed(MouseEvent arg0) {}
