@@ -24,7 +24,7 @@ public class Main
 		Main.panel = new SignIn();
 		
 		//Properties
-		Main.frame.setSize(800, 600);
+		Main.frame.setSize(1280, 768);
 		Main.frame.setLocationRelativeTo(null);
 		Main.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
