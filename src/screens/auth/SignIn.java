@@ -7,12 +7,15 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -93,6 +96,19 @@ public class SignIn extends CenteredPage
 		this.butSignIn.setFont(Constants.FONT_SMALLER);
 		this.butSignIn.setBackground(Constants.COLOR_BUTTON_BASE);
 		this.butSignIn.setForeground(Color.WHITE);
+		this.butSignIn.addActionListener(new ActionListener()
+				{
+					public void actionPerformed(ActionEvent e)
+					{
+						//Check input
+						String email = tfEmail.getText().trim();
+						String pass = new String(tfPass.getPassword()).trim();
+						if (email.equals("") || pass.equals(""))
+						{
+							JOptionPane.showMessageDialog(null, "Invalid email/password entered", "Cannot Sign In", JOptionPane.ERROR_MESSAGE);
+						}
+					}
+				});
 		this.labForgotPass.setForeground(Constants.COLOR_HYPERLINK);
 		this.labForgotPass.setFont(Constants.FONT_SMALLER);
 		

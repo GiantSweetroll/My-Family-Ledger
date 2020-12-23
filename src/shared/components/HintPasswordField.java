@@ -22,6 +22,7 @@ public class HintPasswordField extends JPasswordField
 	 */
 	private static final long serialVersionUID = -9006829736596726028L;
 	//Fields
+	private boolean fieldEmpty;
 	private char originalEchoChar;
 
 	//Constructor
@@ -31,6 +32,7 @@ public class HintPasswordField extends JPasswordField
 		super(hint);
 		this.originalEchoChar = this.getEchoChar();
 		this.setEchoChar((char)0);
+		this.fieldEmpty = true;
 		
 		///Properties
 		this.setForeground(Color.GRAY);
@@ -59,14 +61,22 @@ public class HintPasswordField extends JPasswordField
 							setText(hint);
 							setEchoChar((char)0);
 							setForeground(Color.GRAY);
+							fieldEmpty = true;
 						}
 						else
 						{
 							setText(getText());
 							setForeground(Color.BLACK);
+							fieldEmpty = false;
 						}
 					}
 				});
+	}
+	
+	//Overridden Methods
+	public char[] getPassword()
+	{
+		return this.fieldEmpty ? new char[0] : super.getPassword();
 	}
 	
 	//Testing

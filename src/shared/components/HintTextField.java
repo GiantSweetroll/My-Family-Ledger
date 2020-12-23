@@ -19,11 +19,15 @@ public class HintTextField extends JTextField
 	 * 
 	 */
 	private static final long serialVersionUID = -4024179785933494052L;
+	//Fields
+	private boolean fieldEmpty;
 	
 	//Constructor
 	public HintTextField(String hint)
 	{
+		//Initialization
 		super(hint);
+		this.fieldEmpty = true;
 		
 		///Properties
 		this.setForeground(Color.GRAY);
@@ -50,14 +54,22 @@ public class HintTextField extends JTextField
 						{
 							setText(hint);
 							setForeground(Color.GRAY);
+							fieldEmpty = true;
 						}
 						else
 						{
+							fieldEmpty = false;
 							setText(getText());
 							setForeground(Color.BLACK);
 						}
 					}
 				});
+	}
+	
+	//Public Methods
+	public String getData()
+	{
+		return this.fieldEmpty? "" : this.getText();
 	}
 	
 	//Testing
