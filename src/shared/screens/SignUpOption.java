@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -50,7 +49,7 @@ public class SignUpOption extends JPanel
 		this.taDetails.setBorder(null);
 		this.button.setBackground(Constants.COLOR_BUTTON_BASE);
 		this.button.setForeground(Color.WHITE);
-		//TODO: Add ActionListener to button
+		this.button.addActionListener(onPressed);
 		/*
 		spr.putConstraint(SpringLayout.NORTH, this.labTitle, GENERAL_PADDING, SpringLayout.NORTH, this);
 		spr.putConstraint(SpringLayout.HORIZONTAL_CENTER, this.labTitle, 0, SpringLayout.HORIZONTAL_CENTER, this);
