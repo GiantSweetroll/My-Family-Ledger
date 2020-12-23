@@ -7,8 +7,8 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -79,26 +79,13 @@ public class SignIn extends CenteredPage
 		panelCenter.setBackground(Color.WHITE);
 		this.labLogo.setBackground(Color.YELLOW);
 		this.labSignUp.setFont(Constants.FONT_SMALLER);
-		this.labSignUp.addMouseListener(new MouseListener()
+		this.labSignUp.addMouseListener(new MouseAdapter()
 				{
 					@Override
 					public void mouseClicked(MouseEvent arg0) 
 					{
 						Main.changeScreen(new SignUpOptions());
 					}
-
-					@Override
-					public void mouseEntered(MouseEvent arg0){}
-
-					@Override
-					public void mouseExited(MouseEvent arg0) {}
-
-					@Override
-					public void mousePressed(MouseEvent arg0) {}
-
-					@Override
-					public void mouseReleased(MouseEvent arg0) {}
-					
 				});
 		this.labSignIn.setFont(Constants.FONT_SUB_TITLE);
 		this.tfEmail.setColumns(10);
