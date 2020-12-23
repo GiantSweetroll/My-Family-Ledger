@@ -95,10 +95,6 @@ public class SignUp extends CenteredPage
 		GridBagConstraints c = new GridBagConstraints();
 		StyledDocument doc = this.taTnC.getStyledDocument();
 		SimpleAttributeSet centerAtt = new SimpleAttributeSet();
-		if (!this.asAdmin)
-		{
-			this.initTFAdminID();
-		}
 		
 		//Properties
 		panelCenter.setBackground(Color.WHITE);
@@ -151,6 +147,7 @@ public class SignUp extends CenteredPage
 		panelCenter.add(this.tfConfirmPass, c);			//Confirm Password text field
 		if (!this.asAdmin)
 		{
+			this.initTFAdminID();	//Initialization moved here to prevent double checking
 			Gbm.newGridLine(c);
 			panelCenter.add(this.tfAdminID,c);			//Admin ID
 		}
