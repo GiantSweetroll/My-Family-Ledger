@@ -1,15 +1,13 @@
 package screens.menu;
 
 
-import java.awt.BorderLayout;   
-import java.awt.Color;
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -24,9 +22,9 @@ import giantsweetroll.ImageManager;
 import models.Person;
 import shared.Constants;
 import shared.Methods;
-import shared.screens.AccountPanel;
 import shared.components.AppButton;
 import shared.components.LogoLabel;
+import shared.screens.AccountPanel;
 
 
 public class Menu extends JPanel{
@@ -86,7 +84,7 @@ public class Menu extends JPanel{
 		this.butReport = new AppButton();
 		this.butCategories = new AppButton();
 		this.butExit = new AppButton("Exit");
-		this.logo = new LogoLabel();
+		this.logo = new LogoLabel(LogoLabel.BIG);
 		this.logoDesc = new JLabel("Our Funds Motto or smth");
 		this.historyIconLabel = new JLabel(historyicon);
 		this.historyLabel = new JLabel("History");
@@ -238,7 +236,7 @@ public class Menu extends JPanel{
 		this.butHistory = new AppButton();
 		this.butInput = new AppButton();
 		this.butExit = new AppButton("Exit");
-		this.logo = new LogoLabel();
+		this.logo = new LogoLabel(LogoLabel.BIG);
 		this.logoDesc = new JLabel("Our Funds Motto or smth");
 		this.panelAcc = new AccountPanel();
 		this.historyIconLabel = new JLabel(historyicon);

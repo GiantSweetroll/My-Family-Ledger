@@ -24,6 +24,8 @@ import giantsweetroll.gui.swing.Gbm;
 import shared.Constants;
 import shared.Methods;
 import shared.TextFieldHintListener;
+import shared.components.HintPasswordField;
+import shared.components.HintTextField;
 import shared.components.LogoLabel;
 import shared.screens.CenteredPage;
 
@@ -64,22 +66,23 @@ public class SignUp extends CenteredPage
 	private void initTFAdminID()
 	{
 		//Initialization
-		this.tfAdminID = new JTextField();
+		this.tfAdminID = new HintTextField("Admin ID");
 		
 		//Properties
 		this.tfAdminID.getDocument().addDocumentListener(new TextFieldHintListener(this.tfAdminID, "Admin ID"));
+		this.tfAdminID.setToolTipText("Ask your Admin for their ID to link your accounts");
 	}
 	private void initCenter()
 	{
 		//Initialization
 		this.panelMain = new JPanel(new BorderLayout());
-		this.logo = new LogoLabel();
+		this.logo = new LogoLabel(LogoLabel.SMALL);
 		this.labSignUp = new JLabel("Sign Up");
-		this.tfFirstName = new JTextField();
-		this.tfLastName = new JTextField();
-		this.tfEmail = new JTextField();
-		this.tfPass = new JPasswordField();
-		this.tfConfirmPass = new JPasswordField();
+		this.tfFirstName = new HintTextField("First Name");
+		this.tfLastName = new HintTextField("Last Name");
+		this.tfEmail = new HintTextField("Email");
+		this.tfPass = new HintPasswordField("Password");
+		this.tfConfirmPass = new HintPasswordField("Confirm Password");
 		this.butSignUp = new JButton("Sign up");
 		this.labBack = new JLabel("Back");
 		this.taTnC = new JTextPane();

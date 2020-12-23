@@ -53,7 +53,7 @@ public class SignUpOptions extends CenteredPage
 	{
 		//Initialization
 		this.panelMain = new JPanel();
-		this.labLogo = new LogoLabel();
+		this.labLogo = new LogoLabel(LogoLabel.SMALL);
 		this.labSignUp = new JLabel("Sign Up");
 		this.labSignIn = new JLabel("Sign In");
 		this.adminOption = new SignUpOption("Admin", 

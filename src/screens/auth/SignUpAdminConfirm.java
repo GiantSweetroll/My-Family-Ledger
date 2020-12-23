@@ -41,7 +41,7 @@ public class SignUpAdminConfirm extends CenteredPage
 		//Initialization
 		super();
 		this.labTitle = new JLabel("Last Step!");
-		this.logo = new LogoLabel();
+		this.logo = new LogoLabel(LogoLabel.SMALL);
 		this.ta = new JTextArea(10, 20);
 		this.button = new JButton("Ok");
 		this.id = id;

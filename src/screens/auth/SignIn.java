@@ -21,6 +21,8 @@ import javax.swing.plaf.FontUIResource;
 import giantsweetroll.gui.swing.Gbm;
 import shared.Constants;
 import shared.Methods;
+import shared.components.HintPasswordField;
+import shared.components.HintTextField;
 import shared.components.LogoLabel;
 import shared.screens.CenteredPage;
 
@@ -57,11 +59,11 @@ public class SignIn extends CenteredPage
 	{
 		//Initialization
 		this.panelMain = new JPanel(new BorderLayout());
-		this.labLogo = new LogoLabel();
+		this.labLogo = new LogoLabel(LogoLabel.SMALL);
 		this.labSignIn = new JLabel("Sign In");
 		this.labSignUp = new JLabel("Sign Up");
-		this.tfEmail = new JTextField(10);
-		this.tfPass = new JPasswordField(10);
+		this.tfEmail = new HintTextField("Email");
+		this.tfPass = new HintPasswordField("Password");
 		this.butSignIn = new JButton("Sign in");
 		this.labForgotPass = new JLabel("Forgot your password?");
 		JPanel panelTop = new JPanel();
@@ -104,6 +106,8 @@ public class SignIn extends CenteredPage
 					
 				});
 		this.labSignIn.setFont(Constants.FONT_SUB_TITLE);
+		this.tfEmail.setColumns(10);
+		this.tfPass.setColumns(10);
 		this.butSignIn.setFont(Constants.FONT_SMALLER);
 		this.butSignIn.setBackground(Constants.COLOR_BUTTON_BASE);
 		this.butSignIn.setForeground(Color.WHITE);
