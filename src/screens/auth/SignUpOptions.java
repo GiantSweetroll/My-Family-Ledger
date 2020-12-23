@@ -8,6 +8,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -16,8 +18,10 @@ import javax.swing.JSeparator;
 import javax.swing.plaf.FontUIResource;
 
 import giantsweetroll.gui.swing.Gbm;
+import main.Main;
 import shared.Constants;
 import shared.Methods;
+import shared.components.HyperlinkLabel;
 import shared.components.LogoLabel;
 import shared.screens.CenteredPage;
 import shared.screens.SignUpOption;
@@ -55,7 +59,7 @@ public class SignUpOptions extends CenteredPage
 		this.panelMain = new JPanel();
 		this.labLogo = new LogoLabel(LogoLabel.SMALL);
 		this.labSignUp = new JLabel("Sign Up");
-		this.labSignIn = new JLabel("Sign In");
+		this.labSignIn = new HyperlinkLabel("Sign In");
 		this.adminOption = new SignUpOption("Admin", 
 											"- Transfer Funds \n- Transaction history report from users",
 											"Sign up as admin",
@@ -81,7 +85,14 @@ public class SignUpOptions extends CenteredPage
 		this.panelMain.setBackground(Color.WHITE);
 		this.labSignUp.setFont(Constants.FONT_SUB_TITLE);
 		this.labSignIn.setFont(Constants.FONT_SMALLER);
-		this.labSignIn.setForeground(Constants.COLOR_HYPERLINK);
+		this.labSignIn.addMouseListener(new MouseAdapter()
+				{
+					@Override
+					public void mouseClicked(MouseEvent e)
+					{
+						Main.changeScreen(new SignIn());
+					}	
+				});
 		
 		///Add to panel
 		//Add to panelTop
