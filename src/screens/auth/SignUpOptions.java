@@ -8,6 +8,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -39,12 +41,27 @@ public class SignUpOptions extends CenteredPage
 					labSignIn;
 	private SignUpOption adminOption, userOption;
 	private JSeparator separator;
+	private ActionListener adminListener, userListener;
 	
 	//Constructor
 	public SignUpOptions()
 	{
 		//Initialization
 		super();
+		this.adminListener = new ActionListener()
+				{
+					public void actionPerformed(ActionEvent te)
+					{
+						Main.changeScreen(new SignUp(true));
+					}
+				};
+		this.userListener = new ActionListener()
+				{
+					public void actionPerformed(ActionEvent e)
+					{
+						Main.changeScreen(new SignUp(false));
+					}
+				};
 		this.initCenter();
 		
 		//Properties
@@ -63,11 +80,11 @@ public class SignUpOptions extends CenteredPage
 		this.adminOption = new SignUpOption("Admin", 
 											"- Transfer Funds \n- Transaction history report from users",
 											"Sign up as admin",
-											null);
+											this.adminListener);
 		this.userOption = new SignUpOption("User", 
 											"- Receive funds from admin \n- Report expenditure to admin",
 											"Sign up as user",
-											null);
+											this.userListener);
 		this.separator = new JSeparator(JSeparator.VERTICAL);
 		JPanel panelTop = new JPanel();
 		JPanel panelOptions = new JPanel();
