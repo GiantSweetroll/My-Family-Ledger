@@ -23,6 +23,7 @@ import giantsweetroll.gui.swing.Gbm;
 import models.Person;
 import shared.Constants;
 import shared.Methods;
+import shared.components.HintTextField;
 import shared.components.NameEmailPanel;
 import shared.screens.AccountPanel;
 import shared.screens.RoundedPanel;
@@ -77,8 +78,8 @@ public class TransferFunds extends TriplePanelPage
 		this.labTransfer = new JLabel("Transfer");
 		this.labReceiver = new JLabel("Receiver");
 		this.chosen = new NameEmailPanel("", "");
-		this.tfAmount = new JTextField(10);
-		this.tfNotes = new JTextField(10);
+		this.tfAmount = new HintTextField("Amount (Rp.)");
+		this.tfNotes = new HintTextField("Notes");
 		this.labBack = new JLabel("Back");
 		this.butTf = new JButton("Transfer");
 		JPanel panelButtons = new JPanel(new GridLayout(0, 2));
@@ -94,6 +95,8 @@ public class TransferFunds extends TriplePanelPage
 		this.panelTransfer.setBackground(Color.WHITE);
 		this.labTransfer.setFont(Constants.FONT_TITLE);
 		this.labTransfer.setHorizontalAlignment(SwingConstants.CENTER);
+		this.tfAmount.setColumns(10);
+		this.tfNotes.setColumns(10);
 		this.labBack.setFont(Constants.FONT_SMALLER);
 		this.labBack.setForeground(Constants.COLOR_HYPERLINK);
 		this.labBack.setHorizontalAlignment(SwingConstants.CENTER);

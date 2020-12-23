@@ -21,6 +21,7 @@ import models.Person;
 import shared.Constants;
 import shared.Methods;
 import shared.components.DatePicker;
+import shared.components.HintTextField;
 import shared.components.ListTile;
 import shared.components.ListView;
 import shared.components.SimpleUserTile;
@@ -134,7 +135,7 @@ public class TransferHistory extends HistoryPanel
 		this.initPanelReceivers();
 		this.labValue = new JLabel("Value (Rp.)");
 		this.comboOperand = new JComboBox<String>(Constants.COMBO_BOX_OPERANDS);
-		this.tfValue = new JTextField(10);
+		this.tfValue = new HintTextField("Value");
 		this.labReceiver = new JLabel("Receiver");
 		this.labFrom = new JLabel("From");
 		this.dateFrom = new DatePicker();
@@ -147,6 +148,7 @@ public class TransferHistory extends HistoryPanel
 		GridBagConstraints c = new GridBagConstraints();
 		
 		//Properties
+		this.tfValue.setColumns(10);
 		panelTop.setOpaque(false);
 //		panelBelow.setOpaque(false);
 //		panelBelow.setLayout(new BoxLayout(panelBelow, BoxLayout.Y_AXIS));
