@@ -7,6 +7,8 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -21,11 +23,13 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 import giantsweetroll.gui.swing.Gbm;
+import main.Main;
 import shared.Constants;
 import shared.Methods;
 import shared.TextFieldHintListener;
 import shared.components.HintPasswordField;
 import shared.components.HintTextField;
+import shared.components.HyperlinkLabel;
 import shared.components.LogoLabel;
 import shared.screens.CenteredPage;
 
@@ -84,7 +88,7 @@ public class SignUp extends CenteredPage
 		this.tfPass = new HintPasswordField("Password");
 		this.tfConfirmPass = new HintPasswordField("Confirm Password");
 		this.butSignUp = new JButton("Sign up");
-		this.labBack = new JLabel("Back");
+		this.labBack = new HyperlinkLabel("Back");
 		this.taTnC = new JTextPane();
 		JPanel panelTop = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JPanel panelCenter = new JPanel(new GridBagLayout());
@@ -102,7 +106,13 @@ public class SignUp extends CenteredPage
 		this.panelMain.setBackground(Color.WHITE);
 		this.labSignUp.setFont(Constants.FONT_SUB_TITLE);
 		this.labBack.setFont(Constants.FONT_SMALLER);
-		this.labBack.setForeground(Constants.COLOR_HYPERLINK);
+		this.labBack.addMouseListener(new MouseAdapter()
+				{
+					public void mouseClicked(MouseEvent e)
+					{
+						Main.changeScreen(new SignUpOptions());
+					}
+				});
 		this.tfFirstName.getDocument().addDocumentListener(new TextFieldHintListener(this.tfFirstName, "First Name"));
 		this.tfLastName.getDocument().addDocumentListener(new TextFieldHintListener(this.tfLastName, "Last Name"));
 		this.tfEmail.getDocument().addDocumentListener(new TextFieldHintListener(this.tfEmail, "Email"));
