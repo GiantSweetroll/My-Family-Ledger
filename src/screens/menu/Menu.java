@@ -128,6 +128,7 @@ public class Menu extends JPanel{
 		this.transferLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		this.reportIconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		this.reportLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		this.logo.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
 		this.butTransfer.setBackground(Constants.COLOR_BUTTON_YELLOW);
 		this.butTransfer.setFont(Constants.FONT_GENERAL_BOLD);
@@ -311,7 +312,7 @@ public class Menu extends JPanel{
 		
 		//Add to panelCenter
 		panelCenter.add(logo);
-		panelCenter.add(Box.createRigidArea(new Dimension(0,20)));
+		panelCenter.add(Box.createRigidArea(new Dimension(0,0)));
 		panelCenter.add(logoDesc);
 		panelCenter.add(Box.createRigidArea(new Dimension(0,0)));
 		panelCenter.add(panelButton);
