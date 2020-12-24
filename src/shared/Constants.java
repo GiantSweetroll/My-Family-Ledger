@@ -9,12 +9,16 @@ import java.time.format.DateTimeFormatter;
 
 import javax.swing.ImageIcon;
 
+import database.DatabaseService;
 import giantsweetroll.ImageManager;
 import giantsweetroll.numbers.GNumbers;
 import shared.components.IconCellRenderer;
 
 public class Constants
 {
+	//Database
+	public static final DatabaseService DATABASE_SERVICE = new DatabaseService();
+	
 	//Colors
 	public static final Color COLOR_OUT_OF_FOCUS = new Color(229, 233, 242);
 	public static final Color COLOR_HYPERLINK = new Color(0, 166, 255);
