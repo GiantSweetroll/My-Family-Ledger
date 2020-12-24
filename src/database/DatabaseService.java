@@ -511,6 +511,22 @@ public class DatabaseService
 		}
 	}
 	/**
+	 * Update the Person record. Will call either the update() method overloaded method for either Admin or User.
+	 * @param id the ID of the record to be updated
+	 * @param person a Person object
+	 */
+	public void update(int id, Person person)
+	{
+		if (person instanceof Admin)
+		{
+			update(id, (Admin)person);
+		}
+		else
+		{
+			update(id, (User)person);
+		}
+	}
+	/**
 	 * Update an Admin record. This process updates all data in the record. It does not check for changes.
 	 * @param id - the id of the Admin record to be updated
 	 * @param admin - an Admin object with the new data
