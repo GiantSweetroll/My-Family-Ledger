@@ -15,7 +15,6 @@ import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -27,13 +26,17 @@ import javax.swing.text.StyledDocument;
 
 import giantsweetroll.gui.swing.Gbm;
 import main.Main;
+import models.Account;
+import models.Admin;
 import shared.Constants;
+import shared.Globals;
 import shared.Methods;
 import shared.TextFieldHintListener;
 import shared.components.HintPasswordField;
 import shared.components.HintTextField;
 import shared.components.HyperlinkLabel;
 import shared.components.LogoLabel;
+import shared.components.WarningLabel;
 import shared.screens.CenteredPage;
 
 public class SignUp extends CenteredPage
@@ -47,7 +50,8 @@ public class SignUp extends CenteredPage
 	private JPanel panelMain;
 	private LogoLabel logo;
 	private JLabel labSignUp, 
-					labBack;
+					labBack,
+					labWarning;
 	private JTextField tfFirstName,
 						tfLastName,
 						tfEmail,
@@ -90,6 +94,7 @@ public class SignUp extends CenteredPage
 		this.tfEmail = new HintTextField("Email");
 		this.tfPass = new HintPasswordField("Password");
 		this.tfConfirmPass = new HintPasswordField("Confirm Password");
+		this.labWarning = new WarningLabel();
 		this.butSignUp = new JButton("Sign up");
 		this.labBack = new HyperlinkLabel("Back");
 		this.taTnC = new JTextPane();
@@ -128,14 +133,49 @@ public class SignUp extends CenteredPage
 						String email = ((HintTextField) tfEmail).getData().trim();
 						String pass = new String(tfPass.getPassword());
 						String pass2 = new String(tfConfirmPass.getPassword());
+						String adminID = tfAdminID == null ? null : ((HintTextField) tfAdminID).getData();
 						
-						if (fName.equals("") || email.equals("") || pass.equals("") || pass2.equals(""))
+						//Check if all fields are filled
+						if (fName.equals("") || email.equals("") || pass.equals("") || pass2.equals("") || adminID != null && adminID.equals(""))
 						{
-							JOptionPane.showMessageDialog(null, "Please enter all required fields", "Cannot Sign Up", JOptionPane.ERROR_MESSAGE);
+							labWarning.setText("Please fill in all required fields");
 						}
 						else
 						{
-							
+							//Check if password match
+							if (!pass.equals(pass2)) 
+							{
+								labWarning.setText("Password does not match");
+							}
+							else
+							{
+								//Sign Up to database
+								if (asAdmin)
+								{
+									Admin a = new Admin(fName, lName, email, pass);
+									Constants.DATABASE_SERVICE.insert(a);
+									//Login
+									Globals.activeUser = (Admin) Constants.DATABASE_SERVICE.getLogin(a.getEmail(), a.getPassword());
+									Main.changeScreen(new SignUpAdminConfirm(Globals.activeUser.getID()));
+								}
+								else
+								{
+									//Check if the inputed Admin ID is valid.
+									Admin a = Constants.DATABASE_SERVICE.getAdmin(Integer.parseInt(adminID));
+									if (a == null)
+									{
+										labWarning.setText("Invalid Admin ID");
+									}
+									else
+									{
+										//Create new account for balance
+										Account acc = new Account(0d);
+										Constants.DATABASE_SERVICE.insert(acc);
+										//TODO: Get Account ID
+										
+									}
+								}
+							}
 						}
 					}
 				});
@@ -174,6 +214,8 @@ public class SignUp extends CenteredPage
 			Gbm.newGridLine(c);
 			panelCenter.add(this.tfAdminID,c);			//Admin ID
 		}
+		Gbm.newGridLine(c);
+		panelCenter.add(this.labWarning, c);			//Warning label
 		c.insets = new Insets(20, 100, 5, 100);
 		Gbm.newGridLine(c);
 		panelCenter.add(this.butSignUp, c);				//Sign up button
