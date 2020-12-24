@@ -236,6 +236,7 @@ public class Menu extends JPanel{
 		this.person = person;
 		this.butHistory = new AppButton();
 		this.butInput = new AppButton();
+		this.butCategories = new AppButton();
 		this.butExit = new AppButton("Exit");
 		this.logo = new LogoLabel(LogoLabel.BIG);
 		this.logoDesc = new JLabel("Our Funds Motto or smth");
