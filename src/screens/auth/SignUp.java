@@ -28,6 +28,8 @@ import giantsweetroll.gui.swing.Gbm;
 import main.Main;
 import models.Account;
 import models.Admin;
+import models.User;
+import screens.menu.Menu;
 import shared.Constants;
 import shared.Globals;
 import shared.Methods;
@@ -149,6 +151,7 @@ public class SignUp extends CenteredPage
 							}
 							else
 							{
+								labWarning.setText("");
 								//Sign Up to database
 								if (asAdmin)
 								{
@@ -170,9 +173,14 @@ public class SignUp extends CenteredPage
 									{
 										//Create new account for balance
 										Account acc = new Account(0d);
-										Constants.DATABASE_SERVICE.insert(acc);
-										//TODO: Get Account ID
-										
+										Constants.DATABASE_SERVICE.insert(acc);	//Add account to database
+										acc = Constants.DATABASE_SERVICE.getLastCreatedAccount();
+										//Create User and add it to the database
+										User user = new User(acc.getID(), a.getID(), fName, lName, email, pass);
+										Constants.DATABASE_SERVICE.insert(user);
+										//Login
+										Globals.activeUser = (User)Constants.DATABASE_SERVICE.getLogin(email, pass);
+										Main.changeScreen(new Menu(Globals.activeUser, false));
 									}
 								}
 							}
