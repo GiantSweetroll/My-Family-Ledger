@@ -1375,6 +1375,58 @@ public class DatabaseService
 		return a;
 	}
 	/**
+	 * Get the last created Account
+	 * @return an Account object.
+	 */
+	public Account getLastCreatedAccount()
+	{
+		Account a = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try
+		{
+			ps = this.prepStatement("SELECT * FROM " + TABLE_ACCOUNT);
+			rs = ps.executeQuery();
+			
+			//Loop through the result set
+			rs.last();
+			a = new Account(rs.getInt(Account.ID), rs.getDouble(Account.BALANCE));
+			
+			//Check if balance is not 0
+			if (a.getBalance() != 0d)
+			{
+				return null;
+			}
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch(SQLException ex) {}
+			}
+			
+			if (rs != null)
+			{
+				try
+				{
+					rs.close();
+				}
+				catch(SQLException ex) {}
+			}
+		}
+		
+		return a;
+	}
+	/**
 	 
 	 * Get a category name from category id in the transaction table
 	 */
@@ -1485,8 +1537,8 @@ public class DatabaseService
 				ps.close();
 				//If not check in User table
 				ps = this.prepStatement("SELECT * FROM " + TABLE_USERS 
-										+ " WHERE " + User.EMAIL + " = " + email
-										+ " AND " + User.PASSWORD + " = " + password);
+										+ " WHERE " + User.EMAIL + " = \'" + email + "\'"
+										+ " AND " + User.PASSWORD + " = \'" + password + "\'");
 				rs = ps.executeQuery();
 				
 				if (rs.next())
