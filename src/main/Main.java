@@ -1,6 +1,8 @@
 package main;
 
 import java.awt.Font;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -15,12 +17,14 @@ public class Main
 	//Fields
 	private static JFrame frame;
 	private static JPanel panel;
+	private static List<JPanel> panels;
 	
 	//Constructor
 	public Main()
 	{
 		//Initialization
 		Main.frame = new JFrame();
+		Main.panels = new ArrayList<>();
 		Main.panel = new SignIn();
 		
 		//Properties
@@ -35,6 +39,10 @@ public class Main
 	}
 	
 	//Public methods
+	/**
+	 * Change the screen that is visible. Will perform direct switching.
+	 * @param panel the JPanel to be displayed on the screen.
+	 */
 	public static void changeScreen(JPanel panel)
 	{
 		Main.frame.remove(Main.panel);
@@ -42,6 +50,33 @@ public class Main
 		Main.frame.add(Main.panel);
 		Main.frame.revalidate();
 		Main.frame.repaint();
+	}
+	/**
+	 * Push the JPanel into the stack and display it.
+	 * @param panel the JPanel to be displayed.
+	 */
+	public static void pushScreen(JPanel panel)
+	{
+		Main.panels.add(Main.panel);
+		Main.panels.add(panel);
+		Main.changeScreen(panel);
+	}
+	/**
+	 * Pop the screen to display the previous JPanel before being pushed.
+	 * @return the popped JPanel
+	 */
+	public static JPanel popScreen()
+	{
+		try
+		{
+			JPanel popped = Main.panels.remove(Main.panels.size()-1);
+			Main.changeScreen(Main.panels.get(Main.panels.size()-1));
+			return popped;
+		}
+		catch(Exception ex)
+		{
+			return null;
+		}
 	}
 	
 	public static void main(String args[])
