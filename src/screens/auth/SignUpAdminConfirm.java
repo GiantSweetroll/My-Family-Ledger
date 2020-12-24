@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -15,8 +17,12 @@ import javax.swing.plaf.FontUIResource;
 
 import giantsweetroll.gui.swing.Gbm;
 import giantsweetroll.gui.swing.TextAreaManager;
+import main.Main;
+import screens.menu.Menu;
 import shared.Constants;
+import shared.Globals;
 import shared.Methods;
+import shared.components.AppButton;
 import shared.components.LogoLabel;
 import shared.screens.CenteredPage;
 
@@ -43,7 +49,7 @@ public class SignUpAdminConfirm extends CenteredPage
 		this.labTitle = new JLabel("Last Step!");
 		this.logo = new LogoLabel(LogoLabel.SMALL);
 		this.ta = new JTextArea(10, 20);
-		this.button = new JButton("Ok");
+		this.button = new AppButton("Ok");
 		this.id = id;
 		JPanel panel = new JPanel();
 		GridBagConstraints c = new GridBagConstraints();
@@ -58,8 +64,13 @@ public class SignUpAdminConfirm extends CenteredPage
 						(id==0? "" : id) + 
 						"\n\n" +
 						"Share this to your other members so their account will be registered with you as the admin. You can view this again on the \"My Profile\" page.");
-		this.button.setBackground(Constants.COLOR_BUTTON_BASE);
-		this.button.setForeground(Color.WHITE);
+		this.button.addActionListener(new ActionListener()
+				{
+					public void actionPerformed(ActionEvent e)
+					{
+						Main.changeScreen(new Menu(Globals.activeUser, true));
+					}
+				});
 		
 		//Add to panel
 		Gbm.goToOrigin(c);
