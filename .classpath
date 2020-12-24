@@ -3,5 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="G:/Program Files/Programming Libraries/Java Libraries/GG-Library/GG-Library.jar"/>
+	<classpathentry kind="lib" path="G:/Program Files/Programming Libraries/Java Libraries/JDatePicker/jdatepicker-1.3.4.jar"/>
+	<classpathentry kind="lib" path="G:/Program Files/Programming Libraries/Java Libraries/mysql-connector-java-5.1.49 2/mysql-connector-java-5.1.49.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

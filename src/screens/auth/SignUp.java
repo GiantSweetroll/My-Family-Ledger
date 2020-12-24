@@ -7,12 +7,15 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -116,6 +119,26 @@ public class SignUp extends CenteredPage
 		this.tfConfirmPass.getDocument().addDocumentListener(new TextFieldHintListener(this.tfConfirmPass, "Confirm Password"));
 		this.butSignUp.setBackground(Constants.COLOR_BUTTON_BASE);
 		this.butSignUp.setForeground(Color.WHITE);
+		this.butSignUp.addActionListener(new ActionListener()
+				{
+					public void actionPerformed(ActionEvent e)
+					{
+						String fName = ((HintTextField) tfFirstName).getData().trim();
+						String lName = ((HintTextField) tfLastName).getData().trim();
+						String email = ((HintTextField) tfEmail).getData().trim();
+						String pass = new String(tfPass.getPassword());
+						String pass2 = new String(tfConfirmPass.getPassword());
+						
+						if (fName.equals("") || email.equals("") || pass.equals("") || pass2.equals(""))
+						{
+							JOptionPane.showMessageDialog(null, "Please enter all required fields", "Cannot Sign Up", JOptionPane.ERROR_MESSAGE);
+						}
+						else
+						{
+							
+						}
+					}
+				});
 		this.taTnC.setFont(Constants.FONT_SMALLER);
 		this.taTnC.setEditable(false);
 		this.taTnC.setForeground(Constants.COLOR_TEXT_GRAY);
