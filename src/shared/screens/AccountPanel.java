@@ -2,11 +2,16 @@ package shared.screens;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JLabel;
 
+import main.Main;
 import models.Person;
-import shared.Constants;
+import screens.auth.SignIn;
+import shared.Globals;
+import shared.components.HyperlinkLabel;
 
 public class AccountPanel extends RoundedPanel
 {
@@ -27,12 +32,20 @@ public class AccountPanel extends RoundedPanel
 		//Initialization
 		this.person = new Person("", "");
 		this.labUsername = new JLabel(this.person.getFullName());
-		this.labSignOut = new JLabel("Sign Out");
+		this.labSignOut = new HyperlinkLabel("Sign Out");
 		
 		//Properties
 		this.setBackground(Color.WHITE);
 		this.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		this.labSignOut.setForeground(Constants.COLOR_HYPERLINK);
+		this.labSignOut.addMouseListener(new MouseAdapter()
+				{
+					@Override
+					public void mouseClicked(MouseEvent e)
+					{
+						Globals.activeUser = null;
+						Main.changeScreen(new SignIn());
+					}
+				});
 		
 		//Add to panel
 		this.add(this.labUsername);
