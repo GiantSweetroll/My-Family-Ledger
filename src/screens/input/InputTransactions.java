@@ -3,7 +3,6 @@ package screens.input;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -12,17 +11,18 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.FontUIResource;
 
 import models.Person;
 import shared.Constants;
 import shared.Methods;
+import shared.components.HintTextField;
 import shared.screens.AccountPanel;
 import shared.screens.RoundedPanel;
 import shared.screens.TriplePanelPage;
@@ -41,9 +41,11 @@ public class InputTransactions extends TriplePanelPage{
 	private JLabel labelPrevTrans,
 					labelLastTs,
 					labelInput,
-					labelReceipt;
+					labelReceipt,
+					labelBack;
+	private JButton buttonTransfer;
 	private JComboBox cbCategory;
-	private JTextField inputItem, inputPrice;
+	private HintTextField inputItem, inputPrice;
 	
 	public InputTransactions(Person person) 
 	{
@@ -93,9 +95,12 @@ public class InputTransactions extends TriplePanelPage{
 		this.panelInput = new RoundedPanel(false);
 		JPanel panelContent = new JPanel();
 		BoxLayout boxlayout = new BoxLayout(panelContent, BoxLayout.Y_AXIS);
+		JPanel panelButtons = new JPanel(new GridLayout(1,2));
 		this.labelInput = new JLabel("Input");
-		this.inputItem = new JTextField("Item/Service Name", 10);
-		this.inputPrice = new JTextField("Price (Rp.)", 10);
+		this.labelBack = new JLabel("Back");
+		this.inputItem = new HintTextField("Item/Service Name");
+		this.inputPrice = new HintTextField("Price (Rp.)");
+		this.buttonTransfer = new JButton("Transfer");
 
 		//make combo box
 		String categories[] = { "Select Category", "Food", "Transport", "Household" };
@@ -112,28 +117,39 @@ public class InputTransactions extends TriplePanelPage{
 		
 		//Properties
 		this.panelInput.setLayout(new BorderLayout());
+		this.panelInput.setBackground(Color.WHITE);
 		panelContent.setLayout(boxlayout);
 		panelContent.setOpaque(false);
-		this.panelInput.setBackground(Color.WHITE);
+		panelButtons.setOpaque(false);
+		
 		this.labelInput.setFont(Constants.FONT_SUB_TITLE);
 		this.labelInput.setHorizontalAlignment(SwingConstants.CENTER);
+		this.labelBack.setFont(Constants.FONT_SMALLER);
+		this.labelBack.setForeground(Constants.COLOR_HYPERLINK);
+		this.labelBack.setHorizontalAlignment(SwingConstants.CENTER);
+		
 		this.inputItem.setFont(Constants.FONT_SMALLER);
 		this.inputItem.setForeground(Constants.COLOR_TEXT_GRAY);
 		this.inputPrice.setFont(Constants.FONT_SMALLER);
 		this.inputPrice.setForeground(Constants.COLOR_TEXT_GRAY);
 		this.cbCategory.setFont(Constants.FONT_SMALLER);
+		this.buttonTransfer.setBackground(Constants.COLOR_BUTTON_BASE);
+		this.buttonTransfer.setForeground(Color.WHITE);
 		
 		//Add to panels
-		//panelContent.add(this.labelInput);
+		panelButtons.add(this.labelBack);
+		panelButtons.add(this.buttonTransfer);
 		panelContent.add(Box.createRigidArea(new Dimension(0, 40)));
 		panelContent.add(this.cbCategory);
 		panelContent.add(this.inputItem);
 		panelContent.add(this.inputPrice);
-		panelContent.add(Box.createRigidArea(new Dimension(0, 550)));
+		panelContent.add(Box.createRigidArea(new Dimension(0, 200)));
+		panelContent.add(panelButtons);
+		panelContent.add(Box.createRigidArea(new Dimension(0, 350)));
 		this.panelInput.add(this.labelInput, BorderLayout.NORTH);
-		this.panelInput.add(Box.createRigidArea(new Dimension(50, 0)), BorderLayout.WEST);
+		this.panelInput.add(Box.createRigidArea(new Dimension(100, 0)), BorderLayout.WEST);
 		this.panelInput.add(panelContent, BorderLayout.CENTER);
-		this.panelInput.add(Box.createRigidArea(new Dimension(50, 0)), BorderLayout.EAST);
+		this.panelInput.add(Box.createRigidArea(new Dimension(100, 0)), BorderLayout.EAST);
 	}
 	
 	private void initPanelReceipt()
