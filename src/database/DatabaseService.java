@@ -1301,6 +1301,67 @@ public class DatabaseService
 		return transactions;
 	}
 	/**
+	 * Find an Admin with specified ID (must be exact match).
+	 * @param id
+	 * @return an Admin object if the specified ID is found. Otherwise it will return null.
+	 */
+	public Admin getAdmin(int id)
+	{
+		Admin a = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try
+		{
+			ps = this.prepStatement("SELECT * FROM " + TABLE_ADMINS);
+			rs = ps.executeQuery();
+			
+			//Loop through the result set
+			while (rs.next())
+			{
+				int adminID = rs.getInt(Admin.ID);
+				if (adminID == id)
+				{
+					a = new Admin(adminID,
+									rs.getString(Admin.FIRST_NAME),
+									rs.getString(Admin.LAST_NAME),
+									rs.getString(Admin.EMAIL),
+									rs.getString(Admin.PASSWORD));
+					break;
+				}
+				
+			}
+			
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch(SQLException ex) {}
+			}
+			
+			if (rs != null)
+			{
+				try
+				{
+					rs.close();
+				}
+				catch(SQLException ex) {}
+			}
+		}
+		
+		return a;
+	}
+	/**
+	 
 	 * Get a category name from category id in the transaction table
 	 */
 	public String getCategoryName(int categoryId) {
