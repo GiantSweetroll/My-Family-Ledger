@@ -23,7 +23,11 @@ import javax.swing.plaf.FontUIResource;
 
 import giantsweetroll.gui.swing.Gbm;
 import main.Main;
+import models.Admin;
+import models.Person;
+import screens.menu.Menu;
 import shared.Constants;
+import shared.Globals;
 import shared.Methods;
 import shared.components.HintPasswordField;
 import shared.components.HintTextField;
@@ -101,11 +105,31 @@ public class SignIn extends CenteredPage
 					public void actionPerformed(ActionEvent e)
 					{
 						//Check input
-						String email = tfEmail.getText().trim();
+						String email = ((HintTextField) tfEmail).getData().trim();
 						String pass = new String(tfPass.getPassword()).trim();
 						if (email.equals("") || pass.equals(""))
 						{
 							JOptionPane.showMessageDialog(null, "Invalid email/password entered", "Cannot Sign In", JOptionPane.ERROR_MESSAGE);
+						}
+						else
+						{
+							Person person = Constants.DATABASE_SERVICE.getLogin(email, pass);
+							if (person == null)
+							{
+								JOptionPane.showMessageDialog(null, "Invalid email/password entered", "Cannot Sign In", JOptionPane.ERROR_MESSAGE);
+							}
+							else
+							{
+								Globals.activeUser = person;
+								if (person instanceof Admin)
+								{
+									Main.changeScreen(new Menu(Globals.activeUser, true));
+								}
+								else
+								{
+									Main.changeScreen(new Menu(Globals.activeUser, false));
+								}
+							}
 						}
 					}
 				});
