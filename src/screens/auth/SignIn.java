@@ -15,7 +15,6 @@ import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -33,6 +32,7 @@ import shared.components.HintPasswordField;
 import shared.components.HintTextField;
 import shared.components.HyperlinkLabel;
 import shared.components.LogoLabel;
+import shared.components.WarningLabel;
 import shared.screens.CenteredPage;
 
 public class SignIn extends CenteredPage
@@ -47,6 +47,7 @@ public class SignIn extends CenteredPage
 	private JLabel labLogo, 
 					labSignIn,
 					labSignUp,
+					labWarning,
 					labForgotPass;	
 	private JTextField tfEmail;
 	private JPasswordField tfPass;
@@ -73,6 +74,7 @@ public class SignIn extends CenteredPage
 		this.labSignUp = new HyperlinkLabel("Sign Up");
 		this.tfEmail = new HintTextField("Email");
 		this.tfPass = new HintPasswordField("Password");
+		this.labWarning = new WarningLabel();
 		this.butSignIn = new JButton("Sign in");
 		this.labForgotPass = new JLabel("Forgot your password?");
 		JPanel panelTop = new JPanel();
@@ -109,17 +111,19 @@ public class SignIn extends CenteredPage
 						String pass = new String(tfPass.getPassword()).trim();
 						if (email.equals("") || pass.equals(""))
 						{
-							JOptionPane.showMessageDialog(null, "Invalid email/password entered", "Cannot Sign In", JOptionPane.ERROR_MESSAGE);
+							labWarning.setText("Invalid email/password");
 						}
 						else
 						{
+							labWarning.setText("");
 							Person person = Constants.DATABASE_SERVICE.getLogin(email, pass);
 							if (person == null)
 							{
-								JOptionPane.showMessageDialog(null, "Invalid email/password entered", "Cannot Sign In", JOptionPane.ERROR_MESSAGE);
+								labWarning.setText("Invalid email/password");
 							}
 							else
 							{
+								labWarning.setText("");
 								Globals.activeUser = person;
 								if (person instanceof Admin)
 								{
@@ -153,6 +157,10 @@ public class SignIn extends CenteredPage
 		Gbm.newGridLine(c);
 		panelCenter.add(this.tfPass, c);			//Password text field
 		Gbm.newGridLine(c);
+		c.fill = GridBagConstraints.NONE;
+		panelCenter.add(this.labWarning, c);		//Warning label
+		Gbm.newGridLine(c);
+		c.fill = GridBagConstraints.HORIZONTAL;
 		panelCenter.add(this.butSignIn, c);			//Sign in button
 		Gbm.newGridLine(c);
 		c.fill = GridBagConstraints.NONE;
