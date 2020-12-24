@@ -30,15 +30,15 @@ public class Person extends DatabaseItem
 	{
 		super(0);
 		this.setFullName(firstName, lastName);
-		this.setEmail("");
-		this.setPassword("");
+		this.setEmail(email);
+		this.setPassword(password);
 	}
 	public Person(int id, String firstName, String lastName, String email, String password)
 	{
 		super(id);
 		this.setFullName(firstName, lastName);
-		this.setEmail("");
-		this.setPassword("");
+		this.setEmail(email);
+		this.setPassword(password);
 	}
 
 	//Getters
