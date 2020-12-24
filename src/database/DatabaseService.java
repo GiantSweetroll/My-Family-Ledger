@@ -101,6 +101,8 @@ public class DatabaseService
 										+ Admin.ID + " int unsigned NOT NULL AUTO_INCREMENT,"
 										+ Admin.FIRST_NAME + " varchar(255) NOT NULL,"
 										+ Admin.LAST_NAME + " varchar(255),"
+										+ Admin.EMAIL + " varchar(255) NOT NULL,"
+										+ Admin.PASSWORD + " varchar(255) NOT NULL,"
 										+ "primary key (" + Admin.ID + "))");
 			prep.execute();
 			prep.close();
@@ -142,6 +144,8 @@ public class DatabaseService
 										+ User.LAST_NAME + " varchar(255),"
 										+ User.ACCOUNT_ID + " int unsigned NOT NULL,"
 										+ User.ADMIN_ID + " int unsigned NOT NULL,"
+										+ User.EMAIL + " varchar(255) NOT NULL,"
+										+ User.PASSWORD + " varchar(255) NOT NULL,"
 										+ "primary key (" + User.ID + "),"
 										+ "foreign key (" + User.ADMIN_ID + ") references " + TABLE_ADMINS + "(" + Admin.ID + ") ON UPDATE CASCADE,"
 										+ "foreign key (" + User.ACCOUNT_ID + ") references " + TABLE_ACCOUNT + "(" + Account.ID + ") ON UPDATE CASCADE)");
@@ -221,9 +225,11 @@ public class DatabaseService
 			if (admin.getID() <= 0)	//If no ID yet
 			{
 				ps = this.prepStatement("INSERT INTO " + TABLE_ADMINS + "("
-										+ Admin.FIRST_NAME + ", " + Admin.LAST_NAME +") values ("
+										+ Admin.FIRST_NAME + ", " + Admin.LAST_NAME + "," + Admin.EMAIL + "," + Admin.PASSWORD + ") values ("
 										+ "\'" + admin.getFirstName() + "\',"
-										+ "\'" + admin.getLastName() + "\'"
+										+ "\'" + admin.getLastName() + "\',"
+										+ "\'" + admin.getEmail() + "\',"
+										+ "\'" + admin.getPassword() + "\'"
 										+ ")");
 			}
 			else
@@ -231,7 +237,9 @@ public class DatabaseService
 				ps = this.prepStatement("INSERT INTO " + TABLE_ADMINS + " values (" 
 										+ admin.getID() + ", "
 										+ "\'" + admin.getFirstName() + "\',"
-										+ "\'" + admin.getLastName() + "\'"
+										+ "\'" + admin.getLastName() + "\',"
+										+ "\'" + admin.getEmail() + "\',"
+										+ "\'" + admin.getPassword() + "\'"
 										+ ")");
 			}
 			
@@ -400,11 +408,15 @@ public class DatabaseService
 										+ User.FIRST_NAME + ", " 
 										+ User.LAST_NAME + ", "
 										+ User.ACCOUNT_ID + ", " 
-										+ User.ADMIN_ID + ") values ("
+										+ User.ADMIN_ID + ","
+										+ User.EMAIL + ","
+										+ User.PASSWORD + ") values ("
 										+ "\'" + user.getFirstName() + "\',"
 										+ "\'" + user.getLastName() + "\',"
 										+ user.getAccountID() + ","
-										+ user.getAdminID()
+										+ user.getAdminID() + ","
+										+ "\'" + user.getEmail() + "\',"
+										+ "\'" + user.getPassword() + "\'"
 										+ ")");
 			}
 			else
@@ -414,7 +426,9 @@ public class DatabaseService
 										+ "\'" + user.getFirstName() + "\',"
 										+ "\'" + user.getLastName() + "\',"
 										+ user.getAccountID() + ","
-										+ user.getAdminID()
+										+ user.getAdminID() + ","
+										+ "\'" + user.getEmail() + "\',"
+										+ "\'" + user.getPassword() + "\'"
 										+ ")");
 			}
 			
@@ -1452,8 +1466,8 @@ public class DatabaseService
 		{
 			//Check in admin first
 			ps = this.prepStatement("SELECT * FROM " + TABLE_ADMINS 
-									+ " WHERE " + Admin.EMAIL + " = " + email
-									+ " AND " + Admin.PASSWORD + " = " + password);
+									+ " WHERE " + Admin.EMAIL + " = \'" + email + "\'"
+									+ " AND " + Admin.PASSWORD + " = \'" + password + "\'");
 			rs = ps.executeQuery();
 			//Check if any account in Admin matches the credentials
 			if (rs.next())
