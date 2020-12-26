@@ -1451,9 +1451,9 @@ public final class DatabaseService
 		String categoryName = "";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String query = "SELECT cat_name FROM " + TABLE_CATEGORIES + " INNER JOIN " + TABLE_TRANSACTIONS 
-						+ " ON OF_Categories.cat_id = OF_Transactions.cat_id WHERE OF_Categories.cat_id = " 
-						+ categoryId;
+		String query = "SELECT " + Category.NAME + " FROM " + TABLE_CATEGORIES + " INNER JOIN " + TABLE_TRANSACTIONS 
+						+ " ON " + TABLE_CATEGORIES + "." + Category.ID + " = " + TABLE_TRANSACTIONS + "." 
+						+ Category.ID + " WHERE " + TABLE_CATEGORIES + "." + Category.ID + " = "+ categoryId;
 		
 		try
 		{
@@ -1480,6 +1480,41 @@ public final class DatabaseService
 			}
 		}
 		return categoryName;
+	}
+	
+	public int getBalance(int userAccountId) {
+		int balance = 0;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String query = "SELECT " + Account.BALANCE + " From " + TABLE_ACCOUNT + " INNER JOIN " + TABLE_USERS + " ON " 
+		+ TABLE_ACCOUNT + "." + Account.ID + " = " + TABLE_USERS + "." + Account.ID + " WHERE " + TABLE_USERS + "." 
+		+ Account.ID + " = " + userAccountId;
+		
+		try
+		{
+			ps = this.prepStatement(query);
+			rs = ps.executeQuery();
+			
+			rs.next();
+			balance = rs.getInt(1);
+			
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch(SQLException ex) {}
+			}
+		}
+		return balance;
 	}
 	
 //	public String getCategoryName(categoryId) {
