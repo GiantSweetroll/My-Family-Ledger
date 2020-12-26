@@ -61,7 +61,7 @@ public class Category extends DatabaseItem
 	 */
 	public void setAdminID(Integer adminID)
 	{
-		if (adminID > 0)
+		if (adminID != null && adminID > 0)
 		{
 			this.adminID = adminID;
 		}
