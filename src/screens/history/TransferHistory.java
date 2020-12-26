@@ -16,15 +16,18 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.plaf.FontUIResource;
 
+import database.DatabaseService;
 import giantsweetroll.gui.swing.Gbm;
+import models.Account;
 import models.Person;
+import models.User;
 import shared.Constants;
 import shared.Methods;
 import shared.components.DatePicker;
 import shared.components.HintTextField;
-import shared.components.ListTile;
-import shared.components.ListView;
-import shared.components.SimpleUserTile;
+import shared.components.listview.ListTile;
+import shared.components.listview.ListView;
+import shared.components.listview.SimpleUserTile;
 import shared.screens.HistoryPanel;
 
 public class TransferHistory extends HistoryPanel
@@ -43,9 +46,10 @@ public class TransferHistory extends HistoryPanel
 	private JTextField tfValue;
 	private JScrollPane scrollReceiver;
 	private List<Person> persons;
-	private List<ListTile> receiverTiles;
+	private List<ListTile> tiles;
 	private DatePicker dateFrom, dateTo;
 	private ListView listView;
+	private DatabaseService ds = new DatabaseService();
 	
 	//Constructor
 	public TransferHistory(Person person)
@@ -63,7 +67,7 @@ public class TransferHistory extends HistoryPanel
 	public void updateReceivers(List<Person> persons)
 	{
 		//Clear data
-		this.receiverTiles.clear();
+		this.tiles.clear();
 		this.persons.clear();
 		
 		//Add data
@@ -71,9 +75,9 @@ public class TransferHistory extends HistoryPanel
 		for (Person person : this.persons)
 		{
 			SimpleUserTile tile = new SimpleUserTile(person);
-			this.receiverTiles.add(tile);
+			this.tiles.add(tile);
 		}
-		this.listView.updateData(this.receiverTiles);
+		this.listView.updateData(this.tiles);
 		
 		this.revalidate();
 		this.repaint();
@@ -83,7 +87,7 @@ public class TransferHistory extends HistoryPanel
 	 */
 	public void deselectAllReceivers()
 	{
-		for (ListTile tile : this.receiverTiles)
+		for (ListTile tile : this.tiles)
 		{
 			if (tile instanceof SimpleUserTile)
 			{
@@ -121,8 +125,15 @@ public class TransferHistory extends HistoryPanel
 	{
 		//Initialization
 		this.listView = new ListView();
-		this.persons = new ArrayList<Person>();
-		this.receiverTiles = new ArrayList<ListTile>();
+		this.tiles = new ArrayList<ListTile>();
+		List<User> users = this.ds.getAllUsers();
+		List<Account> accounts = this.ds.getAllAccounts();
+		for(int i=0; i<users.size(); i++) {
+			SimpleUserTile sut = new SimpleUserTile(users.get(i));
+			sut.setTopRightText("Rp. " + String.valueOf(accounts.get(i).getBalance()));
+			this.tiles.add(sut);
+		}
+		
 		this.scrollReceiver = new JScrollPane(this.listView);
 		
 		//Properties

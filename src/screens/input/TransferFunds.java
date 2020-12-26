@@ -27,15 +27,14 @@ import database.DatabaseService;
 import giantsweetroll.gui.swing.Gbm;
 import models.Account;
 import models.Person;
-import models.Transaction;
 import models.User;
 import shared.Constants;
 import shared.Methods;
 import shared.components.HintTextField;
-import shared.components.ListTile;
-import shared.components.ListView;
 import shared.components.NameEmailPanel;
-import shared.components.SimpleUserTile;
+import shared.components.listview.ListTile;
+import shared.components.listview.ListView;
+import shared.components.listview.SimpleUserTile;
 import shared.screens.AccountPanel;
 import shared.screens.RoundedPanel;
 import shared.screens.TriplePanelPage;
@@ -64,7 +63,7 @@ public class TransferFunds extends TriplePanelPage
 	private JButton butTf;
 	private NameEmailPanel chosen;
 	private JTextField tfAmount, tfNotes;
-	private ListView lv;
+	private ListView listView;
 	private List<ListTile> tiles;
 	private DatabaseService ds = new DatabaseService();
 	
@@ -168,7 +167,8 @@ public class TransferFunds extends TriplePanelPage
 		this.panelReceivers = new RoundedPanel(false);
 		this.labReceiverHeader = new JLabel("Receivers");
 		this.labClickSelect = new JLabel("Click to select");
-		this.lv = new ListView();
+		
+		this.listView = new ListView();
 		this.tiles = new ArrayList<ListTile>();
 		List<User> users = this.ds.getAllUsers();
 		List<Account> accounts = this.ds.getAllAccounts();
@@ -188,7 +188,7 @@ public class TransferFunds extends TriplePanelPage
 		this.labClickSelect.setFont(Constants.FONT_SMALLER);
 		this.labClickSelect.setHorizontalAlignment(SwingConstants.CENTER);
 		this.labClickSelect.setForeground(Constants.COLOR_TEXT_GRAY);
-		this.lv.updateData(this.tiles);
+		this.listView.updateData(this.tiles);
 		panelTop.setOpaque(false);
 		
 		///Add to panel
@@ -197,7 +197,7 @@ public class TransferFunds extends TriplePanelPage
 		panelTop.add(this.labClickSelect, BorderLayout.SOUTH);
 		//Add to panelRecievers
 		this.panelReceivers.add(panelTop, BorderLayout.NORTH);
-		this.panelReceivers.add(this.lv, BorderLayout.CENTER);
+		this.panelReceivers.add(this.listView, BorderLayout.CENTER);
 	}
 	private void initPanelPrev()
 	{
