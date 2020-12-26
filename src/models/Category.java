@@ -9,7 +9,7 @@ public class Category extends DatabaseItem
 								ADMIN_ID = "admin_id";
 	
 	//Fields
-	private int adminID;
+	private Integer adminID;
 	private String desc, name;
 	
 	//Constructor
