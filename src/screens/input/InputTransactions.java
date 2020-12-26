@@ -5,8 +5,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Menu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.Box;
@@ -19,12 +22,16 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.FontUIResource;
 
+import main.Main;
 import models.Category;
 import models.Person;
+import screens.auth.SignIn;
 import shared.Constants;
+import shared.Globals;
 import shared.Methods;
 import shared.components.ComboBoxRenderer;
 import shared.components.HintTextField;
+import shared.components.HyperlinkLabel;
 import shared.screens.AccountPanel;
 import shared.screens.RoundedPanel;
 import shared.screens.TriplePanelPage;
@@ -100,14 +107,13 @@ public class InputTransactions extends TriplePanelPage{
 		BoxLayout boxlayout = new BoxLayout(panelContent, BoxLayout.Y_AXIS);
 		JPanel panelButtons = new JPanel(new GridLayout(1,2));
 		this.labelInput = new JLabel("Input");
-		this.labelBack = new JLabel("Back");
+		this.labelBack = new HyperlinkLabel("Back");
 		this.inputItem = new HintTextField("Item/Service Name");
 		this.inputPrice = new HintTextField("Price (Rp.)");
 		this.buttonTransfer = new JButton("Transfer");
 
 		//make combo box
-		String categories1[] = { "Select Category", "Food", "Transport", "Household" };
-		
+
 		List <Category> categories = Constants.DATABASE_SERVICE.getAllCategories();
 
 		this.cbCategory = new JComboBox<Category>();
@@ -136,17 +142,39 @@ public class InputTransactions extends TriplePanelPage{
 		
 		this.labelInput.setFont(Constants.FONT_SUB_TITLE);
 		this.labelInput.setHorizontalAlignment(SwingConstants.CENTER);
+		
 		this.labelBack.setFont(Constants.FONT_SMALLER);
 		this.labelBack.setForeground(Constants.COLOR_HYPERLINK);
 		this.labelBack.setHorizontalAlignment(SwingConstants.CENTER);
+		this.labelBack.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				Main.changeScreen(new Menu(person, false));
+				Main.popScreen();
+			}
+		});
 		
 		this.inputItem.setFont(Constants.FONT_SMALLER);
 		this.inputItem.setForeground(Constants.COLOR_TEXT_GRAY);
+		
+		
 		this.inputPrice.setFont(Constants.FONT_SMALLER);
 		this.inputPrice.setForeground(Constants.COLOR_TEXT_GRAY);
+		
+		
 		this.cbCategory.setFont(Constants.FONT_SMALLER);
 		this.buttonTransfer.setBackground(Constants.COLOR_BUTTON_BASE);
 		this.buttonTransfer.setForeground(Color.WHITE);
+		this.buttonTransfer.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				String item = ((HintTextField) inputItem).getData().trim();
+				double price = ((HintTextField) inputPrice).getData().trim();
+				Category category = new Category();
+			}
+		});
 		
 		//Add to panels
 		panelButtons.add(this.labelBack);
