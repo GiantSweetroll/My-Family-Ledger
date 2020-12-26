@@ -2,9 +2,8 @@ package shared;
 
 import java.awt.event.ActionListener;
 import java.sql.Date;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -102,5 +101,21 @@ public class Methods
 				System.out.println(ex);
 			}
 			return dateString;
+	}
+	
+	public static List<Category> getDefaultCategories()
+	{
+		List<Category> ls = new ArrayList<>();
+		
+		Category cat = new Category(1, 0, "", "Transfer");
+		ls.add(cat);
+		cat = new Category(2, 0, "", "Food");
+		ls.add(cat);
+		cat = new Category(3, 0, "", "Transportation");
+		ls.add(cat);
+		cat = new Category(4, 0, "", "Household");
+		ls.add(cat);
+		
+		return ls;
 	}
 }
