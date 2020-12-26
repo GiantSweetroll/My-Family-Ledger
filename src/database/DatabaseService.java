@@ -169,9 +169,11 @@ public final class DatabaseService
 										+ Transaction.CATEGORY_ID + " int unsigned NOT NULL,"
 										+ Transaction.DESC + " mediumtext NOT NULL,"
 										+ Transaction.LINK_RECEIPT + " text(65535),"
+										+ Transaction.SOURCE_ID + " int unsigned,"
 										+ Transaction.USER_ID + " int unsigned NOT NULL,"
 										+ "primary key (" + Transaction.ID + "),"
 										+ "foreign key (" + Transaction.CATEGORY_ID + ") references " + TABLE_CATEGORIES + "(" + Category.ID + ") ON UPDATE CASCADE,"
+										+ "foreign key (" + Transaction.SOURCE_ID + ") references " + TABLE_ADMINS + "(" + Admin.ID + ") ON UPDATE CASCADE,"
 										+ "foreign key (" + Transaction.USER_ID + ") references " + TABLE_USERS + "(" + User.ID + ") ON UPDATE CASCADE)");
 			prep.execute();
 			prep.close();
@@ -476,6 +478,7 @@ public final class DatabaseService
 										+ Transaction.CATEGORY_ID + ", " 
 										+ Transaction.DESC + ", " 
 										+ Transaction.LINK_RECEIPT + ", " 
+										+ Transaction.SOURCE_ID + ", " 
 										+ Transaction.USER_ID + ") values ("
 										+ "\'" + transaction.getDateInput() + "\',"
 										+ "\'" + transaction.getDateEdit() + "\',"
@@ -483,6 +486,7 @@ public final class DatabaseService
 										+ transaction.getCategoryID() + ","
 										+ "\'" + transaction.getDesc() + "\',"
 										+ "\'" + transaction.getLinkReceipt() + "\',"
+										+ transaction.getSourceID() + ","
 										+ transaction.getUserID()
 										+ ")");
 			}
@@ -496,6 +500,7 @@ public final class DatabaseService
 										+ transaction.getCategoryID() + ","
 										+ "\'" + transaction.getDesc() + "\',"
 										+ "\'" + transaction.getLinkReceipt() + "\',"
+										+ transaction.getSourceID() + ","
 										+ transaction.getUserID()
 										+ ")");
 			}
@@ -719,6 +724,7 @@ public final class DatabaseService
 			ps = this.prepStatement("UPDATE " + TABLE_TRANSACTIONS
 									+ " SET "
 										+ Transaction.ID + "=" + transaction.getID() + ", "
+										+ Transaction.SOURCE_ID + "=" + transaction.getSourceID() + ","
 										+ Transaction.USER_ID + "=" + transaction.getUserID() + ","
 										+ Transaction.CATEGORY_ID + "=" + transaction.getCategoryID() + ","
 										+ Transaction.AMOUNT + "=" + transaction.getAmount() + ","
@@ -1031,6 +1037,7 @@ public final class DatabaseService
 			{
 				Transaction tr = new Transaction(rs.getInt(Transaction.ID),
 													rs.getInt(Transaction.CATEGORY_ID),
+													rs.getInt(Transaction.SOURCE_ID),
 													rs.getInt(Transaction.USER_ID),
 													rs.getDate(Transaction.DATE_INPUT),
 													rs.getDate(Transaction.DATE_EDIT),
@@ -1089,6 +1096,7 @@ public final class DatabaseService
 			{
 				Transaction tr = new Transaction(rs.getInt(Transaction.ID),
 													rs.getInt(Transaction.CATEGORY_ID),
+													rs.getInt(Transaction.SOURCE_ID),
 													rs.getInt(Transaction.USER_ID),
 													rs.getDate(Transaction.DATE_INPUT),
 													rs.getDate(Transaction.DATE_EDIT),
@@ -1151,6 +1159,7 @@ public final class DatabaseService
 			{
 				Transaction tr = new Transaction(rs.getInt(Transaction.ID),
 													rs.getInt(Transaction.CATEGORY_ID),
+													rs.getInt(Transaction.SOURCE_ID),
 													rs.getInt(Transaction.USER_ID),
 													rs.getDate(Transaction.DATE_INPUT),
 													rs.getDate(Transaction.DATE_EDIT),
@@ -1212,6 +1221,7 @@ public final class DatabaseService
 			{
 				Transaction tr = new Transaction(rs.getInt(Transaction.ID),
 													rs.getInt(Transaction.CATEGORY_ID),
+													rs.getInt(Transaction.SOURCE_ID),
 													rs.getInt(Transaction.USER_ID),
 													rs.getDate(Transaction.DATE_INPUT),
 													rs.getDate(Transaction.DATE_EDIT),
@@ -1301,6 +1311,7 @@ public final class DatabaseService
 			{
 				Transaction tr = new Transaction(rs.getInt(Transaction.ID),
 													rs.getInt(Transaction.CATEGORY_ID),
+													rs.getInt(Transaction.SOURCE_ID),
 													rs.getInt(Transaction.USER_ID),
 													rs.getDate(Transaction.DATE_INPUT),
 													rs.getDate(Transaction.DATE_EDIT),

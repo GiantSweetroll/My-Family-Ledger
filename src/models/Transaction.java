@@ -12,10 +12,11 @@ public class Transaction extends DatabaseItem
 								CATEGORY_ID = "cat_id",
 								DESC = "description",
 								LINK_RECEIPT = "linkReceipt",
+								SOURCE_ID = "source_id",
 								USER_ID = "user_id";
 	
 	//Fields
-	private int categoryID, userID;
+	private int categoryID, sourceID, userID;
 	private Date dateInput, dateEdit;
 	private double amount;
 	private String desc, linkReceipt;
@@ -23,6 +24,7 @@ public class Transaction extends DatabaseItem
 	//Constructors
 	public Transaction(int id, 
 						int categoryID, 
+						int sourceID,
 						int userID,
 						Date dateInput, 
 						Date dateEdit, 
@@ -31,10 +33,11 @@ public class Transaction extends DatabaseItem
 						String linkReceipt) 
 	{
 		super(id);
-		this.init(categoryID, userID, dateInput, dateEdit, amount, desc, linkReceipt);
+		this.init(categoryID, sourceID, userID, dateInput, dateEdit, amount, desc, linkReceipt);
 	}
 	public Transaction(int id, 
 						int categoryID,
+						int sourceID,
 						int userID, 
 						Date dateInput,
 						Date dateEdit, 
@@ -42,9 +45,10 @@ public class Transaction extends DatabaseItem
 						String desc)
 	{
 		super(id);
-		this.init(categoryID, userID, dateInput, dateEdit, amount, desc, "");
+		this.init(categoryID, sourceID, userID, dateInput, dateEdit, amount, desc, "");
 	}
 	public Transaction(int categoryID,
+						int sourceID,
 						int userID, 
 						Date dateInput,
 						Date dateEdit, 
@@ -52,9 +56,10 @@ public class Transaction extends DatabaseItem
 						String desc)
 	{
 		super(0);
-		this.init(categoryID, userID, dateInput, dateEdit, amount, desc, "");
+		this.init(categoryID, sourceID, userID, dateInput, dateEdit, amount, desc, "");
 	}
-	public Transaction(int categoryID, 
+	public Transaction(int categoryID,
+						int sourceID,
 						int userID,
 						Date dateInput, 
 						Date dateEdit, 
@@ -63,13 +68,14 @@ public class Transaction extends DatabaseItem
 						String linkReceipt) 
 	{
 		super(0);
-		this.init(categoryID, userID, dateInput, dateEdit, amount, desc, linkReceipt);
+		this.init(categoryID, sourceID, userID, dateInput, dateEdit, amount, desc, linkReceipt);
 	}
 	
 	
 	//Private Methods
 	private void init(int categoryID,
-						int userID, 
+						int sourceID,
+						int targetID,
 						Date dateInput, 
 						Date dateEdit, 
 						double amount, 
@@ -77,7 +83,8 @@ public class Transaction extends DatabaseItem
 						String linkReceipt)
 	{
 		this.setCategoryID(categoryID);
-		this.setUserID(userID);
+		this.setSourceID(sourceID);
+		this.setUserID(targetID);
 		this.setDateInput(dateInput);
 		this.setDateEdit(dateEdit);
 		this.setAmount(amount);
@@ -96,12 +103,20 @@ public class Transaction extends DatabaseItem
 		return categoryID;
 	}
 	/**
+	 * Get the Source ID referenced in this Transaction
+	 * @return an integer
+	 */
+	public int getSourceID()
+	{
+		return this.sourceID;
+	}
+	/**
 	 * Get the User ID referenced in this Transaction
-	 * @return the referenced User ID
+	 * @return an integer
 	 */
 	public int getUserID()
 	{
-		return userID;
+		return this.userID;
 	}
 	/**
 	 * Get the Date of input
@@ -157,14 +172,25 @@ public class Transaction extends DatabaseItem
 		}
 	}
 	/**
-	 * Change the referenced User ID.
-	 * @param userID - the new User ID, must be greater than zero.
+	 * Change the referenced Source ID.
+	 * @param userID - the new Source ID, must be greater than zero.
 	 */
-	public void setUserID(int userID)
+	public void setSourceID(int sourceID)
 	{
-		if (userID > 0)
+		if (sourceID > 0)
 		{
-			this.userID = userID;
+			this.sourceID = sourceID;
+		}
+	}
+	/**
+	 * Change the referenced Target ID.
+	 * @param userID - the new Target ID, must be greater than zero.
+	 */
+	public void setUserID(int targetID)
+	{
+		if (targetID > 0)
+		{
+			this.userID = targetID;
 		}
 	}
 	/**
