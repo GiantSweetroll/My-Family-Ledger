@@ -109,11 +109,11 @@ public class Methods
 		
 		Category cat = new Category(1, null, "", "Transfer");
 		ls.add(cat);
-		cat = new Category(2, null, "", "Food");
+		cat = new Category(2, null, "Food", "");
 		ls.add(cat);
-		cat = new Category(3, null, "", "Transportation");
+		cat = new Category(3, null, "Transportation", "");
 		ls.add(cat);
-		cat = new Category(4, null, "", "Household");
+		cat = new Category(4, null, "Household", "");
 		ls.add(cat);
 		
 		return ls;
