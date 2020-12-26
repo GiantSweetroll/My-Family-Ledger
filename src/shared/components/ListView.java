@@ -23,6 +23,7 @@ public class ListView extends JPanel implements GUIListener
 	private static final long serialVersionUID = 7485576765825337951L;
 	//Fields
 	private List<ListTile> tiles;
+	private boolean allowMultipleHighlight;
 	
 	//Constructor
 	public ListView()
@@ -37,6 +38,10 @@ public class ListView extends JPanel implements GUIListener
 	}
 	
 	//Public Methods
+	/**
+	 * Update the tiles to be displayed.
+	 * @param tiles a List containing ListTile objects.
+	 */
 	public void updateData(List<ListTile> tiles)
 	{
 		//Clear data
@@ -59,6 +64,32 @@ public class ListView extends JPanel implements GUIListener
 		
 		this.revalidate();
 		this.repaint();
+	}
+	/**
+	 * Get a list of selected tiles.
+	 * @return a List of ListTile objects.
+	 */
+	public List<ListTile> getSelectedTiles()
+	{
+		List<ListTile> list = new ArrayList<ListTile>();
+		
+		for (ListTile tile : this.tiles)
+		{
+			if (tile.isSelected())
+			{
+				list.add(tile);
+			}
+		}
+		
+		return list;
+	}
+	/**
+	 * Set wether to allow multiple selection or not.
+	 * @param b
+	 */
+	public void setMultipleSelection(boolean b)
+	{
+		this.allowMultipleHighlight = b;
 	}
 	
 	//Overridden Methods
