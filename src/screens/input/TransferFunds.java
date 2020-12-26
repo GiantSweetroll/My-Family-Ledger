@@ -10,6 +10,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.FontUIResource;
@@ -27,6 +29,7 @@ import database.DatabaseService;
 import giantsweetroll.gui.swing.Gbm;
 import models.Account;
 import models.Person;
+import models.Transaction;
 import models.User;
 import shared.Constants;
 import shared.Methods;
@@ -65,7 +68,7 @@ public class TransferFunds extends TriplePanelPage
 	private JTextField tfAmount, tfNotes;
 	private ListView listView;
 	private List<ListTile> tiles;
-	private DatabaseService ds = new DatabaseService();
+	private JScrollPane scrollReceiver;
 	
 	//Constructor
 	public TransferFunds(Person person)
@@ -95,6 +98,8 @@ public class TransferFunds extends TriplePanelPage
 		this.tfNotes = new HintTextField("Notes");
 		this.labBack = new JLabel("Back");
 		this.butTf = new JButton("Transfer");
+		
+		//Panels
 		JPanel panelButtons = new JPanel(new GridLayout(0, 2));
 		JPanel panelInput = new JPanel();
 		JPanel panelContent = new JPanel(new GridBagLayout());
@@ -126,10 +131,26 @@ public class TransferFunds extends TriplePanelPage
 		//Transfer button action listener
 		this.butTf.addActionListener(new ActionListener(){  
 			public void actionPerformed(ActionEvent e){ 
-				String amount = tfAmount.getText();
+				
+				//Make transaction
+				int categoryId = 1; //"Transfer" is a hardcoded category
+				int adminId = 1; //person.getID();
+				long millis = System.currentTimeMillis(); 
+				Date date = new java.sql.Date(millis);
+				double amount = Double.parseDouble(tfAmount.getText());
 				String notes = tfNotes.getText();
-				System.out.println("Amount: " + amount);
-				System.out.println("Notes: " + notes);
+				Transaction trans = new Transaction(categoryId, adminId, date, date, amount, notes);
+				Constants.DATABASE_SERVICE.insert(trans);
+				
+				//Update the account balance
+				ListTile selectedTiles = listView.getSelectedTiles().get(0);
+				int userId = ((SimpleUserTile) selectedTiles).getPerson().getID();
+				
+				//System.out.println("User ID: " + userId);
+				//System.out.println("Date: " + date);
+				//System.out.println("Amount: " + amount);
+				//System.out.println("Notes: " + notes);
+				//int categoryID, int userID, Date dateInput, Date dateEdit, double amount, String desc
 			}  
 		});
 		
@@ -167,18 +188,19 @@ public class TransferFunds extends TriplePanelPage
 		this.panelReceivers = new RoundedPanel(false);
 		this.labReceiverHeader = new JLabel("Receivers");
 		this.labClickSelect = new JLabel("Click to select");
-		
+		JPanel panelTop = new JPanel(new BorderLayout());
 		this.listView = new ListView();
 		this.tiles = new ArrayList<ListTile>();
-		List<User> users = this.ds.getAllUsers();
-		List<Account> accounts = this.ds.getAllAccounts();
+		List<User> users = Constants.DATABASE_SERVICE.getAllUsers();
+		List<Account> accounts = Constants.DATABASE_SERVICE.getAllAccounts();
+		this.scrollReceiver = new JScrollPane(this.listView);
+		
+		//Add the data
 		for(int i=0; i<users.size(); i++) {
 			SimpleUserTile sut = new SimpleUserTile(users.get(i));
 			sut.setTopRightText("Rp. " + String.valueOf(accounts.get(i).getBalance()));
 			this.tiles.add(sut);
 		}
-		
-		JPanel panelTop = new JPanel(new BorderLayout());
 		
 		//Properties
 		this.panelReceivers.setLayout(new BorderLayout(5, 50));
@@ -188,8 +210,11 @@ public class TransferFunds extends TriplePanelPage
 		this.labClickSelect.setFont(Constants.FONT_SMALLER);
 		this.labClickSelect.setHorizontalAlignment(SwingConstants.CENTER);
 		this.labClickSelect.setForeground(Constants.COLOR_TEXT_GRAY);
-		this.listView.updateData(this.tiles);
 		panelTop.setOpaque(false);
+		this.listView.updateData(this.tiles);
+		this.listView.setMultipleSelection(false);
+		this.scrollReceiver.getViewport().setOpaque(false);
+		this.scrollReceiver.setOpaque(false);
 		
 		///Add to panel
 		//Add to panelTop
@@ -197,7 +222,7 @@ public class TransferFunds extends TriplePanelPage
 		panelTop.add(this.labClickSelect, BorderLayout.SOUTH);
 		//Add to panelRecievers
 		this.panelReceivers.add(panelTop, BorderLayout.NORTH);
-		this.panelReceivers.add(this.listView, BorderLayout.CENTER);
+		this.panelReceivers.add(this.scrollReceiver, BorderLayout.CENTER);
 	}
 	private void initPanelPrev()
 	{

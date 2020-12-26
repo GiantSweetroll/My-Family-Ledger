@@ -128,15 +128,17 @@ public class TransferHistory extends HistoryPanel
 		this.tiles = new ArrayList<ListTile>();
 		List<User> users = this.ds.getAllUsers();
 		List<Account> accounts = this.ds.getAllAccounts();
+		this.scrollReceiver = new JScrollPane(this.listView);
+		
+		//Add the data
 		for(int i=0; i<users.size(); i++) {
 			SimpleUserTile sut = new SimpleUserTile(users.get(i));
 			sut.setTopRightText("Rp. " + String.valueOf(accounts.get(i).getBalance()));
 			this.tiles.add(sut);
 		}
 		
-		this.scrollReceiver = new JScrollPane(this.listView);
-		
 		//Properties
+		this.listView.updateData(this.tiles);
 		this.scrollReceiver.getViewport().setOpaque(false);
 		this.scrollReceiver.setOpaque(false);
 	}
