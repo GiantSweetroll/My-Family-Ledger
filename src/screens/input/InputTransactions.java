@@ -177,7 +177,8 @@ public class InputTransactions extends TriplePanelPage{
 		
 		//Initialization
 		JFrame frame = new JFrame();
-		InputTransactions it = new InputTransactions(null);
+		Person person = new Person("Jocelyn", "Thiojaya");
+		InputTransactions it = new InputTransactions(person);
 		
 		//Properties
 		frame.setSize(700, 700);
