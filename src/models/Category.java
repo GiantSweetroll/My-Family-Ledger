@@ -33,7 +33,7 @@ public class Category extends DatabaseItem
 	 * Gets the Admin ID referenced for this Category
 	 * @return the Admin ID
 	 */
-	public int getAdminID() 
+	public Integer getAdminID() 
 	{
 		return adminID;
 	}
@@ -59,7 +59,7 @@ public class Category extends DatabaseItem
 	 * Changes the admin ID of this Category
 	 * @param adminID - Must be greater than zero
 	 */
-	public void setAdminID(int adminID)
+	public void setAdminID(Integer adminID)
 	{
 		if (adminID > 0)
 		{
