@@ -1,4 +1,4 @@
-package shared.components;
+package shared.components.listview;
 
 import models.Person;
 

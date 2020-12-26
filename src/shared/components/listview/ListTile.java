@@ -1,4 +1,4 @@
-package shared.components;
+package shared.components.listview;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -33,6 +33,7 @@ public class ListTile extends RoundedPanel implements MouseListener
 					labTopLeft;
 	private JPanel panelTop, panelCenter;
 	private boolean selected;
+	private ListView listView;
 	
 	//Constructor
 	public ListTile()
@@ -104,6 +105,17 @@ public class ListTile extends RoundedPanel implements MouseListener
 		this.setBackground(this.selected? Constants.COLOR_SELECTED : Color.WHITE);
 	}
 	
+	//Protected methods
+	/**
+	 * Sets the parent list view that will contain this tile.
+	 * @param lv a ListView object
+	 * @param index the location index in the list view
+	 */
+	protected void setListViewParent(ListView lv)
+	{
+		this.listView = lv;
+	}
+	
 	//Private Methods
 	private void initPanelTop()
 	{
@@ -155,6 +167,7 @@ public class ListTile extends RoundedPanel implements MouseListener
 	public void mouseClicked(MouseEvent arg0) 
 	{
 		this.setSelected(!this.selected);
+		this.listView.notifySelection(this);
 	}
 
 	@Override

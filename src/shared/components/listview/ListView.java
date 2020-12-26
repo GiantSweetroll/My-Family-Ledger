@@ -1,4 +1,4 @@
-package shared.components;
+package shared.components.listview;
 
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -23,13 +23,16 @@ public class ListView extends JPanel implements GUIListener
 	private static final long serialVersionUID = 7485576765825337951L;
 	//Fields
 	private List<ListTile> tiles;
-	private boolean allowMultipleHighlight;
+	private boolean allowMultipleSelection;
+	private ListTile selectedTile;		//Previously selected tile, only to be used when allowMultipleSelection is false
 	
 	//Constructor
 	public ListView()
 	{
 		//Initialization
 		super();
+		this.selectedTile = null;
+		this.allowMultipleSelection = true;
 		this.tiles = new ArrayList<ListTile>();
 		
 		//Properties
@@ -59,6 +62,7 @@ public class ListView extends JPanel implements GUIListener
 		this.tiles.addAll(tiles);
 		for (ListTile tile : this.tiles)
 		{
+			tile.setListViewParent(this);
 			this.add(tile);
 		}
 		
@@ -73,23 +77,58 @@ public class ListView extends JPanel implements GUIListener
 	{
 		List<ListTile> list = new ArrayList<ListTile>();
 		
-		for (ListTile tile : this.tiles)
+		if (this.allowMultipleSelection)
 		{
-			if (tile.isSelected())
+			for (ListTile tile : this.tiles)
 			{
-				list.add(tile);
+				if (tile.isSelected())
+				{
+					list.add(tile);
+				}
 			}
+		}
+		else
+		{
+			list.add(this.selectedTile);
 		}
 		
 		return list;
 	}
 	/**
-	 * Set wether to allow multiple selection or not.
+	 * Set whether to allow multiple selection or not.
 	 * @param b
 	 */
 	public void setMultipleSelection(boolean b)
 	{
-		this.allowMultipleHighlight = b;
+		this.allowMultipleSelection = b;
+	}
+	
+	//Protected Methods
+	/**
+	 * Notify the list view when a tile's selection status has changed.
+	 * @param tile a ListTile object
+	 */
+	protected void notifySelection(ListTile tile)
+	{
+		if (!this.allowMultipleSelection)
+		{
+			if (tile.isSelected())
+			{
+				if (this.selectedTile != null)
+				{
+					this.selectedTile.setSelected(false);
+					this.selectedTile = tile;
+				}
+				else
+				{
+					this.selectedTile = tile;
+				}
+			}
+			else
+			{
+				this.selectedTile = null;
+			}
+		}
 	}
 	
 	//Overridden Methods
@@ -120,6 +159,7 @@ public class ListView extends JPanel implements GUIListener
 		
 		//Properties
 		lv.updateData(tiles);
+		lv.setMultipleSelection(false);
 		frame.setSize(500, 500);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
