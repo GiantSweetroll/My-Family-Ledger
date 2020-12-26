@@ -825,8 +825,8 @@ public final class DatabaseService
 			{
 				Category cat = new Category(rs.getInt(Category.ID),
 											rs.getInt(Category.ADMIN_ID),
-											rs.getString(Category.DESC),
-											rs.getString(Category.NAME));
+											rs.getString(Category.NAME),
+											rs.getString(Category.DESC));
 				categories.add(cat);
 			}
 			
@@ -1500,8 +1500,8 @@ public final class DatabaseService
 		return categoryName;
 	}
 	
-	public int getBalance(int userAccountId) {
-		int balance = 0;
+	public double getBalance(int userAccountId) {
+		double balance = 0;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String query = "SELECT " + Account.BALANCE + " From " + TABLE_ACCOUNT + " INNER JOIN " + TABLE_USERS + " ON " 
@@ -1514,7 +1514,7 @@ public final class DatabaseService
 			rs = ps.executeQuery();
 			
 			rs.next();
-			balance = rs.getInt(1);
+			balance = rs.getDouble(Account.BALANCE);
 			
 		}
 		catch(SQLException ex)
@@ -1535,41 +1535,59 @@ public final class DatabaseService
 		return balance;
 	}
 	
-//	public String getCategoryName(categoryId) {
-//		String categoryName = "";
-//		PreparedStatement ps = null;
-//		ResultSet rs = null;
-//		String query = "SELECT cat_name FROM " + TABLE_CATEGORIES + " INNER JOIN " + TABLE_TRANSACTIONS 
-//						+ " ON OF_Categories.cat_id = OF_Transactions.cat_id WHERE OF_Categories.cat_id = " 
-//						+ categoryId;
-//		
-//		try
-//		{
-//			ps = this.prepStatement(query);
-//			rs = ps.executeQuery();
-//			
-//			rs.next();
-//			categoryName = rs.getString(1);
-//			
-//		}
-//		catch(SQLException ex)
-//		{
-//			System.err.println(ex.getMessage());
-//		}
-//		finally
-//		{
-//			if (ps != null)
-//			{
-//				try
-//				{
-//					ps.close();
-//				}
-//				catch(SQLException ex) {}
-//			}
-//		}
-//		return categoryName;
-//	}
-	
+	public Account getAccount(int accountId)
+	{
+		Account a = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try
+		{
+			ps = this.prepStatement("SELECT * FROM " + TABLE_ACCOUNT);
+			rs = ps.executeQuery();
+			
+			//Loop through the result set
+			while (rs.next())
+			{
+				int accountID = rs.getInt(Account.ID);
+				if (accountID == accountId)
+				{
+					a = new Account(accountID,
+									rs.getDouble(Account.BALANCE));
+					break;
+				}
+				
+			}
+			
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch(SQLException ex) {}
+			}
+			
+			if (rs != null)
+			{
+				try
+				{
+					rs.close();
+				}
+				catch(SQLException ex) {}
+			}
+		}
+		
+		return a;
+	}
+
 	/**
 	 * Get the login information of the either the Admin or the User. If there are no matches
 	 * with the provided credentials, returns null. Will check Admins table first before checking Users table.
