@@ -16,8 +16,9 @@ import models.Category;
 import models.Person;
 import models.Transaction;
 import models.User;
+import shared.SecurityServices;
 
-public class DatabaseService 
+public final class DatabaseService 
 {
 	private static final String HOST = "jdbc:mysql://localhost:3306/",
 								USERNAME = "root",
@@ -45,7 +46,7 @@ public class DatabaseService
 	
 	//Private Methods
 	/**
-	 * Initializes the class. It checks for existance of database. If not create it. Tables are also checked and created if needed.
+	 * Initializes the class. It checks for existence of database. If not create it. Tables are also checked and created if needed.
 	 */
 	private void init()
 	{
@@ -229,7 +230,7 @@ public class DatabaseService
 										+ "\'" + admin.getFirstName() + "\',"
 										+ "\'" + admin.getLastName() + "\',"
 										+ "\'" + admin.getEmail() + "\',"
-										+ "\'" + admin.getPassword() + "\'"
+										+ "\'" + SecurityServices.encode(admin.getPassword()) + "\'"
 										+ ")");
 			}
 			else
@@ -239,7 +240,7 @@ public class DatabaseService
 										+ "\'" + admin.getFirstName() + "\',"
 										+ "\'" + admin.getLastName() + "\',"
 										+ "\'" + admin.getEmail() + "\',"
-										+ "\'" + admin.getPassword() + "\'"
+										+ "\'" + SecurityServices.encode(admin.getPassword()) + "\'"
 										+ ")");
 			}
 			
@@ -416,7 +417,7 @@ public class DatabaseService
 										+ user.getAccountID() + ","
 										+ user.getAdminID() + ","
 										+ "\'" + user.getEmail() + "\',"
-										+ "\'" + user.getPassword() + "\'"
+										+ "\'" + SecurityServices.encode(user.getPassword()) + "\'"
 										+ ")");
 			}
 			else
@@ -428,7 +429,7 @@ public class DatabaseService
 										+ user.getAccountID() + ","
 										+ user.getAdminID() + ","
 										+ "\'" + user.getEmail() + "\',"
-										+ "\'" + user.getPassword() + "\'"
+										+ "\'" + SecurityServices.encode(user.getPassword()) + "\'"
 										+ ")");
 			}
 			
@@ -1535,7 +1536,7 @@ public class DatabaseService
 			//Check in admin first
 			ps = this.prepStatement("SELECT * FROM " + TABLE_ADMINS 
 									+ " WHERE " + Admin.EMAIL + " = \'" + email + "\'"
-									+ " AND " + Admin.PASSWORD + " = \'" + password + "\'");
+									+ " AND " + Admin.PASSWORD + " = \'" + SecurityServices.encode(password) + "\'");
 			rs = ps.executeQuery();
 			//Check if any account in Admin matches the credentials
 			if (rs.next())
@@ -1554,7 +1555,7 @@ public class DatabaseService
 				//If not check in User table
 				ps = this.prepStatement("SELECT * FROM " + TABLE_USERS 
 										+ " WHERE " + User.EMAIL + " = \'" + email + "\'"
-										+ " AND " + User.PASSWORD + " = \'" + password + "\'");
+										+ " AND " + User.PASSWORD + " = \'" + SecurityServices.encode(password) + "\'");
 				rs = ps.executeQuery();
 				
 				if (rs.next())
