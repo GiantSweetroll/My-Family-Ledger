@@ -16,6 +16,7 @@ import models.Category;
 import models.Person;
 import models.Transaction;
 import models.User;
+import shared.Methods;
 import shared.SecurityServices;
 
 public final class DatabaseService 
@@ -59,6 +60,12 @@ public final class DatabaseService
 			
 			//Check for tables
 			this.createTables();
+			//Add default categories
+			List<Category> categories = Methods.getDefaultCategories();
+			for (Category cat : categories)
+			{
+				this.insert(cat);
+			}
 		}
 		catch (SQLException ex)
 		{
