@@ -53,7 +53,7 @@ public final class DatabaseService
 	{
 		//Connect to mysql database
 		try
-		{
+		{	
 			//Try to connect to the database
 			this.c = DriverManager.getConnection(HOST + DB_NAME, USERNAME, PASSWORD);
 			System.out.println("Database connection successful");
@@ -1586,6 +1586,59 @@ public final class DatabaseService
 		}
 		
 		return a;
+	}
+	
+	public User getUser(int userId)
+	{
+		User u = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try
+		{
+			ps = this.prepStatement("SELECT * FROM " + TABLE_USERS);
+			rs = ps.executeQuery();
+			
+			//Loop through the result set
+			while (rs.next())
+			{
+				int userID = rs.getInt(User.ID);
+				if (userID == userId)
+				{
+					u = new User(userID, rs.getInt(User.ACCOUNT_ID), rs.getInt(User.ADMIN_ID), rs.getString(User.FIRST_NAME),
+							rs.getString(User.LAST_NAME),  rs.getString(User.EMAIL), rs.getString(User.PASSWORD));
+					break;
+				}
+				
+			}
+			
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch(SQLException ex) {}
+			}
+			
+			if (rs != null)
+			{
+				try
+				{
+					rs.close();
+				}
+				catch(SQLException ex) {}
+			}
+		}
+		
+		return u;
 	}
 
 	/**
