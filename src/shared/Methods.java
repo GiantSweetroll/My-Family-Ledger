@@ -107,7 +107,7 @@ public class Methods
 	{
 		List<Category> ls = new ArrayList<>();
 		
-		Category cat = new Category(1, null, "", "Transfer");
+		Category cat = new Category(1, null, "Transfer", "");
 		ls.add(cat);
 		cat = new Category(2, null, "Food", "");
 		ls.add(cat);
