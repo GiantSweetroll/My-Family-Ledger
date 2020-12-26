@@ -19,10 +19,19 @@ import javax.swing.JScrollPane;
 import javax.swing.plaf.FontUIResource;
 
 import giantsweetroll.ImageManager;
+import main.Main;
+import models.Admin;
 import models.Person;
+import screens.history.TransactionHistory;
+import screens.history.TransferHistory;
+import screens.input.InputTransactions;
+import screens.input.TransferFunds;
+import screens.report.ReportPage;
 import shared.Constants;
+import shared.Globals;
 import shared.Methods;
 import shared.components.AppButton;
+import shared.components.CategoryEditor;
 import shared.components.LogoLabel;
 import shared.screens.AccountPanel;
 
@@ -67,11 +76,7 @@ public class Menu extends JPanel{
 			this.initMenuAdmin(person);	
 		}
 		
-		//Properties 
-		
-
-		
-		
+		//Properties 	
 	}
 	
 	
@@ -105,6 +110,8 @@ public class Menu extends JPanel{
 		JPanel mainPanel = new JPanel(new BorderLayout());
 		JScrollPane scrollpane = new JScrollPane(mainPanel);
 		this.panelAcc = new AccountPanel();
+		Globals.activeUser = person;
+		
 		
 		//Properties 
 		panelHistoryBtn.setLayout(new BoxLayout(panelHistoryBtn,BoxLayout.Y_AXIS));
@@ -136,7 +143,7 @@ public class Menu extends JPanel{
 		this.butTransfer.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
-				
+				Main.changeScreen(new TransferFunds(person));
 				
 			}
 		});
@@ -147,7 +154,7 @@ public class Menu extends JPanel{
 		this.butHistory.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
-				System.out.println("");
+				Main.changeScreen(new TransferHistory(person));
 			}
 		});
 		
@@ -157,7 +164,7 @@ public class Menu extends JPanel{
 		this.butReport.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
-				System.out.println("");
+				Main.changeScreen(new ReportPage(person));
 			}
 		});
 		
@@ -167,7 +174,7 @@ public class Menu extends JPanel{
 		this.butCategories.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
-				System.out.println("");
+				//Main.pushScreen(new CategoryEditor(admin));
 			}
 		});
 
@@ -245,6 +252,7 @@ public class Menu extends JPanel{
 		this.historyLabel = new JLabel("History");
 		this.inputIconLabel = new JLabel(inputicon);
 		this.inputLabel = new JLabel("Input");
+		Globals.activeUser = person;
 		
 		JPanel panelHistoryBtn = new JPanel();
 		JPanel panelInputBtn = new JPanel();
@@ -273,12 +281,25 @@ public class Menu extends JPanel{
 		this.historyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		this.inputIconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		this.inputLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		
 		this.butInput.setBackground(Constants.COLOR_BUTTON_YELLOW);
 		this.butInput.setFont(Constants.FONT_GENERAL_BOLD);
 		this.butInput.setPreferredSize(new Dimension(220,150));
+		this.butInput.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				Main.changeScreen(new InputTransactions(person));
+			}
+		});
+		
 		this.butHistory.setBackground(Constants.COLOR_BUTTON_YELLOW);
 		this.butHistory.setFont(Constants.FONT_GENERAL_BOLD);
 		this.butHistory.setPreferredSize(new Dimension(220,150));
+		this.butHistory.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				Main.changeScreen(new TransactionHistory(person));
+			}
+		});
 		
 		this.butExit.setBackground(Constants.COLOR_BUTTON_BASE);
 		this.butExit.addActionListener( new ActionListener() {
