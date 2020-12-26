@@ -282,8 +282,8 @@ public final class DatabaseService
 			{
 				ps = this.prepStatement("INSERT INTO " + TABLE_CATEGORIES + "("
 										+ Category.DESC + ", " + Category.NAME + ", " + Category.ADMIN_ID +") values ("
-										+ "\'" + category.getDesc() + "\',"
 										+ "\'" + category.getName() + "\',"
+										+ "\'" + category.getDesc() + "\',"
 										+ category.getAdminID()
 										+ ")");
 			}
@@ -291,8 +291,8 @@ public final class DatabaseService
 			{
 				ps = this.prepStatement("INSERT INTO " + TABLE_CATEGORIES + " values (" 
 										+ category.getID() + ", "
-										+ "\'" + category.getDesc() + "\',"
 										+ "\'" + category.getName() + "\',"
+										+ "\'" + category.getDesc() + "\',"
 										+ category.getAdminID()
 										+ ")");
 			}
