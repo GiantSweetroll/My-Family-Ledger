@@ -115,6 +115,8 @@ public class Methods
 		ls.add(cat);
 		cat = new Category(4, null, "Household", "");
 		ls.add(cat);
+		cat = new Category(5, null, "Other", "");
+		ls.add(cat);
 		
 		return ls;
 	}
