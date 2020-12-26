@@ -8,6 +8,10 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -19,12 +23,19 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.FontUIResource;
 
+import database.DatabaseService;
 import giantsweetroll.gui.swing.Gbm;
+import models.Account;
 import models.Person;
+import models.Transaction;
+import models.User;
 import shared.Constants;
 import shared.Methods;
 import shared.components.HintTextField;
+import shared.components.ListTile;
+import shared.components.ListView;
 import shared.components.NameEmailPanel;
+import shared.components.SimpleUserTile;
 import shared.screens.AccountPanel;
 import shared.screens.RoundedPanel;
 import shared.screens.TriplePanelPage;
@@ -53,6 +64,9 @@ public class TransferFunds extends TriplePanelPage
 	private JButton butTf;
 	private NameEmailPanel chosen;
 	private JTextField tfAmount, tfNotes;
+	private ListView lv;
+	private List<ListTile> tiles;
+	private DatabaseService ds = new DatabaseService();
 	
 	//Constructor
 	public TransferFunds(Person person)
@@ -110,6 +124,16 @@ public class TransferFunds extends TriplePanelPage
 		panelLeft.setOpaque(false);
 		panelRight.setOpaque(false);
 		
+		//Transfer button action listener
+		this.butTf.addActionListener(new ActionListener(){  
+			public void actionPerformed(ActionEvent e){ 
+				String amount = tfAmount.getText();
+				String notes = tfNotes.getText();
+				System.out.println("Amount: " + amount);
+				System.out.println("Notes: " + notes);
+			}  
+		});
+		
 		///Add to panel
 		//Add to panelButtons
 		panelButtons.add(this.labBack);
@@ -144,6 +168,16 @@ public class TransferFunds extends TriplePanelPage
 		this.panelReceivers = new RoundedPanel(false);
 		this.labReceiverHeader = new JLabel("Receivers");
 		this.labClickSelect = new JLabel("Click to select");
+		this.lv = new ListView();
+		this.tiles = new ArrayList<ListTile>();
+		List<User> users = this.ds.getAllUsers();
+		List<Account> accounts = this.ds.getAllAccounts();
+		for(int i=0; i<users.size(); i++) {
+			SimpleUserTile sut = new SimpleUserTile(users.get(i));
+			sut.setTopRightText("Rp. " + String.valueOf(accounts.get(i).getBalance()));
+			this.tiles.add(sut);
+		}
+		
 		JPanel panelTop = new JPanel(new BorderLayout());
 		
 		//Properties
@@ -154,6 +188,7 @@ public class TransferFunds extends TriplePanelPage
 		this.labClickSelect.setFont(Constants.FONT_SMALLER);
 		this.labClickSelect.setHorizontalAlignment(SwingConstants.CENTER);
 		this.labClickSelect.setForeground(Constants.COLOR_TEXT_GRAY);
+		this.lv.updateData(this.tiles);
 		panelTop.setOpaque(false);
 		
 		///Add to panel
@@ -162,6 +197,7 @@ public class TransferFunds extends TriplePanelPage
 		panelTop.add(this.labClickSelect, BorderLayout.SOUTH);
 		//Add to panelRecievers
 		this.panelReceivers.add(panelTop, BorderLayout.NORTH);
+		this.panelReceivers.add(this.lv, BorderLayout.CENTER);
 	}
 	private void initPanelPrev()
 	{
