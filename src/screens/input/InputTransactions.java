@@ -7,7 +7,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -19,9 +19,11 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.FontUIResource;
 
+import models.Category;
 import models.Person;
 import shared.Constants;
 import shared.Methods;
+import shared.components.ComboBoxRenderer;
 import shared.components.HintTextField;
 import shared.screens.AccountPanel;
 import shared.screens.RoundedPanel;
@@ -60,6 +62,7 @@ public class InputTransactions extends TriplePanelPage{
 		//Properties
 		this.setCenterPanels(this.panelPrevTrans, this.panelInput, this.panelReceipt);
 		this.setPanelTop(this.panelAcc);
+		panelAcc.setAccount(person);
 	}
 		
 		
@@ -103,8 +106,17 @@ public class InputTransactions extends TriplePanelPage{
 		this.buttonTransfer = new JButton("Transfer");
 
 		//make combo box
-		String categories[] = { "Select Category", "Food", "Transport", "Household" };
-		this.cbCategory = new JComboBox<String>(categories);
+		String categories1[] = { "Select Category", "Food", "Transport", "Household" };
+		
+		List <Category> categories = Constants.DATABASE_SERVICE.getAllCategories();
+
+		this.cbCategory = new JComboBox<Category>();
+		for(int i = 0; i < categories.size(); i++) {
+			cbCategory.addItem(categories.get(i));
+			cbCategory.setRenderer(new ComboBoxRenderer(categories.get(i)));
+		}
+
+		
 		cbCategory.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 // Get the source of the component, which is our combo box.

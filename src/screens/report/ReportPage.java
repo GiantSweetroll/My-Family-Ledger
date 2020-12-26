@@ -1,7 +1,7 @@
 package screens.report;
  
 import java.awt.Dimension;
-import java.awt.Font; 
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
@@ -10,8 +10,8 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTable;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -21,9 +21,9 @@ import models.Person;
 import shared.Constants;
 import shared.Methods;
 import shared.components.DatePicker;
-import shared.components.ListTile;
-import shared.components.ListView;
-import shared.components.SimpleUserTile;
+import shared.components.listview.ListTile;
+import shared.components.listview.ListView;
+import shared.components.listview.SimpleUserTile;
 import shared.screens.ReportPanel;
 
 public class ReportPage extends ReportPanel{
