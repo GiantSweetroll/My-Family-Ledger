@@ -16,7 +16,8 @@ public class Transaction extends DatabaseItem
 								USER_ID = "user_id";
 	
 	//Fields
-	private int categoryID, sourceID, userID;
+	private int categoryID, userID;
+	private Integer sourceID;
 	private Date dateInput, dateEdit;
 	private double amount;
 	private String desc, linkReceipt;
@@ -24,7 +25,7 @@ public class Transaction extends DatabaseItem
 	//Constructors
 	public Transaction(int id, 
 						int categoryID, 
-						int sourceID,
+						Integer sourceID,
 						int userID,
 						Date dateInput, 
 						Date dateEdit, 
@@ -37,7 +38,7 @@ public class Transaction extends DatabaseItem
 	}
 	public Transaction(int id, 
 						int categoryID,
-						int sourceID,
+						Integer sourceID,
 						int userID, 
 						Date dateInput,
 						Date dateEdit, 
@@ -48,7 +49,7 @@ public class Transaction extends DatabaseItem
 		this.init(categoryID, sourceID, userID, dateInput, dateEdit, amount, desc, "");
 	}
 	public Transaction(int categoryID,
-						int sourceID,
+						Integer sourceID,
 						int userID, 
 						Date dateInput,
 						Date dateEdit, 
@@ -59,7 +60,7 @@ public class Transaction extends DatabaseItem
 		this.init(categoryID, sourceID, userID, dateInput, dateEdit, amount, desc, "");
 	}
 	public Transaction(int categoryID,
-						int sourceID,
+						Integer sourceID,
 						int userID,
 						Date dateInput, 
 						Date dateEdit, 
@@ -74,7 +75,7 @@ public class Transaction extends DatabaseItem
 	
 	//Private Methods
 	private void init(int categoryID,
-						int sourceID,
+						Integer sourceID,
 						int targetID,
 						Date dateInput, 
 						Date dateEdit, 
@@ -106,7 +107,7 @@ public class Transaction extends DatabaseItem
 	 * Get the Source ID referenced in this Transaction
 	 * @return an integer
 	 */
-	public int getSourceID()
+	public Integer getSourceID()
 	{
 		return this.sourceID;
 	}
@@ -175,9 +176,9 @@ public class Transaction extends DatabaseItem
 	 * Change the referenced Source ID.
 	 * @param userID - the new Source ID, must be greater than zero.
 	 */
-	public void setSourceID(int sourceID)
+	public void setSourceID(Integer sourceID)
 	{
-		if (sourceID > 0)
+		if (sourceID != null && sourceID > 0)
 		{
 			this.sourceID = sourceID;
 		}
