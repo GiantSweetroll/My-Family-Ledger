@@ -1,9 +1,13 @@
 package screens.history;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,10 +17,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.plaf.FontUIResource;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
-import database.DatabaseService;
 import giantsweetroll.gui.swing.Gbm;
 import models.Account;
 import models.Person;
@@ -49,7 +55,14 @@ public class TransferHistory extends HistoryPanel
 	private List<ListTile> tiles;
 	private DatePicker dateFrom, dateTo;
 	private ListView listView;
-	private DatabaseService ds = new DatabaseService();
+	private JTable tableTransfer;
+	
+	String[][] data = {
+			{"01/01/01", "Food", "Gardyan", "1000000", "google.com", "none", "none"},
+			{"01/01/01", "Food", "Gardyan", "1000000", "google.com", "none", "none"},
+			{"01/01/01", "Food", "Gardyan", "1000000", "google.com", "none", "none"}
+	};
+	String[] columnNames = {"Date", "Category", "Name", "Amount (Rp.)", "Receipt Link", "Last Modified", "Action"};
 	
 	//Constructor
 	public TransferHistory(Person person)
@@ -57,6 +70,10 @@ public class TransferHistory extends HistoryPanel
 		//Initialization
 		super(person);
 		this.initFilters();
+		this.initTable();
+		
+		//Properties
+		this.setTable(tableTransfer);
 	}
 	
 	//Public methods
@@ -106,19 +123,6 @@ public class TransferHistory extends HistoryPanel
 		this.deselectAllReceivers();
 		this.tfValue.setText("");
 	}
-	@Override
-	public void backButtonPressed() 
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void refreshButtonPressed() 
-	{
-		// TODO Auto-generated method stub
-		
-	}
 	
 	//Private methods
 	private void initPanelReceivers()
@@ -126,21 +130,13 @@ public class TransferHistory extends HistoryPanel
 		//Initialization
 		this.listView = new ListView();
 		this.tiles = new ArrayList<ListTile>();
-		List<User> users = this.ds.getAllUsers();
-		List<Account> accounts = this.ds.getAllAccounts();
 		this.scrollReceiver = new JScrollPane(this.listView);
 		
-		//Add the data
-		for(int i=0; i<users.size(); i++) {
-			SimpleUserTile sut = new SimpleUserTile(users.get(i));
-			sut.setTopRightText("Rp. " + String.valueOf(accounts.get(i).getBalance()));
-			this.tiles.add(sut);
-		}
-		
 		//Properties
-		this.listView.updateData(this.tiles);
+		this.listView.setMultipleSelection(false);
 		this.scrollReceiver.getViewport().setOpaque(false);
 		this.scrollReceiver.setOpaque(false);
+		updateListView();
 	}
 	private void initFilters()
 	{
@@ -207,7 +203,66 @@ public class TransferHistory extends HistoryPanel
 		//Display filter panel
 		this.setFilterPanel(panelFilter);
 	}
+	
+	public void initTable() {
+		//Initialization
+		TableModel model = new DefaultTableModel(this.data, this.columnNames){
+			public boolean isCellEditable(int row, int column){
+				return false;//This causes all cells to be not editable
+			}
+		};
+		
+		this.tableTransfer = new JTable(model);
+		
+		//Properties
+		this.tableTransfer.getTableHeader().setFont(Constants.FONT_SMALLER_BOLD);
+		this.tableTransfer.setFont(Constants.FONT_SMALLER);
+		this.tableTransfer.setPreferredScrollableViewportSize(new Dimension(500, 220));
+	    this.tableTransfer.setFillsViewportHeight(true);
+	    this.tableTransfer.setRowHeight(30);
+	}
+	
+	@Override
+	public void backButtonPressed() 
+	{
+		// TODO Auto-generated method stub
+		
+	}
 
+	@Override
+	public void refreshButtonPressed() 
+	{
+		//Date dateStart = convertUtilToSql(this.dateFrom.getSelectedDate());
+		//Date dateEnd =  convertUtilToSql(this.dateTo.getSelectedDate());
+		Object operand = this.comboOperand.getSelectedItem();
+		double value = Double.parseDouble(this.tfValue.getText());
+		//System.out.println("Date start: " + convertUtilToSql(this.dateFrom.getSelectedDate()));
+		System.out.println("Date end: " + this.dateTo.getSelectedDate());
+		System.out.println("Operand: " + operand);
+		System.out.println("Value: " + value);
+	}
+
+	private void updateListView() {
+		List<User> users = Constants.DATABASE_SERVICE.getAllUsers();
+		List<Account> accounts = Constants.DATABASE_SERVICE.getAllAccounts();
+		List<ListTile> currentTiles = new ArrayList<ListTile>();
+		
+		//Add the data
+		for(int i=0; i<users.size(); i++) {
+			SimpleUserTile sut = new SimpleUserTile(users.get(i));
+			sut.setTopRightText("Rp. " + String.valueOf(accounts.get(i).getBalance()));
+			currentTiles.add(sut);
+		}
+		
+		this.tiles = currentTiles;
+		this.listView.updateData(this.tiles);
+	}
+	
+	private java.sql.Date convertUtilToSql(java.util.Date uDate) {
+        java.sql.Date sDate = new java.sql.Date(uDate.getTime());
+        return sDate;
+    }
+	
 	//Testing
 	public static void main(String args[])
 	{
