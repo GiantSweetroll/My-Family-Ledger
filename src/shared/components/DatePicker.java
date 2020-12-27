@@ -95,7 +95,7 @@ public class DatePicker extends JPanel implements GUIListener
 	 */
 	public Date getSelectedDate()
 	{
-		return (Date)this.picker.getModel().getValue();
+		return new Date(((java.util.Date)this.picker.getModel().getValue()).getTime());
 	}
 	
 	//Overridden Methods
@@ -122,5 +122,7 @@ public class DatePicker extends JPanel implements GUIListener
 		frame.add(picker);
 		
 		frame.setVisible(true);
+		
+		System.out.println(picker.getSelectedDate());
 	}
 }
