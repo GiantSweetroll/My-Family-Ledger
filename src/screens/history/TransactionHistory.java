@@ -63,7 +63,7 @@ public class TransactionHistory extends HistoryPanel{
 		
 		//Properties
 		this.setFilterPanel(this.filters);
-		this.setTable(tableTrans);
+		this.setTable(this.tableTrans);
 	}
 	
 	//Public Methods
