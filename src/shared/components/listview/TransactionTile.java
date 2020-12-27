@@ -46,7 +46,7 @@ public class TransactionTile extends ListTile
 	//Private methods
 	private void updateData()
 	{
-		this.setTitle("");		//TODO: use DatabaseService to get Category name
+		this.setTitle(Constants.DATABASE_SERVICE.getCategoryName(this.transaction.getCategoryID()));		//TODO: use DatabaseService to get Category name
 		this.setSubtitle(this.transaction.getDesc());
 		this.setTopLeftText(Constants.DATE_FORMAT.format(this.transaction.getDateInput()));
 		this.setTopRightText("Rp. " + this.transaction.getAmount());

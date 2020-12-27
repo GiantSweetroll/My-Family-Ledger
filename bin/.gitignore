@@ -1,4 +1,7 @@
-/shared/
 /database/
-/screens/
+/legacy/
+/main/
 /models/
+/resources/
+/screens/
+/shared/

@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.Box;
@@ -19,12 +20,16 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.FontUIResource;
 
 import main.Main;
+import models.Account;
 import models.Category;
 import models.Person;
+import models.Transaction;
+import models.User;
 import screens.auth.SignIn;
 import shared.Constants;
 import shared.Globals;
@@ -32,6 +37,10 @@ import shared.Methods;
 import shared.components.ComboBoxRenderer;
 import shared.components.HintTextField;
 import shared.components.HyperlinkLabel;
+import shared.components.listview.ListTile;
+import shared.components.listview.ListView;
+import shared.components.listview.SimpleUserTile;
+import shared.components.listview.TransactionTile;
 import shared.screens.AccountPanel;
 import shared.screens.RoundedPanel;
 import shared.screens.TriplePanelPage;
@@ -55,6 +64,9 @@ public class InputTransactions extends TriplePanelPage{
 	private JButton buttonTransfer;
 	private JComboBox cbCategory;
 	private HintTextField inputItem, inputPrice;
+	private ListView listView;
+	private List<ListTile> tiles;
+	private JScrollPane scrollReceiver;
 	
 	public InputTransactions(Person person) 
 	{
@@ -79,7 +91,11 @@ public class InputTransactions extends TriplePanelPage{
 		this.panelPrevTrans = new RoundedPanel(false);
 		this.labelPrevTrans = new JLabel("Previous Transactions");
 		this.labelLastTs = new JLabel("Your Last 5 Transactions");
+		this.listView = new ListView();
+		this.tiles = new ArrayList<ListTile>();
+		this.scrollReceiver = new JScrollPane(this.listView);
 		JPanel panelTop = new JPanel(new BorderLayout());
+		
 		
 		//Properties
 		this.panelPrevTrans.setLayout(new BorderLayout(5, 50));
@@ -90,11 +106,16 @@ public class InputTransactions extends TriplePanelPage{
 		this.labelLastTs.setForeground(Constants.COLOR_TEXT_GRAY);
 		this.labelLastTs.setHorizontalAlignment(SwingConstants.CENTER);
 		panelTop.setOpaque(false);
+		this.listView.setMultipleSelection(false);
+		this.scrollReceiver.getViewport().setOpaque(false);
+		this.scrollReceiver.setOpaque(false);
+		updateListView();
 		
 		//Add to panel
 		//add to panelTop
 		panelTop.add(this.labelPrevTrans, BorderLayout.NORTH);
-		panelTop.add(this.labelLastTs, BorderLayout.SOUTH);
+		panelTop.add(this.labelLastTs, BorderLayout.CENTER);
+		panelTop.add(this.listView, BorderLayout.SOUTH);
 		//add to panelPrevTrans
 		this.panelPrevTrans.add(panelTop, BorderLayout.NORTH);
 	}
@@ -150,7 +171,6 @@ public class InputTransactions extends TriplePanelPage{
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-				Main.changeScreen(new Menu(person, false));
 				Main.popScreen();
 			}
 		});
@@ -171,8 +191,9 @@ public class InputTransactions extends TriplePanelPage{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				String item = ((HintTextField) inputItem).getData().trim();
-				double price = ((HintTextField) inputPrice).getData().trim();
-				Category category = new Category();
+				double price = Double.parseDouble(((HintTextField) inputPrice).getData().trim());
+				Category category = (Category) cbCategory.getSelectedItem();
+				
 			}
 		});
 		
@@ -209,6 +230,20 @@ public class InputTransactions extends TriplePanelPage{
 		panelTop.add(this.labelReceipt, BorderLayout.NORTH);
 		//Add to panelInput
 		this.panelReceipt.add(panelTop, BorderLayout.NORTH);
+	}
+	
+	private void updateListView() {
+		List<Transaction> transactions = Constants.DATABASE_SERVICE.getAllTransactions(person.getID());
+		List<ListTile> currentTiles = new ArrayList<ListTile>();
+		
+		//Add the data
+		for(int i=0; i < transactions.size(); i++) {
+			TransactionTile ttile = new TransactionTile(transactions.get(i));
+			currentTiles.add(ttile);
+		}
+		
+		this.tiles = currentTiles;
+		this.listView.updateData(this.tiles);
 	}
 	
 	public static void main(String args[])
