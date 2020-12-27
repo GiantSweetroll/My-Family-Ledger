@@ -16,6 +16,7 @@ import models.Category;
 import models.Person;
 import models.Transaction;
 import models.User;
+import shared.Constants;
 import shared.Methods;
 import shared.SecurityServices;
 
@@ -1409,6 +1410,62 @@ public final class DatabaseService
 		
 		return a;
 	}
+	
+	public List<Transaction> getAllTransactions(int sourceId, int categoryId)
+	{
+		List<Transaction> transactions = new ArrayList<Transaction>();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try
+		{
+			ps = this.prepStatement("SELECT * FROM " + TABLE_TRANSACTIONS + " WHERE " + Transaction.ID + " = " + userID);
+			rs = ps.executeQuery();
+			
+			//Loop through the result set
+			while (rs.next())
+			{
+				Transaction tr = new Transaction(rs.getInt(Transaction.ID),
+													rs.getInt(Transaction.CATEGORY_ID),
+													rs.getInt(Transaction.SOURCE_ID),
+													rs.getInt(Transaction.USER_ID),
+													rs.getDate(Transaction.DATE_INPUT),
+													rs.getDate(Transaction.DATE_EDIT),
+													rs.getDouble(Transaction.AMOUNT),
+													rs.getString(Transaction.DESC),
+													rs.getString(Transaction.LINK_RECEIPT));
+				transactions.add(tr);
+			}
+			
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch(SQLException ex) {}
+			}
+			
+			if (rs != null)
+			{
+				try
+				{
+					rs.close();
+				}
+				catch(SQLException ex) {}
+			}
+		}
+		
+		return transactions;
+	}
+	
 	/**
 	 * Get the last created Account
 	 * @return an Account object.
@@ -1731,19 +1788,19 @@ public final class DatabaseService
 //		System.out.println(date1);
 //		System.out.println(date2);
 		
-		DatabaseService ds = new DatabaseService();
-		Account acc1 = new Account(3, 2000000);
-		Admin admin1 = new Admin(1, "Gardyan", "Akbar");
-		User user1 = new User(3, acc1.getID(), admin1.getID(), "William", "Tok", "wtok@gmail.com", "lel");
-		Category category1 = new Category(3, admin1.getID(), "Clothes???", "Clothes");
-		AdminCategory adminc1 = new AdminCategory(3, admin1.getID(), category1.getID());
-		Transaction transaction1 = new Transaction(3, category1.getID(), 2, date1, date2, 800000, "Buy 3 T-Shirts", "hehe receipt lol");
+//		DatabaseService ds = new DatabaseService();
+//		Account acc1 = new Account(3, 2000000);
+//		Admin admin1 = new Admin(1, "Gardyan", "Akbar");
+//		User user1 = new User(3, acc1.getID(), admin1.getID(), "William", "Tok", "wtok@gmail.com", "lel");
+//		Category category1 = new Category(3, admin1.getID(), "Clothes???", "Clothes");
+//		AdminCategory adminc1 = new AdminCategory(3, admin1.getID(), category1.getID());
+//		Transaction transaction1 = new Transaction(1, 1, null, 1, date1, date2, 800000, "Buy 3 T-Shirts", "hehe receipt lol");
 		
 //		ds.insert(acc1);
 //		ds.insert(admin1);
 //		ds.insert(user1);
 //		ds.insert(category1);
 //		ds.insert(adminc1);
-//		ds.insert(transaction1);
+//		Constants.DATABASE_SERVICE.insert(transaction1);
 	}
 }
