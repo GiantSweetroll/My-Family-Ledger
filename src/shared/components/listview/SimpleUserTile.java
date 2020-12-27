@@ -49,7 +49,10 @@ public class SimpleUserTile extends ListTile
 	//Private methods
 	private void updateData()
 	{
-		this.setTitle(person.getFullName());
-		this.setSubtitle(person.getEmail());
+		if (this.person != null)
+		{
+			this.setTitle(person.getFullName());
+			this.setSubtitle(person.getEmail());
+		}
 	}
 }
