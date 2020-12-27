@@ -92,12 +92,12 @@ public final class SecurityServices
 	//Testing
 	public static void main(String args[])
 	{
-		String s = "Hello There Sir123[]";
+		String s = "Hello there801[.";
 		
 		String encoded = encode(s);
 		String decoded = decode(encoded);
 		
-		System.out.println(encoded);
-		System.out.println(decoded);
+		System.out.println("Encoded: " + encoded);
+		System.out.println("Decoded: " + decoded);
 	}
 }
