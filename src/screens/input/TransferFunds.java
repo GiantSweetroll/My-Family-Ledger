@@ -131,26 +131,30 @@ public class TransferFunds extends TriplePanelPage
 		//Transfer button action listener
 		this.butTf.addActionListener(new ActionListener(){  
 			public void actionPerformed(ActionEvent e){ 
+				ListTile selectedTiles = listView.getSelectedTiles().get(0);
+				Person userPerson = ((SimpleUserTile) selectedTiles).getPerson();
+				User user = Constants.DATABASE_SERVICE.getUser(userPerson.getID());
 				
 				//Make transaction
-				int categoryId = 1; //"Transfer" is a hardcoded category
+				int categoryId = 1; //"Transfer" is a hardcoded category for 1
 				int adminId = 1; //person.getID();
+				int userId = user.getID();
 				long millis = System.currentTimeMillis(); 
 				Date date = new java.sql.Date(millis);
 				double amount = Double.parseDouble(tfAmount.getText());
 				String notes = tfNotes.getText();
-				Transaction trans = new Transaction(categoryId, adminId, date, date, amount, notes);
+				Transaction trans = new Transaction(categoryId, adminId, userId, date, date, amount, notes);
 				Constants.DATABASE_SERVICE.insert(trans);
 				
 				//Update the account balance
-				ListTile selectedTiles = listView.getSelectedTiles().get(0);
-				int userId = ((SimpleUserTile) selectedTiles).getPerson().getID();
+				Account userAccount = Constants.DATABASE_SERVICE.getAccount(user.getAccountID());
+				userAccount.updateBalance(amount);
+				Constants.DATABASE_SERVICE.update(userId, userAccount);
 				
-				//System.out.println("User ID: " + userId);
-				//System.out.println("Date: " + date);
-				//System.out.println("Amount: " + amount);
-				//System.out.println("Notes: " + notes);
-				//int categoryID, int userID, Date dateInput, Date dateEdit, double amount, String desc
+				//Reset
+				updateListView();
+				resetFields();
+				
 			}  
 		});
 		
@@ -191,16 +195,7 @@ public class TransferFunds extends TriplePanelPage
 		JPanel panelTop = new JPanel(new BorderLayout());
 		this.listView = new ListView();
 		this.tiles = new ArrayList<ListTile>();
-		List<User> users = Constants.DATABASE_SERVICE.getAllUsers();
-		List<Account> accounts = Constants.DATABASE_SERVICE.getAllAccounts();
 		this.scrollReceiver = new JScrollPane(this.listView);
-		
-		//Add the data
-		for(int i=0; i<users.size(); i++) {
-			SimpleUserTile sut = new SimpleUserTile(users.get(i));
-			sut.setTopRightText("Rp. " + String.valueOf(accounts.get(i).getBalance()));
-			this.tiles.add(sut);
-		}
 		
 		//Properties
 		this.panelReceivers.setLayout(new BorderLayout(5, 50));
@@ -211,10 +206,10 @@ public class TransferFunds extends TriplePanelPage
 		this.labClickSelect.setHorizontalAlignment(SwingConstants.CENTER);
 		this.labClickSelect.setForeground(Constants.COLOR_TEXT_GRAY);
 		panelTop.setOpaque(false);
-		this.listView.updateData(this.tiles);
 		this.listView.setMultipleSelection(false);
 		this.scrollReceiver.getViewport().setOpaque(false);
 		this.scrollReceiver.setOpaque(false);
+		updateListView();
 		
 		///Add to panel
 		//Add to panelTop
@@ -247,6 +242,29 @@ public class TransferFunds extends TriplePanelPage
 		panelTop.add(this.labLastTf, BorderLayout.SOUTH);
 		//Add to panelPrev
 		this.panelPrev.add(panelTop, BorderLayout.NORTH);
+	}
+	
+	private void updateListView() {
+		List<User> users = Constants.DATABASE_SERVICE.getAllUsers();
+		List<Account> accounts = Constants.DATABASE_SERVICE.getAllAccounts();
+		List<ListTile> currentTiles = new ArrayList<ListTile>();
+		
+		//Add the data
+		for(int i=0; i<users.size(); i++) {
+			SimpleUserTile sut = new SimpleUserTile(users.get(i));
+			sut.setTopRightText("Rp. " + String.valueOf(accounts.get(i).getBalance()));
+			currentTiles.add(sut);
+		}
+		
+		this.tiles = currentTiles;
+		this.listView.updateData(this.tiles);
+	}
+	
+	private void resetFields() {
+		this.tfAmount.setText("Amount (Rp.)");
+		this.tfNotes.setText("Notes");
+		this.tfAmount.setForeground(Color.GRAY);
+		this.tfNotes.setForeground(Color.GRAY);
 	}
 	
 	//Testing
