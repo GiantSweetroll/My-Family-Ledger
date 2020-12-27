@@ -66,9 +66,12 @@ public class TransferFunds extends TriplePanelPage
 	private JButton butTf;
 	private NameEmailPanel chosen;
 	private JTextField tfAmount, tfNotes;
-	private ListView listView;
-	private List<ListTile> tiles;
-	private JScrollPane scrollReceiver;
+	private ListView lvReceivers,
+					lvPrevTransfers;
+	private List<ListTile> tilesReceivers,
+						tilesPrevTransfers;
+	private JScrollPane scrollReceiver,
+						scrollPrevTransfer;
 	
 	//Constructor
 	public TransferFunds(Person person)
@@ -131,7 +134,7 @@ public class TransferFunds extends TriplePanelPage
 		//Transfer button action listener
 		this.butTf.addActionListener(new ActionListener(){  
 			public void actionPerformed(ActionEvent e){ 
-				ListTile selectedTiles = listView.getSelectedTiles().get(0);
+				ListTile selectedTiles = lvReceivers.getSelectedTiles().get(0);
 				Person userPerson = ((SimpleUserTile) selectedTiles).getPerson();
 				User user = Constants.DATABASE_SERVICE.getUser(userPerson.getID());
 				
@@ -152,7 +155,7 @@ public class TransferFunds extends TriplePanelPage
 				Constants.DATABASE_SERVICE.update(userId, userAccount);
 				
 				//Reset
-				updateListView();
+				updateListViewReceivers();
 				resetFields();
 				
 			}  
@@ -193,9 +196,8 @@ public class TransferFunds extends TriplePanelPage
 		this.labReceiverHeader = new JLabel("Receivers");
 		this.labClickSelect = new JLabel("Click to select");
 		JPanel panelTop = new JPanel(new BorderLayout());
-		this.listView = new ListView();
-		this.tiles = new ArrayList<ListTile>();
-		this.scrollReceiver = new JScrollPane(this.listView);
+		this.lvReceivers = new ListView();
+		this.scrollReceiver = new JScrollPane(this.lvReceivers);
 		
 		//Properties
 		this.panelReceivers.setLayout(new BorderLayout(5, 50));
@@ -206,10 +208,10 @@ public class TransferFunds extends TriplePanelPage
 		this.labClickSelect.setHorizontalAlignment(SwingConstants.CENTER);
 		this.labClickSelect.setForeground(Constants.COLOR_TEXT_GRAY);
 		panelTop.setOpaque(false);
-		this.listView.setMultipleSelection(false);
+		this.lvReceivers.setMultipleSelection(false);
 		this.scrollReceiver.getViewport().setOpaque(false);
 		this.scrollReceiver.setOpaque(false);
-		updateListView();
+		updateListViewReceivers();
 		
 		///Add to panel
 		//Add to panelTop
@@ -226,6 +228,8 @@ public class TransferFunds extends TriplePanelPage
 		this.labPrev = new JLabel ("Previous Transfers");
 		this.labLastTf = new JLabel ("Your last 5 transfers");
 		JPanel panelTop = new JPanel(new BorderLayout());
+		this.lvPrevTransfers = new ListView();
+		this.scrollPrevTransfer = new JScrollPane(this.lvPrevTransfers);
 		
 		//Properties
 		this.panelPrev.setBackground(Color.WHITE);
@@ -235,6 +239,10 @@ public class TransferFunds extends TriplePanelPage
 		this.labLastTf.setForeground(Constants.COLOR_TEXT_GRAY);
 		this.labLastTf.setHorizontalAlignment(SwingConstants.CENTER);
 		panelTop.setOpaque(false);
+		this.lvPrevTransfers.setMultipleSelection(false);
+		this.scrollPrevTransfer.getViewport().setOpaque(false);
+		this.scrollPrevTransfer.setOpaque(false);
+		updateListViewPrevTransfers();
 		
 		///Add to panel
 		//add to panelTop
@@ -242,9 +250,10 @@ public class TransferFunds extends TriplePanelPage
 		panelTop.add(this.labLastTf, BorderLayout.SOUTH);
 		//Add to panelPrev
 		this.panelPrev.add(panelTop, BorderLayout.NORTH);
+		this.panelPrev.add(this.scrollPrevTransfer, BorderLayout.CENTER);
 	}
 	
-	private void updateListView() {
+	private void updateListViewReceivers() {
 		List<User> users = Constants.DATABASE_SERVICE.getAllUsers();
 		List<Account> accounts = Constants.DATABASE_SERVICE.getAllAccounts();
 		List<ListTile> currentTiles = new ArrayList<ListTile>();
@@ -256,8 +265,16 @@ public class TransferFunds extends TriplePanelPage
 			currentTiles.add(sut);
 		}
 		
-		this.tiles = currentTiles;
-		this.listView.updateData(this.tiles);
+		this.tilesReceivers = currentTiles;
+		this.lvReceivers.updateData(this.tilesReceivers);
+	}
+	
+	private void updateListViewPrevTransfers() {
+		List<Transaction> transactions = Constants.DATABASE_SERVICE.getAllTransactions();
+		List<Transaction> lastTrans = new ArrayList<Transaction>();
+		lastTrans.add(transactions.get(transactions.size()-1));
+		lastTrans.add(transactions.get(transactions.size()-2));
+		lastTrans.add(transactions.get(transactions.size()-3));
 	}
 	
 	private void resetFields() {
