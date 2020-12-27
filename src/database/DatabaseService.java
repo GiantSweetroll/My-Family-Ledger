@@ -1419,7 +1419,8 @@ public final class DatabaseService
 		
 		try
 		{
-			ps = this.prepStatement("SELECT * FROM " + TABLE_TRANSACTIONS + " WHERE " + Transaction.ID + " = " + userID);
+			ps = this.prepStatement("SELECT * FROM " + TABLE_TRANSACTIONS + " WHERE " + Transaction.SOURCE_ID + " = " + sourceId + " AND " 
+									+ Transaction.CATEGORY_ID + " = " + categoryId);
 			rs = ps.executeQuery();
 			
 			//Loop through the result set
@@ -1794,13 +1795,13 @@ public final class DatabaseService
 //		User user1 = new User(3, acc1.getID(), admin1.getID(), "William", "Tok", "wtok@gmail.com", "lel");
 //		Category category1 = new Category(3, admin1.getID(), "Clothes???", "Clothes");
 //		AdminCategory adminc1 = new AdminCategory(3, admin1.getID(), category1.getID());
-//		Transaction transaction1 = new Transaction(1, 1, null, 1, date1, date2, 800000, "Buy 3 T-Shirts", "hehe receipt lol");
+		Transaction transaction1 = new Transaction(2, 1, 1, 1, date1, date2, 1000000, "tambahan gaji", "hehe receipt lol");
 		
 //		ds.insert(acc1);
 //		ds.insert(admin1);
 //		ds.insert(user1);
 //		ds.insert(category1);
 //		ds.insert(adminc1);
-//		Constants.DATABASE_SERVICE.insert(transaction1);
+		Constants.DATABASE_SERVICE.insert(transaction1);
 	}
 }
