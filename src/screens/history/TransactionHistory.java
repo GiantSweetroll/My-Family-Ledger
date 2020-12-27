@@ -25,6 +25,7 @@ import shared.Constants;
 import shared.Methods;
 import shared.screens.HistoryPanel;
 import shared.components.DatePicker;
+import shared.components.HintTextField;
 
 public class TransactionHistory extends HistoryPanel{
 	
@@ -77,34 +78,14 @@ public class TransactionHistory extends HistoryPanel{
 		this.labelTo = new JLabel("To");
 		this.labelPrice = new JLabel("Price (Rp.)");
 		this.labelCategory = new JLabel("Category");
-		this.tfValue = new JTextField("");
+		this.tfValue = new HintTextField("Value");
 		this.dateFrom = new DatePicker();
 		this.dateTo = new DatePicker();
-		
-		//make combo box for equality signs
 		this.cbEquals = new JComboBox<String>(Constants.COMBO_BOX_OPERANDS);
-		cbEquals.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                // Get the source of the component, which is our combo box.
-                JComboBox cbEquals = (JComboBox) event.getSource();
-                // Print the selected items and the action command.
-                Object selected = cbEquals.getSelectedItem();
-                System.out.println("Selected Item  = " + selected);
-            }
-		});
-		
-		//make combo box for category
-		String categories[] = { "Select Item", "Food", "Transport", "Household" };
+
+		String categories[] = { "Select Item", "Food", "Transport", "Household" }; //perlu diganti with the actual categories
 		this.cbCategory = new JComboBox<String>(categories);
-		cbCategory.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                // Get the source of the component, which is our combo box.
-                JComboBox cbCategory = (JComboBox) event.getSource();
-                // Print the selected items and the action command.
-                Object selected = cbCategory.getSelectedItem();
-                System.out.println("Selected Item  = " + selected);
-            }
-		});
+
 		
 		//Properties
 		this.filters.setLayout(boxlayout);
