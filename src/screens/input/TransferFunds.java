@@ -130,36 +130,7 @@ public class TransferFunds extends TriplePanelPage
 		panelCenter.setOpaque(false);
 		panelLeft.setOpaque(false);
 		panelRight.setOpaque(false);
-		
-		//Transfer button action listener
-		this.butTf.addActionListener(new ActionListener(){  
-			public void actionPerformed(ActionEvent e){ 
-				ListTile selectedTiles = lvReceivers.getSelectedTiles().get(0);
-				Person userPerson = ((SimpleUserTile) selectedTiles).getPerson();
-				User user = Constants.DATABASE_SERVICE.getUser(userPerson.getID());
-				
-				//Make transaction
-				int categoryId = 1; //"Transfer" is a hardcoded category for 1
-				int adminId = 1; //person.getID();
-				int userId = user.getID();
-				long millis = System.currentTimeMillis(); 
-				Date date = new java.sql.Date(millis);
-				double amount = Double.parseDouble(tfAmount.getText());
-				String notes = tfNotes.getText();
-				Transaction trans = new Transaction(categoryId, adminId, userId, date, date, amount, notes);
-				Constants.DATABASE_SERVICE.insert(trans);
-				
-				//Update the account balance
-				Account userAccount = Constants.DATABASE_SERVICE.getAccount(user.getAccountID());
-				userAccount.updateBalance(amount);
-				Constants.DATABASE_SERVICE.update(userId, userAccount);
-				
-				//Reset
-				updateListViewReceivers();
-				resetFields();
-				
-			}  
-		});
+		transferButtonPressed();
 		
 		///Add to panel
 		//Add to panelButtons
@@ -251,6 +222,38 @@ public class TransferFunds extends TriplePanelPage
 		//Add to panelPrev
 		this.panelPrev.add(panelTop, BorderLayout.NORTH);
 		this.panelPrev.add(this.scrollPrevTransfer, BorderLayout.CENTER);
+	}
+	
+	private void transferButtonPressed() {
+		//Transfer button action listener
+		this.butTf.addActionListener(new ActionListener(){  
+			public void actionPerformed(ActionEvent e){ 
+				ListTile selectedTiles = lvReceivers.getSelectedTiles().get(0);
+				Person userPerson = ((SimpleUserTile) selectedTiles).getPerson();
+				User user = Constants.DATABASE_SERVICE.getUser(userPerson.getID());
+				
+				//Make transaction
+				int categoryId = 1; //"Transfer" is a hardcoded category for 1
+				int adminId = 1; //person.getID();
+				int userId = user.getID();
+				long millis = System.currentTimeMillis(); 
+				Date date = new java.sql.Date(millis);
+				double amount = Double.parseDouble(tfAmount.getText());
+				String notes = tfNotes.getText();
+				Transaction trans = new Transaction(categoryId, adminId, userId, date, date, amount, notes);
+				Constants.DATABASE_SERVICE.insert(trans);
+				
+				//Update the account balance
+				Account userAccount = Constants.DATABASE_SERVICE.getAccount(user.getAccountID());
+				userAccount.updateBalance(amount);
+				Constants.DATABASE_SERVICE.update(userId, userAccount);
+				
+				//Reset
+				updateListViewReceivers();
+				resetFields();
+				
+			}  
+		});
 	}
 	
 	private void updateListViewReceivers() {
