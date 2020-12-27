@@ -10,6 +10,8 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +27,6 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.FontUIResource;
 
-import database.DatabaseService;
 import giantsweetroll.gui.swing.Gbm;
 import models.Account;
 import models.Person;
@@ -35,6 +36,7 @@ import shared.Constants;
 import shared.Methods;
 import shared.components.HintTextField;
 import shared.components.NameEmailPanel;
+import shared.components.WarningLabel;
 import shared.components.listview.ListTile;
 import shared.components.listview.ListView;
 import shared.components.listview.SimpleUserTile;
@@ -62,7 +64,8 @@ public class TransferFunds extends TriplePanelPage
 					labClickSelect,
 					labReceiver,
 					labLastTf,
-					labBack;
+					labBack,
+					labWarning;
 	private JButton butTf;
 	private NameEmailPanel chosen;
 	private JTextField tfAmount, tfNotes;
@@ -85,6 +88,7 @@ public class TransferFunds extends TriplePanelPage
 		this.initPanelPrev();
 		
 		//Properties
+		this.panelAcc.setAccount(this.person);
 		this.setCenterPanels(this.panelReceivers, this.panelTransfer, this.panelPrev);
 		this.setPanelTop(this.panelAcc);
 	}
@@ -99,6 +103,7 @@ public class TransferFunds extends TriplePanelPage
 		this.chosen = new NameEmailPanel("", "");
 		this.tfAmount = new HintTextField("Amount (Rp.)");
 		this.tfNotes = new HintTextField("Notes");
+		this.labWarning = new WarningLabel();
 		this.labBack = new JLabel("Back");
 		this.butTf = new JButton("Transfer");
 		
@@ -123,6 +128,42 @@ public class TransferFunds extends TriplePanelPage
 		this.labBack.setHorizontalAlignment(SwingConstants.CENTER);
 		this.butTf.setBackground(Constants.COLOR_BUTTON_BASE);
 		this.butTf.setForeground(Color.WHITE);
+		this.butTf.addActionListener(new ActionListener()
+		{  
+			public void actionPerformed(ActionEvent e)
+			{ 
+				try
+				{
+					ListTile selectedTiles = lvReceivers.getSelectedTiles().get(0);
+					Person userPerson = ((SimpleUserTile) selectedTiles).getPerson();
+					User user = Constants.DATABASE_SERVICE.getUser(userPerson.getID());
+					
+					//Make transaction
+					int categoryId = 1; //"Transfer" is a hardcoded category for 1
+					int adminId = 1; //person.getID();
+					int userId = user.getID();
+					long millis = System.currentTimeMillis(); 
+					Date date = new java.sql.Date(millis);
+					double amount = Double.parseDouble(tfAmount.getText());
+					String notes = tfNotes.getText();
+					Transaction trans = new Transaction(categoryId, adminId, userId, date, date, amount, notes);
+					Constants.DATABASE_SERVICE.insert(trans);
+					
+					//Update the account balance
+					Account userAccount = Constants.DATABASE_SERVICE.getAccount(user.getAccountID());
+					userAccount.updateBalance(amount);
+					Constants.DATABASE_SERVICE.update(userId, userAccount);
+					
+					//Reset
+					updateListViewReceivers();
+					resetFields();
+				}
+				catch(NumberFormatException ex)
+				{
+					labWarning.setText("Invalid value for amount");
+				}
+			}  
+		});
 		panelButtons.setBackground(Color.WHITE);
 		panelInput.setLayout(new BoxLayout(panelInput, BoxLayout.Y_AXIS));
 		panelInput.setBackground(Color.WHITE);
@@ -130,7 +171,6 @@ public class TransferFunds extends TriplePanelPage
 		panelCenter.setOpaque(false);
 		panelLeft.setOpaque(false);
 		panelRight.setOpaque(false);
-		transferButtonPressed();
 		
 		///Add to panel
 		//Add to panelButtons
@@ -144,6 +184,8 @@ public class TransferFunds extends TriplePanelPage
 		panelInput.add(this.tfAmount);
 		panelInput.add(Box.createRigidArea(new Dimension(0, 20)));
 		panelInput.add(this.tfNotes);
+		panelInput.add(Box.createRigidArea(new Dimension(0, 20)));
+		panelInput.add(this.labWarning);
 		panelInput.add(Box.createRigidArea(new Dimension(0, 50)));
 		//Add to panelContent
 		Gbm.goToOrigin(c);
@@ -180,6 +222,22 @@ public class TransferFunds extends TriplePanelPage
 		this.labClickSelect.setForeground(Constants.COLOR_TEXT_GRAY);
 		panelTop.setOpaque(false);
 		this.lvReceivers.setMultipleSelection(false);
+		this.lvReceivers.addMouseListener(new MouseAdapter()
+				{
+					public void mouseClicked(MouseEvent e)
+					{
+						ListTile tile = lvReceivers.getSelectedTiles().get(0);
+						Person person = ((SimpleUserTile) tile).getPerson();
+						if (person != null)
+						{
+							chosen.setNameEmail(person);
+						}
+						else
+						{
+							chosen.setNameEmail("", "");
+						}
+					}
+				});
 		this.scrollReceiver.getViewport().setOpaque(false);
 		this.scrollReceiver.setOpaque(false);
 		updateListViewReceivers();
@@ -222,38 +280,6 @@ public class TransferFunds extends TriplePanelPage
 		//Add to panelPrev
 		this.panelPrev.add(panelTop, BorderLayout.NORTH);
 		this.panelPrev.add(this.scrollPrevTransfer, BorderLayout.CENTER);
-	}
-	
-	private void transferButtonPressed() {
-		//Transfer button action listener
-		this.butTf.addActionListener(new ActionListener(){  
-			public void actionPerformed(ActionEvent e){ 
-				ListTile selectedTiles = lvReceivers.getSelectedTiles().get(0);
-				Person userPerson = ((SimpleUserTile) selectedTiles).getPerson();
-				User user = Constants.DATABASE_SERVICE.getUser(userPerson.getID());
-				
-				//Make transaction
-				int categoryId = 1; //"Transfer" is a hardcoded category for 1
-				int adminId = 1; //person.getID();
-				int userId = user.getID();
-				long millis = System.currentTimeMillis(); 
-				Date date = new java.sql.Date(millis);
-				double amount = Double.parseDouble(tfAmount.getText());
-				String notes = tfNotes.getText();
-				Transaction trans = new Transaction(categoryId, adminId, userId, date, date, amount, notes);
-				Constants.DATABASE_SERVICE.insert(trans);
-				
-				//Update the account balance
-				Account userAccount = Constants.DATABASE_SERVICE.getAccount(user.getAccountID());
-				userAccount.updateBalance(amount);
-				Constants.DATABASE_SERVICE.update(userId, userAccount);
-				
-				//Reset
-				updateListViewReceivers();
-				resetFields();
-				
-			}  
-		});
 	}
 	
 	private void updateListViewReceivers() {
