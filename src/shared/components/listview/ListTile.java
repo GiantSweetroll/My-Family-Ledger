@@ -167,7 +167,10 @@ public class ListTile extends RoundedPanel implements MouseListener
 	public void mouseClicked(MouseEvent arg0) 
 	{
 		this.setSelected(!this.selected);
-		this.listView.notifySelection(this);
+		if (this.listView != null)
+		{
+			this.listView.notifySelection(this);
+		}
 	}
 
 	@Override
