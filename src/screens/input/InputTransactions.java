@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -191,8 +192,21 @@ public class InputTransactions extends TriplePanelPage{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				String item = ((HintTextField) inputItem).getData().trim();
-				double price = Double.parseDouble(((HintTextField) inputPrice).getData().trim());
+				String price = ((HintTextField) inputPrice).getData().trim();
 				Category category = (Category) cbCategory.getSelectedItem();
+				long millis = System.currentTimeMillis();
+				Date date = new Date(millis);
+				if(!isDigit(price)){
+					System.out.println("enter digit plz");
+				}
+				if(item.equals("") || price.equals("")) {
+					System.out.println("enter someshit");
+				}
+				else {
+					double dprice = Double.parseDouble(price);
+					Constants.DATABASE_SERVICE.insert(new Transaction(category.getID(), null, person.getID(), date, date, dprice, item));
+					resetInputPage();
+				}
 				
 			}
 		});
@@ -244,6 +258,25 @@ public class InputTransactions extends TriplePanelPage{
 		
 		this.tiles = currentTiles;
 		this.listView.updateData(this.tiles);
+	}
+	
+	private static boolean isDigit(String inputText) {
+	    if (inputText == null) {
+	        return false;
+	    }
+	    try {
+	        double d = Double.parseDouble(inputText);
+	    } catch (NumberFormatException nfe) {
+	        return false;
+	    }
+	    return true;
+	}
+	
+	private void resetInputPage() {
+		cbCategory.setSelectedIndex(0);
+		inputItem.setText("");
+		inputPrice.setText("");
+		this.updateListView();
 	}
 	
 	public static void main(String args[])
