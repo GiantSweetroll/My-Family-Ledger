@@ -31,7 +31,6 @@ import screens.input.InputTransactions;
 import screens.input.TransferFunds;
 import screens.report.ReportPage;
 import shared.Constants;
-import shared.Globals;
 import shared.Methods;
 import shared.components.AppButton;
 import shared.components.LogoLabel;
