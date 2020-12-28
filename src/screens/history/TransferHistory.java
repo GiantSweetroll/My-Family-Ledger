@@ -267,13 +267,15 @@ public class TransferHistory extends HistoryPanel
 	}
 
 	private void updateListView() {
-		List<User> users = Constants.DATABASE_SERVICE.getAllUsers();
-		List<Account> accounts = Constants.DATABASE_SERVICE.getAllAccounts();
+		List<User> users = Constants.DATABASE_SERVICE.getAllUsers(this.person.getID());
+		
 		this.tiles.clear();
 		//Add the data
 		for(int i=0; i<users.size(); i++) {
 			SimpleUserTile sut = new SimpleUserTile(users.get(i));
-			sut.setTopRightText("Rp. " + String.valueOf(accounts.get(i).getBalance()));
+			int accountId = users.get(i).getAccountID();
+			Account currentAccount = Constants.DATABASE_SERVICE.getAccount(accountId);
+			sut.setTopRightText("Rp. " + String.valueOf(currentAccount.getBalance()));
 			this.tiles.add(sut);
 		}
 		
