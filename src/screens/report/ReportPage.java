@@ -17,8 +17,11 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import giantsweetroll.gui.swing.Gbm;
+import main.Main;
 import models.Person;
+import screens.menu.Menu;
 import shared.Constants;
+import shared.Globals;
 import shared.Methods;
 import shared.components.DatePicker;
 import shared.components.listview.ListTile;
@@ -175,6 +178,8 @@ public class ReportPage extends ReportPanel{
 	
 	@Override
 	public void BackButtonPressed() {
+		Globals.activeUser = person;
+		Main.changeScreen(new Menu(person,true));
 		// TODO Auto-generated method stub
 		
 	}
