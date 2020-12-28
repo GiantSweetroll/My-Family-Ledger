@@ -44,14 +44,12 @@ public class ReportPage extends ReportPanel{
 	private Person person;
 	private JLabel labFrom, labTo;
 	private DatePicker dateFrom, dateTo;
-	private NameEmailPanel chosen;
-	private List<Person> persons;
 	private List<ListTile> tilesUsers;
 	private ListView lvUsers;
 	private JScrollPane scrollUsers;
 	private JTable tableTrans,tableUsers;
-	private DefaultTableModel modelTop;
-	private int columnsTop = 6;
+	private DefaultTableModel modelTop, modelBottom;
+	private int columnsNumber = 6;
 	String[] columnTopNames = {"Date", "Category", "Name", "Amount (Rp.)", "Receipt Link", "Last Modified"};
 	String[] columnBottomNames = {"First Name", "Last Name", "Email", "Total Income (Rp.)",
 			"Total Expenditure (Rp.)", "Balance (Rp.)"};
@@ -127,7 +125,7 @@ public class ReportPage extends ReportPanel{
 		//Properties
 		this.lvUsers.setMultipleSelection(false);
 		this.scrollUsers.getViewport().setOpaque(false);
-		//this.scrollUsers.setOpaque(false);
+		this.scrollUsers.setOpaque(false);
 		this.scrollUsers.getViewport().setBorder(null);
 		this.scrollUsers.setBorder(null);
 		panelCenter.setOpaque(false);
@@ -156,7 +154,6 @@ public class ReportPage extends ReportPanel{
 		this.dateTo = new DatePicker();
 		JPanel panelCenter = new JPanel(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
-		
 		
 		//Properties
 		panelCenter.setOpaque(false);
@@ -201,32 +198,28 @@ public class ReportPage extends ReportPanel{
 		
 	
 	private void initTableBottom() {
-		TableModel modell = new DefaultTableModel(this.dataBottom,this.columnBottomNames) {
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			public boolean isCellEditable(int row, int column){
-				return false;//This causes all cells to be not editable
+		this.modelBottom = new DefaultTableModel(this.columnBottomNames,0) {
+			public boolean isCellEditable(int row, int column) {
+				return false;
 			}
 		};
 		
+		this.tableUsers = new JTable(this.modelBottom);
+		updateTableBottom();
+		
 		//Properties
-		this.tableUsers = new JTable(modell);
+		
 		this.tableUsers.getTableHeader().setFont(Constants.FONT_SMALLER_BOLD);
 		this.tableUsers.setFont(Constants.FONT_SMALLER);
 		this.tableUsers.setPreferredScrollableViewportSize(new Dimension(400, 300));
 	    this.tableUsers.setFillsViewportHeight(true);
-	    this.tableUsers.setRowHeight(30);
-		
-		
+	    this.tableUsers.setRowHeight(30);	
 	}
 	
 	private void updateTableTop() {
 		List <Transaction> transactions = Constants.DATABASE_SERVICE.getAllTransactions();
 		List <Category> categories = Constants.DATABASE_SERVICE.getAllCategories();
-		String[] currentData = new String[this.columnsTop];
+		String[] currentData = new String[this.columnsNumber];
 		for (Transaction t: transactions) {
 			currentData[0] = String.valueOf(t.getDateInput());
 			currentData[1] = categories.get(t.getCategoryID()-1).getName();
@@ -237,6 +230,29 @@ public class ReportPage extends ReportPanel{
 			this.modelTop.addRow(currentData);
 			
 		}
+	}
+	
+	private void updateTableBottom() {
+		Globals.activeUser = person;
+		int adminID = Constants.DATABASE_SERVICE.getAdminID(person.getEmail());
+		List<User> users = Constants.DATABASE_SERVICE.getAllUsers(adminID);
+		String[] currentData = new String[this.columnsNumber];
+		double totalBalance = 0;
+		
+		for (User u: users) {
+			currentData[0] =  u.getFirstName();
+			currentData[1] = u.getLastName();
+			currentData[2] = u.getEmail();
+			
+			//Replace this with total income and total expenditure.
+			//currentData[3] =  u.getFirstName();
+			//currentData[4] = u.getLastName();
+			totalBalance = Constants.DATABASE_SERVICE.getBalance(u.getID());
+			currentData[5] = String.valueOf(totalBalance);
+			this.modelBottom.addRow(currentData);
+			
+		}
+		
 	}
 	
 
