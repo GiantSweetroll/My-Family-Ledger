@@ -277,7 +277,6 @@ public class TransferFunds extends TriplePanelPage
 		spr.putConstraint(SpringLayout.WEST, this.scrollReceiver, 20, SpringLayout.WEST, panelCenter);
 		spr.putConstraint(SpringLayout.EAST, this.scrollReceiver, -20, SpringLayout.EAST, panelCenter);
 		spr.putConstraint(SpringLayout.HORIZONTAL_CENTER, this.scrollReceiver, 0, SpringLayout.HORIZONTAL_CENTER, panelCenter);
-		spr.putConstraint(SpringLayout.SOUTH, this.scrollReceiver, -5, SpringLayout.SOUTH, panelCenter);
 		
 		///Add to panel
 		//Add to panelTop
@@ -323,7 +322,6 @@ public class TransferFunds extends TriplePanelPage
 		spr.putConstraint(SpringLayout.WEST, this.scrollPrevTransfer, 20, SpringLayout.WEST, panelCenter);
         spr.putConstraint(SpringLayout.EAST, this.scrollPrevTransfer, -20, SpringLayout.EAST, panelCenter);
         spr.putConstraint(SpringLayout.HORIZONTAL_CENTER, this.scrollPrevTransfer, 0, SpringLayout.HORIZONTAL_CENTER, panelCenter);
-        spr.putConstraint(SpringLayout.SOUTH, this.scrollPrevTransfer, -5, SpringLayout.SOUTH, panelCenter);
         
 		///Add to panel
 		//add to panelTop
