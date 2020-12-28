@@ -22,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.FontUIResource;
 
@@ -147,23 +148,17 @@ public class TransferFunds extends TriplePanelPage
 		this.labWarning = new WarningLabel();
 		this.labBack = new JLabel("Back");
 		this.butTf = new JButton("Transfer");
-		
-		//Panels
-		JPanel panelButtons = new JPanel(new GridLayout(0, 2));
-		JPanel panelInput = new JPanel();
-		JPanel panelContent = new JPanel(new GridBagLayout());
-		JPanel panelCenter = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		JPanel panelLeft = new JPanel();
-		JPanel panelRight = new JPanel();
-		GridBagConstraints c = new GridBagConstraints();
+		SpringLayout spr = new SpringLayout();
+		JPanel panelCenter = new JPanel(spr);
 		
 		//Properties
-		this.panelTransfer.setLayout(new BorderLayout(5, 50));
+		this.panelTransfer.setLayout(new BorderLayout());
 		this.panelTransfer.setBackground(Color.WHITE);
 		this.labTransfer.setFont(Constants.FONT_TITLE);
 		this.labTransfer.setHorizontalAlignment(SwingConstants.CENTER);
 		this.tfAmount.setColumns(10);
 		this.tfNotes.setColumns(10);
+		this.labWarning.setHorizontalAlignment(SwingConstants.CENTER);
 		this.labBack.setFont(Constants.FONT_SMALLER);
 		this.labBack.setForeground(Constants.COLOR_HYPERLINK);
 		this.labBack.setHorizontalAlignment(SwingConstants.CENTER);
@@ -203,45 +198,57 @@ public class TransferFunds extends TriplePanelPage
 				{
 					labWarning.setText("Invalid value for amount");
 				}
+				catch(NullPointerException ex)
+				{
+					labWarning.setText("Please select a receiver");
+				}
 			}  
 		});
-		panelButtons.setBackground(Color.WHITE);
-		panelInput.setLayout(new BoxLayout(panelInput, BoxLayout.Y_AXIS));
-		panelInput.setBackground(Color.WHITE);
-		panelContent.setBackground(Color.WHITE);
 		panelCenter.setOpaque(false);
-		panelLeft.setOpaque(false);
-		panelRight.setOpaque(false);
+		
+		///SpringLayout Constraints
+		int sidePadding = 70;	//Left and right padding
+		int tbPadding = 20;		//Top bottom padding
+		//labReceiver constraints
+		spr.putConstraint(SpringLayout.WEST, this.labReceiver, sidePadding, SpringLayout.WEST, panelCenter);
+		//chosen constraints
+		spr.putConstraint(SpringLayout.WEST, this.chosen, sidePadding, SpringLayout.WEST, panelCenter);
+		spr.putConstraint(SpringLayout.NORTH, this.chosen, tbPadding, SpringLayout.SOUTH, this.labReceiver);
+		spr.putConstraint(SpringLayout.EAST, this.chosen, -1 * sidePadding, SpringLayout.EAST, panelCenter);
+		//tfAmount constraints
+		spr.putConstraint(SpringLayout.WEST, this.tfAmount, sidePadding, SpringLayout.WEST, panelCenter);
+		spr.putConstraint(SpringLayout.NORTH, this.tfAmount, tbPadding, SpringLayout.SOUTH, this.chosen);
+		spr.putConstraint(SpringLayout.EAST, this.tfAmount, -1 * sidePadding, SpringLayout.EAST, panelCenter);
+		//tfNotes constraints
+		spr.putConstraint(SpringLayout.WEST, this.tfNotes, sidePadding, SpringLayout.WEST, panelCenter);
+		spr.putConstraint(SpringLayout.NORTH, this.tfNotes, tbPadding, SpringLayout.SOUTH, this.tfAmount);
+		spr.putConstraint(SpringLayout.EAST, this.tfNotes, -1 * sidePadding, SpringLayout.EAST, panelCenter);
+		//labWarning constraints
+		spr.putConstraint(SpringLayout.WEST, this.labWarning, sidePadding, SpringLayout.WEST, panelCenter);
+		spr.putConstraint(SpringLayout.NORTH, this.labWarning, tbPadding, SpringLayout.SOUTH, this.tfNotes);
+		spr.putConstraint(SpringLayout.EAST, this.labWarning, -1 * sidePadding, SpringLayout.EAST, panelCenter);
+		//butTf constraints
+		spr.putConstraint(SpringLayout.NORTH, this.butTf, 80, SpringLayout.SOUTH, this.labWarning);
+		spr.putConstraint(SpringLayout.WEST, this.butTf, 5, SpringLayout.HORIZONTAL_CENTER, panelCenter);
+		spr.putConstraint(SpringLayout.EAST, this.butTf, -1 * sidePadding, SpringLayout.EAST, panelCenter);
+		//labBack constraints
+		spr.putConstraint(SpringLayout.NORTH, this.labBack, 80, SpringLayout.SOUTH, this.labWarning);
+		spr.putConstraint(SpringLayout.EAST, this.labBack, -5, SpringLayout.HORIZONTAL_CENTER, panelCenter);
+		spr.putConstraint(SpringLayout.WEST, this.labBack, sidePadding, SpringLayout.WEST, panelCenter);
+		spr.putConstraint(SpringLayout.VERTICAL_CENTER, this.labBack, 0, SpringLayout.VERTICAL_CENTER, this.butTf);
 		
 		///Add to panel
-		//Add to panelButtons
-		panelButtons.add(this.labBack);
-		panelButtons.add(this.butTf);
-		//Add to panelInput
-		panelInput.add(this.labReceiver);
-		panelInput.add(Box.createRigidArea(new Dimension(0, 20)));
-		panelInput.add(this.chosen);
-		panelInput.add(Box.createRigidArea(new Dimension(0, 20)));
-		panelInput.add(this.tfAmount);
-		panelInput.add(Box.createRigidArea(new Dimension(0, 20)));
-		panelInput.add(this.tfNotes);
-		panelInput.add(Box.createRigidArea(new Dimension(0, 20)));
-		panelInput.add(this.labWarning);
-		panelInput.add(Box.createRigidArea(new Dimension(0, 50)));
-		//Add to panelContent
-		Gbm.goToOrigin(c);
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.insets = Constants.INSETS_GENERAL;
-		panelContent.add(panelInput, c);			//panelInput
-		Gbm.newGridLine(c);
-		panelContent.add(panelButtons, c);			//panelButtons
 		//Add to panelCenter
-		panelCenter.add(panelContent);
+		panelCenter.add(this.labReceiver);
+		panelCenter.add(this.chosen);
+		panelCenter.add(this.tfAmount);
+		panelCenter.add(this.tfNotes);
+		panelCenter.add(this.labWarning);
+		panelCenter.add(this.labBack);
+		panelCenter.add(this.butTf);
 		//Add to panelTransfer
 		this.panelTransfer.add(this.labTransfer, BorderLayout.NORTH);
 		this.panelTransfer.add(panelCenter, BorderLayout.CENTER);
-		this.panelTransfer.add(panelRight, BorderLayout.EAST);
-		this.panelTransfer.add(panelLeft, BorderLayout.WEST);
 	}
 	private void initPanelReceivers()
 	{
@@ -249,10 +256,11 @@ public class TransferFunds extends TriplePanelPage
 		this.panelReceivers = new RoundedPanel(false);
 		this.labReceiverHeader = new JLabel("Receivers");
 		this.labClickSelect = new JLabel("Click to select");
-		JPanel panelTop = new JPanel(new BorderLayout());
-		JPanel panelCenter = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		this.lvReceivers = new ListView();
 		this.scrollReceiver = ScrollPaneManager.generateDefaultScrollPane(this.lvReceivers, 10, 10);
+		SpringLayout spr = new SpringLayout();
+		JPanel panelTop = new JPanel(new BorderLayout());
+		JPanel panelCenter = new JPanel(spr);
 		
 		//Properties
 		this.panelReceivers.setLayout(new BorderLayout(5, 50));
@@ -271,6 +279,11 @@ public class TransferFunds extends TriplePanelPage
 		this.scrollReceiver.setBorder(null);
 		updateListViewReceivers();
 		
+		//SpringLayout constraints
+		spr.putConstraint(SpringLayout.WEST, this.scrollReceiver, 20, SpringLayout.WEST, panelCenter);
+		spr.putConstraint(SpringLayout.EAST, this.scrollReceiver, -20, SpringLayout.EAST, panelCenter);
+		spr.putConstraint(SpringLayout.HORIZONTAL_CENTER, this.scrollReceiver, 0, SpringLayout.HORIZONTAL_CENTER, panelCenter);
+		
 		///Add to panel
 		//Add to panelTop
 		panelTop.add(this.labReceiverHeader, BorderLayout.NORTH);
@@ -288,10 +301,11 @@ public class TransferFunds extends TriplePanelPage
 		this.tilesPrevTransfers = new ArrayList<>();
 		this.labPrev = new JLabel ("Previous Transfers");
 		this.labLastTf = new JLabel ("Your last 5 transfers");
-		JPanel panelTop = new JPanel(new BorderLayout());
-		JPanel panelCenter = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		this.lvPrevTransfers = new ListView();
 		this.scrollPrevTransfer = new JScrollPane(this.lvPrevTransfers);
+		SpringLayout spr = new SpringLayout();
+		JPanel panelTop = new JPanel(new BorderLayout());
+		JPanel panelCenter = new JPanel(spr);
 		
 		//Properties
 		this.panelPrev.setBackground(Color.WHITE);
@@ -308,6 +322,11 @@ public class TransferFunds extends TriplePanelPage
 		this.scrollPrevTransfer.getViewport().setBorder(null);
 		this.scrollPrevTransfer.setBorder(null);
 		updateListViewPrevTransfers();
+		
+		//SpringLayout Constraints
+		spr.putConstraint(SpringLayout.WEST, this.scrollReceiver, 20, SpringLayout.WEST, panelCenter);
+		spr.putConstraint(SpringLayout.EAST, this.scrollReceiver, -20, SpringLayout.EAST, panelCenter);
+		spr.putConstraint(SpringLayout.HORIZONTAL_CENTER, this.scrollReceiver, 0, SpringLayout.HORIZONTAL_CENTER, panelCenter);
 		
 		///Add to panel
 		//add to panelTop
