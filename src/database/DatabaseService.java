@@ -16,7 +16,6 @@ import models.Category;
 import models.Person;
 import models.Transaction;
 import models.User;
-import shared.Constants;
 import shared.Methods;
 import shared.SecurityServices;
 
