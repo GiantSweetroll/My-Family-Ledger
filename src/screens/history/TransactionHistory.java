@@ -20,8 +20,11 @@ import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import main.Main;
 import models.Person;
+import screens.menu.Menu;
 import shared.Constants;
+import shared.Globals;
 import shared.Methods;
 import shared.screens.HistoryPanel;
 import shared.components.DatePicker;
@@ -170,7 +173,8 @@ public class TransactionHistory extends HistoryPanel{
 	@Override
 	public void backButtonPressed() {
 		// TODO Auto-generated method stub
-		
+		Globals.activeUser = person;
+		Main.changeScreen(new Menu(person, false));
 	}
 
 	@Override

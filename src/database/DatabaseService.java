@@ -16,6 +16,7 @@ import models.Category;
 import models.Person;
 import models.Transaction;
 import models.User;
+import shared.Constants;
 import shared.Methods;
 import shared.SecurityServices;
 
@@ -1088,7 +1089,7 @@ public final class DatabaseService
 		
 		try
 		{
-			ps = this.prepStatement("SELECT * FROM " + TABLE_TRANSACTIONS + " WHERE " + Transaction.ID + " = " + userID);
+			ps = this.prepStatement("SELECT * FROM " + TABLE_TRANSACTIONS + " WHERE " + User.ID + " = " + userID);
 			rs = ps.executeQuery();
 			
 			//Loop through the result set
@@ -1855,5 +1856,9 @@ public final class DatabaseService
 //		ds.insert(category1);
 //		ds.insert(adminc1);
 //		Constants.DATABASE_SERVICE.insert(transaction1);
+//		List <Transaction> transactions = Constants.DATABASE_SERVICE.getAllTransactions(1);
+//		for(int i = 0; i < transactions.size(); i++) {
+//			System.out.println(transactions.get(i).getID());
+//		}
 	}
 }

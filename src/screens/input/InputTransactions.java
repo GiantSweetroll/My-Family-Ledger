@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Menu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -20,18 +19,19 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.FontUIResource;
 
+import giantsweetroll.gui.swing.ScrollPaneManager;
 import main.Main;
-import models.Account;
 import models.Category;
 import models.Person;
 import models.Transaction;
-import models.User;
-import screens.auth.SignIn;
+import screens.menu.Menu;
 import shared.Constants;
 import shared.Globals;
 import shared.Methods;
@@ -40,7 +40,6 @@ import shared.components.HintTextField;
 import shared.components.HyperlinkLabel;
 import shared.components.listview.ListTile;
 import shared.components.listview.ListView;
-import shared.components.listview.SimpleUserTile;
 import shared.components.listview.TransactionTile;
 import shared.screens.AccountPanel;
 import shared.screens.RoundedPanel;
@@ -67,7 +66,7 @@ public class InputTransactions extends TriplePanelPage{
 	private HintTextField inputItem, inputPrice;
 	private ListView listView;
 	private List<ListTile> tiles;
-	private JScrollPane scrollReceiver;
+	private JScrollPane scrollTf;
 	
 	public InputTransactions(Person person) 
 	{
@@ -94,8 +93,10 @@ public class InputTransactions extends TriplePanelPage{
 		this.labelLastTs = new JLabel("Your Last 5 Transactions");
 		this.listView = new ListView();
 		this.tiles = new ArrayList<ListTile>();
-		this.scrollReceiver = new JScrollPane(this.listView);
+		this.scrollTf = ScrollPaneManager.generateDefaultScrollPane(this.listView, 10, 10);
+		SpringLayout sprLayout = new SpringLayout();
 		JPanel panelTop = new JPanel(new BorderLayout());
+		JPanel panelCenter = new JPanel(sprLayout);
 		
 		
 		//Properties
@@ -107,18 +108,27 @@ public class InputTransactions extends TriplePanelPage{
 		this.labelLastTs.setForeground(Constants.COLOR_TEXT_GRAY);
 		this.labelLastTs.setHorizontalAlignment(SwingConstants.CENTER);
 		panelTop.setOpaque(false);
+		panelCenter.setOpaque(false);
 		this.listView.setMultipleSelection(false);
-		this.scrollReceiver.getViewport().setOpaque(false);
-		this.scrollReceiver.setOpaque(false);
+		this.scrollTf.getViewport().setOpaque(false);
+		this.scrollTf.setOpaque(false);
+		this.scrollTf.getViewport().setBorder(null);
+		this.scrollTf.setBorder(null);
 		updateListView();
+		
+		//SpringLayout Constraints
+		sprLayout.putConstraint(SpringLayout.WEST, this.scrollTf, 20, SpringLayout.WEST, panelCenter);
+        sprLayout.putConstraint(SpringLayout.EAST, this.scrollTf, -20, SpringLayout.EAST, panelCenter);
+        sprLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, this.scrollTf, 0, SpringLayout.HORIZONTAL_CENTER, panelCenter);
 		
 		//Add to panel
 		//add to panelTop
 		panelTop.add(this.labelPrevTrans, BorderLayout.NORTH);
-		panelTop.add(this.labelLastTs, BorderLayout.CENTER);
-		panelTop.add(this.listView, BorderLayout.SOUTH);
+		panelTop.add(this.labelLastTs, BorderLayout.SOUTH);
+		panelCenter.add(this.scrollTf);
 		//add to panelPrevTrans
 		this.panelPrevTrans.add(panelTop, BorderLayout.NORTH);
+		this.panelPrevTrans.add(panelCenter, BorderLayout.CENTER);
 	}
 	
 	private void initPanelInput()
@@ -172,7 +182,8 @@ public class InputTransactions extends TriplePanelPage{
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-				Main.popScreen();
+				Globals.activeUser = person;
+				Main.changeScreen(new Menu(person, false));
 			}
 		});
 		
@@ -205,6 +216,7 @@ public class InputTransactions extends TriplePanelPage{
 				else {
 					double dprice = Double.parseDouble(price);
 					Constants.DATABASE_SERVICE.insert(new Transaction(category.getID(), null, person.getID(), date, date, dprice, item));
+					JOptionPane.showMessageDialog(null, "Transaction Successfully Made");
 					resetInputPage();
 				}
 				
@@ -248,15 +260,13 @@ public class InputTransactions extends TriplePanelPage{
 	
 	private void updateListView() {
 		List<Transaction> transactions = Constants.DATABASE_SERVICE.getAllTransactions(person.getID());
-		List<ListTile> currentTiles = new ArrayList<ListTile>();
+		this.tiles.clear();
 		
 		//Add the data
 		for(int i=0; i < transactions.size(); i++) {
 			TransactionTile ttile = new TransactionTile(transactions.get(i));
-			currentTiles.add(ttile);
+			this.tiles.add(ttile);
 		}
-		
-		this.tiles = currentTiles;
 		this.listView.updateData(this.tiles);
 	}
 	
