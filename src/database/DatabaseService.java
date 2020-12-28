@@ -1697,6 +1697,59 @@ public final class DatabaseService
 		
 		return u;
 	}
+	
+	public List<User> getAllUsers(int adminId)
+	{
+		List<User> users = new ArrayList<User>();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try
+		{
+			ps = this.prepStatement("SELECT * FROM " + TABLE_USERS + " WHERE " + User.ID + " = " + adminId);
+			rs = ps.executeQuery();
+			
+			//Loop through the result set
+			while (rs.next())
+			{
+				User user = new User(rs.getInt(User.ID),
+										rs.getInt(User.ACCOUNT_ID),
+										rs.getInt(User.ADMIN_ID),
+										rs.getString(User.FIRST_NAME),
+										rs.getString(User.LAST_NAME),
+										rs.getString(User.EMAIL),
+										rs.getString(User.PASSWORD));
+				users.add(user);
+			}
+			
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch(SQLException ex) {}
+			}
+			
+			if (rs != null)
+			{
+				try
+				{
+					rs.close();
+				}
+				catch(SQLException ex) {}
+			}
+		}
+		
+		return users;
+	}
 
 	/**
 	 * Get the login information of the either the Admin or the User. If there are no matches
