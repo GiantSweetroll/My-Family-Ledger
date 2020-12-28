@@ -23,11 +23,6 @@ public class HistoryTable extends AbstractLedgerTable implements MouseListener{
 	
 //	private final String[] columnNames2 = {"Date", "Category", "Name", "Amount (Rp.)", "Receipt Link", "Last Modified", "Action"};
 	private final String[] columnNames = {"Id", "Category Id", "User Id", "DateInput" , "DateEdit" , "Amount (Rp.)", "Desc", "Receipt Link", "Action", "Action"};
-//	private final String[][] data = {
-//			{"01/01/01", "Food", "Gardyan", "1000000", "google.com", "none", "none"},
-//			{"01/01/01", "Food", "Gardyan", "1000000", "google.com", "none", "none"},
-//			{"01/01/01", "Food", "Gardyan", "1000000", "google.com", "none", "none"}
-//	};
 	
 	
 	public HistoryTable(List<Transaction> transaction) {

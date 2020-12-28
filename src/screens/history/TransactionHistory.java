@@ -6,6 +6,9 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -21,7 +24,10 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import main.Main;
+import models.Category;
 import models.Person;
+import models.Transaction;
+import models.User;
 import screens.menu.Menu;
 import shared.Constants;
 import shared.Globals;
@@ -29,6 +35,8 @@ import shared.Methods;
 import shared.screens.HistoryPanel;
 import shared.components.DatePicker;
 import shared.components.HintTextField;
+import shared.components.HistoryTableCellRenderer;
+import shared.components.IconCellRenderer;
 
 public class TransactionHistory extends HistoryPanel{
 	
@@ -48,14 +56,10 @@ public class TransactionHistory extends HistoryPanel{
 	private JTextField tfValue;
 	private JTable tableTrans;
 	private DatePicker dateFrom, dateTo;
+	private DefaultTableModel model;
+	private int columns = 8;
 	
-	String[][] data = {
-			{"01/01/01", "Food", "Gardyan", "1000000", "google.com", "none", "none"},
-			{"01/01/01", "Food", "Gardyan", "1000000", "google.com", "none", "none"},
-			{"01/01/01", "Food", "Gardyan", "1000000", "google.com", "none", "none"}
-	};
-	String[] columnNames = {"Date", "Category", "Name", "Amount (Rp.)", "Receipt Link", "Last Modified", "Action"};
-	
+	private String[] columnNames = {"Date", "Category", "Name", "Amount (Rp.)", "Receipt Link", "Last Modified", "Action", "Action"};
 	//Constructor
 	public TransactionHistory(Person person) {
 		super(person);
@@ -128,13 +132,14 @@ public class TransactionHistory extends HistoryPanel{
 
 	private void initTable(){
 		//Initialization
-		TableModel model = new DefaultTableModel(this.data, this.columnNames){
+		this.model = new DefaultTableModel(this.columnNames, 0){
 			public boolean isCellEditable(int row, int column){
 				return false;//This causes all cells to be not editable
 			}
 		};
 		
-		this.tableTrans = new JTable(model);
+		this.tableTrans = new JTable(this.model);
+		updateTable();
 		
 		//Properties
 		this.tableTrans.getTableHeader().setFont(Constants.FONT_SMALLER_BOLD);
@@ -142,6 +147,25 @@ public class TransactionHistory extends HistoryPanel{
 		this.tableTrans.setPreferredScrollableViewportSize(new Dimension(500, 220));
 	    this.tableTrans.setFillsViewportHeight(true);
 	    this.tableTrans.setRowHeight(30);
+	}
+	
+	private void updateTable() {
+		List<Transaction> transactions = Constants.DATABASE_SERVICE.getAllTransactions();
+		String[] currentData = new String[this.columns];
+		
+		for(Transaction tr: transactions) {
+			currentData[0] = tr.getDateInput().toString();
+			currentData[1] = Constants.DATABASE_SERVICE.getCategoryName(tr.getCategoryID());
+			currentData[2] = tr.getDesc();
+			currentData[3] = Double.toString(tr.getAmount());
+			currentData[4] = tr.getLinkReceipt();
+			currentData[5] = tr.getDateEdit().toString();
+			currentData[6] = "";
+			currentData[7] = "";
+			this.model.addRow(currentData);
+			this.tableTrans.getColumnModel().getColumn(columns - 1).setCellRenderer(new HistoryTableCellRenderer(Constants.ICON_EDIT));
+			this.tableTrans.getColumnModel().getColumn(columns - 2).setCellRenderer(new HistoryTableCellRenderer(Constants.ICON_DELETE));
+		}
 	}
 	
 	public static void main(String args[])

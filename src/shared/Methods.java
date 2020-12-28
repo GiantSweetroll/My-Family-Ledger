@@ -68,7 +68,7 @@ public class Methods
 		
 		return arr;
 	}
-	
+		
 	public static String[][] convertTransactionToTableRowData(List<Transaction> list)
 	{
 		String[][] arr = new String[list.size()][10];
