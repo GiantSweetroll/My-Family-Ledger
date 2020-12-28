@@ -54,6 +54,11 @@ public class Constants
 	public static final ImageIcon ICON_LOGO = new ImageIcon(ImageManager.scaleImage(ImageManager.getImage(Constants.class.getResource("/resources/logo_trans.png")), 300, 300));
 	public static final ImageIcon ICON_LOGO_SMALL = new ImageIcon(ImageManager.scaleImage(ImageManager.getImage(Constants.class.getResource("/resources/logo_trans.png")), 100, 100));
 	public static final ImageIcon ICON_CLOSE = new ImageIcon(ImageManager.scaleImage(ImageManager.getImage(Constants.class.getResource("/resources/closeicon.png")), 16, 16));
+	public static final ImageIcon ICON_HISTORY = new ImageIcon(ImageManager.scaleImage(ImageManager.getImage(Constants.class.getResource("/resources/history_icon.png")), 64, 64));
+	public static final ImageIcon ICON_TRANSFER = new ImageIcon(ImageManager.scaleImage(ImageManager.getImage(Constants.class.getResource("/resources/transfer_icon.png")), 64, 64));
+	public static final ImageIcon ICON_REPORT = new ImageIcon(ImageManager.scaleImage(ImageManager.getImage(Constants.class.getResource("/resources/report_icon.png")), 64, 64));
+	public static final ImageIcon ICON_INPUT = new ImageIcon(ImageManager.scaleImage(ImageManager.getImage(Constants.class.getResource("/resources/input_icon.png")), 64, 64));
+	public static final ImageIcon ICON_CATEGORIES = new ImageIcon(ImageManager.scaleImage(ImageManager.getImage(Constants.class.getResource("/resources/categories_icon.png")), 64, 64));
 	
 	//Renderers
 	public static final IconCellRenderer RENDERER_DELETE = new IconCellRenderer(Constants.ICON_DELETE);
