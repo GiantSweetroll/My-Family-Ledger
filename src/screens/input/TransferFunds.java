@@ -10,8 +10,6 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +26,9 @@ import javax.swing.SwingConstants;
 import javax.swing.plaf.FontUIResource;
 
 import giantsweetroll.gui.swing.Gbm;
+import giantsweetroll.gui.swing.ScrollPaneManager;
 import models.Account;
+import models.Admin;
 import models.Person;
 import models.Transaction;
 import models.User;
@@ -40,6 +40,7 @@ import shared.components.WarningLabel;
 import shared.components.listview.ListTile;
 import shared.components.listview.ListView;
 import shared.components.listview.SimpleUserTile;
+import shared.components.listview.TransactionTile;
 import shared.screens.AccountPanel;
 import shared.screens.RoundedPanel;
 import shared.screens.TriplePanelPage;
@@ -75,6 +76,12 @@ public class TransferFunds extends TriplePanelPage
 						tilesPrevTransfers;
 	private JScrollPane scrollReceiver,
 						scrollPrevTransfer;
+	private Runnable receiverChecker;
+	private Thread receiverThread;
+	
+	//Constants
+	private final String RECEIVER_NOT_SELECTED = "<html><i>No receivers chosen yet</i></html>",
+						RECEIVER_NOT_SELECTED_SUB = "<html><i>Please select from the panel on the left</i></html>";
 	
 	//Constructor
 	public TransferFunds(Person person)
@@ -83,6 +90,23 @@ public class TransferFunds extends TriplePanelPage
 		//Initialization
 		this.person = person;
 		this.panelAcc = new AccountPanel();
+		this.receiverChecker = new Runnable()
+				{
+					public void run()
+					{
+						try
+						{
+							ListTile tile = lvReceivers.getSelectedTiles().get(0);
+							Person person = ((SimpleUserTile) tile).getPerson();
+							chosen.setNameEmail(person);
+						}
+						catch(NullPointerException ex)
+						{
+							chosen.setNameEmail(RECEIVER_NOT_SELECTED, RECEIVER_NOT_SELECTED_SUB);
+						}
+					}
+				};
+		this.receiverThread = new Thread(this.receiverChecker);
 		this.initPanelTransfer();
 		this.initPanelReceivers();
 		this.initPanelPrev();
@@ -91,6 +115,23 @@ public class TransferFunds extends TriplePanelPage
 		this.panelAcc.setAccount(this.person);
 		this.setCenterPanels(this.panelReceivers, this.panelTransfer, this.panelPrev);
 		this.setPanelTop(this.panelAcc);
+		
+		//Thread
+		Thread tfThread = new Thread(new Runnable()
+				{
+					public void run()
+					{
+						while(true)
+						{
+							if (!receiverThread.isAlive())
+							{
+								receiverThread = new Thread(receiverChecker);
+								receiverThread.start();
+							}
+						}
+					}
+				});
+		tfThread.start();
 	}
 
 	//Private methods
@@ -100,7 +141,7 @@ public class TransferFunds extends TriplePanelPage
 		this.panelTransfer = new RoundedPanel(false);
 		this.labTransfer = new JLabel("Transfer");
 		this.labReceiver = new JLabel("Receiver");
-		this.chosen = new NameEmailPanel("", "");
+		this.chosen = new NameEmailPanel(this.RECEIVER_NOT_SELECTED, this.RECEIVER_NOT_SELECTED_SUB);
 		this.tfAmount = new HintTextField("Amount (Rp.)");
 		this.tfNotes = new HintTextField("Notes");
 		this.labWarning = new WarningLabel();
@@ -209,8 +250,9 @@ public class TransferFunds extends TriplePanelPage
 		this.labReceiverHeader = new JLabel("Receivers");
 		this.labClickSelect = new JLabel("Click to select");
 		JPanel panelTop = new JPanel(new BorderLayout());
+		JPanel panelCenter = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		this.lvReceivers = new ListView();
-		this.scrollReceiver = new JScrollPane(this.lvReceivers);
+		this.scrollReceiver = ScrollPaneManager.generateDefaultScrollPane(this.lvReceivers, 10, 10);
 		
 		//Properties
 		this.panelReceivers.setLayout(new BorderLayout(5, 50));
@@ -221,42 +263,33 @@ public class TransferFunds extends TriplePanelPage
 		this.labClickSelect.setHorizontalAlignment(SwingConstants.CENTER);
 		this.labClickSelect.setForeground(Constants.COLOR_TEXT_GRAY);
 		panelTop.setOpaque(false);
+		panelCenter.setOpaque(false);
 		this.lvReceivers.setMultipleSelection(false);
-		this.lvReceivers.addMouseListener(new MouseAdapter()
-				{
-					public void mouseClicked(MouseEvent e)
-					{
-						ListTile tile = lvReceivers.getSelectedTiles().get(0);
-						Person person = ((SimpleUserTile) tile).getPerson();
-						if (person != null)
-						{
-							chosen.setNameEmail(person);
-						}
-						else
-						{
-							chosen.setNameEmail("", "");
-						}
-					}
-				});
 		this.scrollReceiver.getViewport().setOpaque(false);
 		this.scrollReceiver.setOpaque(false);
+		this.scrollReceiver.getViewport().setBorder(null);
+		this.scrollReceiver.setBorder(null);
 		updateListViewReceivers();
 		
 		///Add to panel
 		//Add to panelTop
 		panelTop.add(this.labReceiverHeader, BorderLayout.NORTH);
 		panelTop.add(this.labClickSelect, BorderLayout.SOUTH);
+		//Add to panelCenter
+		panelCenter.add(this.scrollReceiver);
 		//Add to panelRecievers
 		this.panelReceivers.add(panelTop, BorderLayout.NORTH);
-		this.panelReceivers.add(this.scrollReceiver, BorderLayout.CENTER);
+		this.panelReceivers.add(panelCenter, BorderLayout.CENTER);
 	}
 	private void initPanelPrev()
 	{
 		//Initialization
 		this.panelPrev = new RoundedPanel(false);
+		this.tilesPrevTransfers = new ArrayList<>();
 		this.labPrev = new JLabel ("Previous Transfers");
 		this.labLastTf = new JLabel ("Your last 5 transfers");
 		JPanel panelTop = new JPanel(new BorderLayout());
+		JPanel panelCenter = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		this.lvPrevTransfers = new ListView();
 		this.scrollPrevTransfer = new JScrollPane(this.lvPrevTransfers);
 		
@@ -268,18 +301,23 @@ public class TransferFunds extends TriplePanelPage
 		this.labLastTf.setForeground(Constants.COLOR_TEXT_GRAY);
 		this.labLastTf.setHorizontalAlignment(SwingConstants.CENTER);
 		panelTop.setOpaque(false);
+		panelCenter.setOpaque(false);
 		this.lvPrevTransfers.setMultipleSelection(false);
 		this.scrollPrevTransfer.getViewport().setOpaque(false);
 		this.scrollPrevTransfer.setOpaque(false);
+		this.scrollPrevTransfer.getViewport().setBorder(null);
+		this.scrollPrevTransfer.setBorder(null);
 		updateListViewPrevTransfers();
 		
 		///Add to panel
 		//add to panelTop
 		panelTop.add(this.labPrev, BorderLayout.NORTH);
 		panelTop.add(this.labLastTf, BorderLayout.SOUTH);
+		//add to panelCenter
+		panelCenter.add(this.scrollPrevTransfer);
 		//Add to panelPrev
 		this.panelPrev.add(panelTop, BorderLayout.NORTH);
-		this.panelPrev.add(this.scrollPrevTransfer, BorderLayout.CENTER);
+		this.panelPrev.add(panelCenter, BorderLayout.CENTER);
 	}
 	
 	private void updateListViewReceivers() {
@@ -298,12 +336,21 @@ public class TransferFunds extends TriplePanelPage
 		this.lvReceivers.updateData(this.tilesReceivers);
 	}
 	
-	private void updateListViewPrevTransfers() {
-		List<Transaction> transactions = Constants.DATABASE_SERVICE.getAllTransactions();
-		List<Transaction> lastTrans = new ArrayList<Transaction>();
-		lastTrans.add(transactions.get(transactions.size()-1));
-		lastTrans.add(transactions.get(transactions.size()-2));
-		lastTrans.add(transactions.get(transactions.size()-3));
+	/**
+	 * Updates the list view for previous transfers. Calls the revalidate() and repaint() methods.
+	 */
+	private void updateListViewPrevTransfers() 
+	{
+		List<Transaction> transactions = Constants.DATABASE_SERVICE.getAllTransactions(this.person.getID());
+		this.tilesPrevTransfers.clear();
+		//Create tiles
+		for (Transaction tr : transactions)
+		{
+			TransactionTile tile = new TransactionTile(tr);
+			this.tilesPrevTransfers.add(tile);
+		}
+		
+		this.lvPrevTransfers.updateData(this.tilesPrevTransfers);
 	}
 	
 	private void resetFields() {
@@ -320,7 +367,7 @@ public class TransferFunds extends TriplePanelPage
 		
 		//Initialization
 		JFrame frame = new JFrame();
-		TransferFunds tf = new TransferFunds(null);
+		TransferFunds tf = new TransferFunds(new Admin(1, "Gardyan", "Akbar"));
 		
 		//Properties
 		frame.setSize(700, 700);
