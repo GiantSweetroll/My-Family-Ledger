@@ -209,7 +209,6 @@ public class Menu extends JPanel{
 		this.logo = new LogoLabel(LogoLabel.BIG);
 		this.logoDesc = new JLabel("Our Funds Motto or smth");
 		this.panelAcc = new AccountPanel();
-		Globals.activeUser = person;
 		
 		JPanel panelTop = new JPanel();
 		JPanel panelButton = new JPanel();
