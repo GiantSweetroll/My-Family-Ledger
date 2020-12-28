@@ -17,10 +17,17 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import giantsweetroll.gui.swing.Gbm;
+import giantsweetroll.gui.swing.ScrollPaneManager;
+import main.Main;
+import models.Account;
 import models.Person;
+import models.User;
+import screens.menu.Menu;
 import shared.Constants;
+import shared.Globals;
 import shared.Methods;
 import shared.components.DatePicker;
+import shared.components.NameEmailPanel;
 import shared.components.listview.ListTile;
 import shared.components.listview.ListView;
 import shared.components.listview.SimpleUserTile;
@@ -34,9 +41,10 @@ public class ReportPage extends ReportPanel{
 	private Person person;
 	private JLabel labFrom, labTo;
 	private DatePicker dateFrom, dateTo;
+	private NameEmailPanel chosen;
 	private List<Person> persons;
-	private List<ListTile> userTiles;
-	private ListView listView;
+	private List<ListTile> tilesUsers;
+	private ListView lvUsers;
 	private JScrollPane scrollUsers;
 	private JTable tableTrans,tableUsers;
 	
@@ -71,36 +79,39 @@ public class ReportPage extends ReportPanel{
 		
 	}
 	
-	public void showUsers(List<Person> persons)
+	public void updateListViewUsers()
 	{
 		
-		//Add data
-		this.persons.addAll(persons);
-		for (Person person : this.persons)
-		{
-			SimpleUserTile tile = new SimpleUserTile(person);
-			this.userTiles.add(tile);
-		}
-		this.listView.updateData(this.userTiles);
+		List<User> users = Constants.DATABASE_SERVICE.getAllUsers();
+		List <Account> accounts = Constants.DATABASE_SERVICE.getAllAccounts();
+		List <ListTile> currentTiles = new ArrayList<ListTile>();
 		
-		this.revalidate();
-		this.repaint();
+		//Add the data 
+		for(int i =0; i < users.size(); i++) {
+			SimpleUserTile SUT = new SimpleUserTile(users.get(i));
+			currentTiles.add(SUT);	
+		}
+		this.tilesUsers = currentTiles;
+		this.lvUsers.updateData(tilesUsers);
 	}
 	
 	private void initPanelUsers()
 	{
 		//Initialization
-		this.listView = new ListView();
+		this.lvUsers = new ListView();
 		this.persons = new ArrayList<Person>();
-		this.userTiles = new ArrayList<ListTile>();
-		this.scrollUsers = new JScrollPane(this.listView);
+		this.scrollUsers = ScrollPaneManager.generateDefaultScrollPane(this.lvUsers);
 		JPanel panelCenter = new JPanel();
 		
 		//Properties
-		this.scrollUsers.getViewport().setOpaque(false);
+		this.scrollUsers.getViewport().setOpaque(true);
 		this.scrollUsers.setOpaque(false);
+		this.scrollUsers.setBorder(null);
 		panelCenter.setOpaque(false);
+		panelCenter.add(scrollUsers);
+		updateListViewUsers();
 		this.setusersPanel(panelCenter);
+		
 	}
 	
 	
@@ -175,6 +186,8 @@ public class ReportPage extends ReportPanel{
 	
 	@Override
 	public void BackButtonPressed() {
+		Globals.activeUser = person;
+		Main.changeScreen(new Menu(person,true));
 		// TODO Auto-generated method stub
 		
 	}
