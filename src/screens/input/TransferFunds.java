@@ -250,6 +250,7 @@ public class TransferFunds extends TriplePanelPage
 		this.labReceiverHeader = new JLabel("Receivers");
 		this.labClickSelect = new JLabel("Click to select");
 		this.lvReceivers = new ListView();
+		this.tilesReceivers = new ArrayList<ListTile>();
 		this.scrollReceiver = ScrollPaneManager.generateDefaultScrollPane(this.lvReceivers, 10, 10);
 		SpringLayout spr = new SpringLayout();
 		JPanel panelTop = new JPanel(new BorderLayout());
@@ -291,16 +292,17 @@ public class TransferFunds extends TriplePanelPage
 	{
 		//Initialization
 		this.panelPrev = new RoundedPanel(false);
-		this.tilesPrevTransfers = new ArrayList<>();
 		this.labPrev = new JLabel ("Previous Transfers");
 		this.labLastTf = new JLabel ("Your last 5 transfers");
 		this.lvPrevTransfers = new ListView();
-		this.scrollPrevTransfer = new JScrollPane(this.lvPrevTransfers);
+		this.tilesPrevTransfers = new ArrayList<ListTile>();
+		this.scrollPrevTransfer = ScrollPaneManager.generateDefaultScrollPane(this.lvPrevTransfers, 10, 10);
 		SpringLayout spr = new SpringLayout();
 		JPanel panelTop = new JPanel(new BorderLayout());
 		JPanel panelCenter = new JPanel(spr);
 		
 		//Properties
+		this.panelPrev.setLayout(new BorderLayout(5, 50));
 		this.panelPrev.setBackground(Color.WHITE);
 		this.labPrev.setFont(Constants.FONT_SUB_TITLE);
 		this.labPrev.setHorizontalAlignment(SwingConstants.CENTER);
@@ -317,9 +319,9 @@ public class TransferFunds extends TriplePanelPage
 		updateListViewPrevTransfers();
 		
 		//SpringLayout Constraints
-		spr.putConstraint(SpringLayout.WEST, this.scrollReceiver, 20, SpringLayout.WEST, panelCenter);
-		spr.putConstraint(SpringLayout.EAST, this.scrollReceiver, -20, SpringLayout.EAST, panelCenter);
-		spr.putConstraint(SpringLayout.HORIZONTAL_CENTER, this.scrollReceiver, 0, SpringLayout.HORIZONTAL_CENTER, panelCenter);
+		spr.putConstraint(SpringLayout.WEST, this.scrollPrevTransfer, 20, SpringLayout.WEST, panelCenter);
+        spr.putConstraint(SpringLayout.EAST, this.scrollPrevTransfer, -20, SpringLayout.EAST, panelCenter);
+        spr.putConstraint(SpringLayout.HORIZONTAL_CENTER, this.scrollPrevTransfer, 0, SpringLayout.HORIZONTAL_CENTER, panelCenter);
 		
 		///Add to panel
 		//add to panelTop
@@ -335,16 +337,14 @@ public class TransferFunds extends TriplePanelPage
 	private void updateListViewReceivers() {
 		List<User> users = Constants.DATABASE_SERVICE.getAllUsers();
 		List<Account> accounts = Constants.DATABASE_SERVICE.getAllAccounts();
-		List<ListTile> currentTiles = new ArrayList<ListTile>();
-		
-		//Add the data
+		this.tilesReceivers.clear();
+		//Create tiles
 		for(int i=0; i<users.size(); i++) {
 			SimpleUserTile sut = new SimpleUserTile(users.get(i));
 			sut.setTopRightText("Rp. " + String.valueOf(accounts.get(i).getBalance()));
-			currentTiles.add(sut);
+			this.tilesReceivers.add(sut);
 		}
 		
-		this.tilesReceivers = currentTiles;
 		this.lvReceivers.updateData(this.tilesReceivers);
 	}
 	
@@ -353,7 +353,7 @@ public class TransferFunds extends TriplePanelPage
 	 */
 	private void updateListViewPrevTransfers() 
 	{
-		List<Transaction> transactions = Constants.DATABASE_SERVICE.getAllTransactions(this.person.getID());
+		List<Transaction> transactions = Constants.DATABASE_SERVICE.getAllTransactions(this.person.getID(), 1);
 		this.tilesPrevTransfers.clear();
 		//Create tiles
 		for (Transaction tr : transactions)
