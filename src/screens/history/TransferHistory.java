@@ -5,9 +5,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +28,7 @@ import shared.Constants;
 import shared.Methods;
 import shared.components.DatePicker;
 import shared.components.HintTextField;
+import shared.components.WarningLabel;
 import shared.components.listview.ListTile;
 import shared.components.listview.ListView;
 import shared.components.listview.SimpleUserTile;
@@ -47,7 +45,8 @@ public class TransferHistory extends HistoryPanel
 	private JLabel labValue, 
 					labReceiver,
 					labFrom,
-					labTo;
+					labTo,
+					labWarning;
 	private JComboBox<String> comboOperand;
 	private JTextField tfValue;
 	private JScrollPane scrollReceiver;
@@ -136,6 +135,8 @@ public class TransferHistory extends HistoryPanel
 		this.listView.setMultipleSelection(false);
 		this.scrollReceiver.getViewport().setOpaque(false);
 		this.scrollReceiver.setOpaque(false);
+		this.scrollReceiver.getViewport().setBorder(null);
+		this.scrollReceiver.setBorder(null);
 		updateListView();
 	}
 	private void initFilters()
@@ -145,6 +146,7 @@ public class TransferHistory extends HistoryPanel
 		this.labValue = new JLabel("Value (Rp.)");
 		this.comboOperand = new JComboBox<String>(Constants.COMBO_BOX_OPERANDS);
 		this.tfValue = new HintTextField("Value");
+		this.labWarning = new WarningLabel();
 		this.labReceiver = new JLabel("Receiver");
 		this.labFrom = new JLabel("From");
 		this.dateFrom = new DatePicker();
@@ -185,6 +187,10 @@ public class TransferHistory extends HistoryPanel
 		panelTop.add(this.comboOperand, c);			//Operand combobox
 		Gbm.nextGridColumn(c);
 		panelTop.add(this.tfValue, c);				//Value text field
+		Gbm.newGridLine(c);
+		Gbm.nextGridColumn(c);
+		c.gridwidth = 2;
+		panelTop.add(this.labWarning, c);			//Warning label
 		Gbm.newGridLine(c);
 		c.gridwidth = 3;
 		panelTop.add(this.labReceiver, c);			//Receivers
@@ -232,14 +238,22 @@ public class TransferHistory extends HistoryPanel
 	@Override
 	public void refreshButtonPressed() 
 	{
-		//Date dateStart = convertUtilToSql(this.dateFrom.getSelectedDate());
-		//Date dateEnd =  convertUtilToSql(this.dateTo.getSelectedDate());
-		Object operand = this.comboOperand.getSelectedItem();
-		double value = Double.parseDouble(this.tfValue.getText());
-		//System.out.println("Date start: " + convertUtilToSql(this.dateFrom.getSelectedDate()));
-		System.out.println("Date end: " + this.dateTo.getSelectedDate());
-		System.out.println("Operand: " + operand);
-		System.out.println("Value: " + value);
+		try
+		{
+			//Date dateStart = convertUtilToSql(this.dateFrom.getSelectedDate());
+			//Date dateEnd =  convertUtilToSql(this.dateTo.getSelectedDate());
+			Object operand = this.comboOperand.getSelectedItem();
+			double value = Double.parseDouble(this.tfValue.getText());
+			this.labWarning.setText("");
+			//System.out.println("Date start: " + convertUtilToSql(this.dateFrom.getSelectedDate()));
+			System.out.println("Date end: " + this.dateTo.getSelectedDate());
+			System.out.println("Operand: " + operand);
+			System.out.println("Value: " + value);
+		}
+		catch(NumberFormatException ex)
+		{
+			this.labWarning.setText("Please enter a valid value");
+		}
 	}
 
 	private void updateListView() {
@@ -257,11 +271,6 @@ public class TransferHistory extends HistoryPanel
 		this.tiles = currentTiles;
 		this.listView.updateData(this.tiles);
 	}
-	
-	private java.sql.Date convertUtilToSql(java.util.Date uDate) {
-        java.sql.Date sDate = new java.sql.Date(uDate.getTime());
-        return sDate;
-    }
 	
 	//Testing
 	public static void main(String args[])
