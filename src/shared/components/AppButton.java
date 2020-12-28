@@ -2,6 +2,7 @@ package shared.components;
 
 import java.awt.Color;
 
+import javax.swing.Icon;
 import javax.swing.JButton;
 
 import shared.Constants;
@@ -22,6 +23,11 @@ public class AppButton extends JButton
 	public AppButton(String text)
 	{
 		super(text);
+		this.init();
+	}
+	public AppButton(String text, Icon icon)
+	{
+		super(text, icon);
 		this.init();
 	}
 	
