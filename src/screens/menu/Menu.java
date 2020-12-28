@@ -2,6 +2,7 @@ package screens.menu;
 
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -16,11 +17,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SpringLayout;
+import javax.swing.SwingConstants;
 import javax.swing.plaf.FontUIResource;
 
 import giantsweetroll.ImageManager;
+import giantsweetroll.gui.swing.ScrollPaneManager;
 import main.Main;
-import models.Admin;
 import models.Person;
 import screens.history.TransactionHistory;
 import screens.history.TransferHistory;
@@ -31,7 +34,6 @@ import shared.Constants;
 import shared.Globals;
 import shared.Methods;
 import shared.components.AppButton;
-import shared.components.CategoryEditor;
 import shared.components.LogoLabel;
 import shared.screens.AccountPanel;
 
@@ -41,7 +43,6 @@ public class Menu extends JPanel{
 	private static final long serialVersionUID = -4877032747183645341L;
 
 	//Fields
-	private Person person;
 	private AppButton butTransfer, 
 					butHistory, 
 					butReport, butExit,
@@ -49,23 +50,13 @@ public class Menu extends JPanel{
 	private AccountPanel panelAcc;
 	private LogoLabel logo;
 	private JLabel logoDesc, 
-					historyIconLabel, historyLabel,
-					transferIconLabel, transferLabel,
-					reportIconLabel, reportLabel,
-					inputIconLabel, inputLabel,
 					addCatIconLabel, addCatLabel;
 	private boolean asAdmin;
-	ImageIcon historyicon = createImageIcon("/resources/history_icon.png", "History");
-	ImageIcon transfericon = createImageIcon("/resources/transfer_icon.png", "Transfer");
-	ImageIcon reporticon = createImageIcon("/resources/report_icon.png", "Report");
-	ImageIcon inputicon = createImageIcon("/resources/input_icon.png", "Input");
-	ImageIcon categoriesicon = createImageIcon("/resources/categories_icon.png","Categories");
 	
 	
 	public Menu (Person person, boolean asAdmin)
 	{
 		super();
-		this.person = person;
 		this.asAdmin = asAdmin;
 		this.setLayout(new BorderLayout());
 		
@@ -83,43 +74,26 @@ public class Menu extends JPanel{
 	private void initMenuAdmin(Person person)
 	{
 		//Initialization
-		this.person = person;
-		this.butHistory = new AppButton();
-		this.butTransfer = new AppButton();
-		this.butReport = new AppButton();
+		this.panelAcc = new AccountPanel();
+		this.butHistory = new AppButton("History", Constants.ICON_HISTORY);
+		this.butTransfer = new AppButton("Transfer", Constants.ICON_TRANSFER);
+		this.butReport = new AppButton("Report", Constants.ICON_REPORT);
 		this.butCategories = new AppButton();
 		this.butExit = new AppButton("Exit");
 		this.logo = new LogoLabel(LogoLabel.BIG);
 		this.logoDesc = new JLabel("Our Funds Motto or smth");
-		this.historyIconLabel = new JLabel(historyicon);
-		this.historyLabel = new JLabel("History");
-		this.transferIconLabel = new JLabel(transfericon);
-		this.transferLabel = new JLabel("Transfer");
-		this.reportIconLabel = new JLabel(reporticon);
-		this.reportLabel = new JLabel("Report");
-		this.addCatIconLabel = new JLabel(categoriesicon);
+		this.addCatIconLabel = new JLabel(Constants.ICON_CATEGORIES);
 		this.addCatLabel = new JLabel ("   Categories");
-		JPanel panelHistoryBtn = new JPanel();
-		JPanel panelTransferBtn = new JPanel();
-		JPanel panelReportBtn = new JPanel();
+		SpringLayout spr = new SpringLayout();
 		JPanel panelCategoriesBtn = new JPanel();
 		JPanel panelTop = new JPanel();
 		JPanel panelButton = new JPanel();
 		JPanel panelCenter = new JPanel();
 		JPanel panelBottom = new JPanel();
 		JPanel mainPanel = new JPanel(new BorderLayout());
-		JScrollPane scrollpane = new JScrollPane(mainPanel);
-		this.panelAcc = new AccountPanel();
-		Globals.activeUser = person;
-		
+		JScrollPane scrollpane = ScrollPaneManager.generateDefaultScrollPane(mainPanel, 10, 10);
 		
 		//Properties 
-		panelHistoryBtn.setLayout(new BoxLayout(panelHistoryBtn,BoxLayout.Y_AXIS));
-		panelHistoryBtn.setOpaque(false);
-		panelTransferBtn.setLayout(new BoxLayout(panelTransferBtn,BoxLayout.Y_AXIS));
-		panelTransferBtn.setOpaque(false);
-		panelReportBtn.setLayout(new BoxLayout(panelReportBtn,BoxLayout.Y_AXIS));
-		panelReportBtn.setOpaque(false);
 		panelCategoriesBtn.setLayout(new BoxLayout(panelCategoriesBtn,BoxLayout.X_AXIS));
 		panelCategoriesBtn.setOpaque(false);
 		panelTop.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -129,17 +103,14 @@ public class Menu extends JPanel{
 		mainPanel.setLayout(new BorderLayout());
 		
 		this.logoDesc.setAlignmentX(Component.CENTER_ALIGNMENT);
-		this.historyIconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		this.historyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		this.transferIconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		this.transferLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		this.reportIconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		this.reportLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		this.logo.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
 		this.butTransfer.setBackground(Constants.COLOR_BUTTON_YELLOW);
 		this.butTransfer.setFont(Constants.FONT_GENERAL_BOLD);
 		this.butTransfer.setPreferredSize(new Dimension(220,150));
+		this.butTransfer.setVerticalTextPosition(SwingConstants.BOTTOM);
+		this.butTransfer.setHorizontalTextPosition(SwingConstants.CENTER);
+		this.butTransfer.setForeground(Color.BLACK);
 		this.butTransfer.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
@@ -151,6 +122,9 @@ public class Menu extends JPanel{
 		this.butHistory.setBackground(Constants.COLOR_BUTTON_YELLOW);
 		this.butHistory.setFont(Constants.FONT_GENERAL_BOLD);
 		this.butHistory.setPreferredSize(new Dimension(220,150));
+		this.butHistory.setVerticalTextPosition(SwingConstants.BOTTOM);
+		this.butHistory.setHorizontalTextPosition(SwingConstants.CENTER);
+		this.butHistory.setForeground(Color.BLACK);
 		this.butHistory.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
@@ -161,6 +135,9 @@ public class Menu extends JPanel{
 		this.butReport.setBackground(Constants.COLOR_BUTTON_YELLOW);
 		this.butReport.setFont(Constants.FONT_GENERAL_BOLD);
 		this.butReport.setPreferredSize(new Dimension(220,150));
+		this.butReport.setVerticalTextPosition(SwingConstants.BOTTOM);
+		this.butReport.setHorizontalTextPosition(SwingConstants.CENTER);
+		this.butReport.setForeground(Color.BLACK);
 		this.butReport.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
@@ -192,21 +169,6 @@ public class Menu extends JPanel{
 		//Add to panelTop 
 		panelAcc.setAccount(person);
 		panelTop.add(panelAcc);
-		
-		//Add to History Button
-		panelHistoryBtn.add(historyIconLabel);
-		panelHistoryBtn.add(historyLabel);
-		butHistory.add(panelHistoryBtn);
-		
-		//Add to Transfer Button
-		panelTransferBtn.add(transferIconLabel);
-		panelTransferBtn.add(transferLabel);
-		butTransfer.add(panelTransferBtn);
-		
-		//Add to Report Button
-		panelReportBtn.add(reportIconLabel);
-		panelReportBtn.add(reportLabel);
-		butReport.add(panelReportBtn);
 		
 		//Add to Categories button 
 		panelCategoriesBtn.add(addCatIconLabel);
@@ -240,36 +202,25 @@ public class Menu extends JPanel{
 	}
 	
 	private void initMenuUser(Person person) {
-		this.person = person;
-		this.butHistory = new AppButton();
-		this.butInput = new AppButton();
+		this.butHistory = new AppButton("History", Constants.ICON_HISTORY);
+		this.butInput = new AppButton("Input", Constants.ICON_INPUT);
 		this.butCategories = new AppButton();
 		this.butExit = new AppButton("Exit");
 		this.logo = new LogoLabel(LogoLabel.BIG);
 		this.logoDesc = new JLabel("Our Funds Motto or smth");
 		this.panelAcc = new AccountPanel();
-		this.historyIconLabel = new JLabel(historyicon);
-		this.historyLabel = new JLabel("History");
-		this.inputIconLabel = new JLabel(inputicon);
-		this.inputLabel = new JLabel("Input");
 		Globals.activeUser = person;
 		
-		JPanel panelHistoryBtn = new JPanel();
-		JPanel panelInputBtn = new JPanel();
 		JPanel panelTop = new JPanel();
 		JPanel panelButton = new JPanel();
 		JPanel panelCenter = new JPanel();
 		JPanel panelBottom = new JPanel(); 
 		JPanel mainPanel = new JPanel();
 		JPanel panelCategories = new JPanel();
-		JScrollPane scrollpane = new JScrollPane(mainPanel);
+		JScrollPane scrollpane = ScrollPaneManager.generateDefaultScrollPane(mainPanel, 10 ,10);
 		
 		
 		//Properties 
-		panelHistoryBtn.setLayout(new BoxLayout(panelHistoryBtn,BoxLayout.Y_AXIS));
-		panelHistoryBtn.setOpaque(false);
-		panelInputBtn.setLayout(new BoxLayout(panelInputBtn,BoxLayout.Y_AXIS));
-		panelInputBtn.setOpaque(false);
 		panelTop.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		panelButton.setLayout(new FlowLayout(FlowLayout.CENTER,200,200));
 		panelCenter.setLayout(new BoxLayout(panelCenter, BoxLayout.Y_AXIS));
@@ -277,15 +228,13 @@ public class Menu extends JPanel{
 		panelCategories.setLayout(new FlowLayout(FlowLayout.CENTER));
 		mainPanel.setLayout(new BorderLayout());
 		this.logoDesc.setAlignmentX(Component.CENTER_ALIGNMENT);
-		this.historyIconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		this.historyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		this.inputIconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		this.inputLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		
 		
 		this.butInput.setBackground(Constants.COLOR_BUTTON_YELLOW);
 		this.butInput.setFont(Constants.FONT_GENERAL_BOLD);
 		this.butInput.setPreferredSize(new Dimension(220,150));
+		this.butInput.setVerticalTextPosition(SwingConstants.BOTTOM);
+		this.butInput.setHorizontalTextPosition(SwingConstants.CENTER);
+		this.butInput.setForeground(Color.BLACK);
 		this.butInput.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				Main.changeScreen(new InputTransactions(person));
@@ -295,6 +244,9 @@ public class Menu extends JPanel{
 		this.butHistory.setBackground(Constants.COLOR_BUTTON_YELLOW);
 		this.butHistory.setFont(Constants.FONT_GENERAL_BOLD);
 		this.butHistory.setPreferredSize(new Dimension(220,150));
+		this.butHistory.setVerticalTextPosition(SwingConstants.BOTTOM);
+		this.butHistory.setHorizontalTextPosition(SwingConstants.CENTER);
+		this.butHistory.setForeground(Color.BLACK);
 		this.butHistory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				Main.changeScreen(new TransactionHistory(person));
@@ -308,18 +260,6 @@ public class Menu extends JPanel{
 				System.exit(0);
 			}
 		});
-		
-		
-		
-		//Add to History Button
-		panelHistoryBtn.add(historyIconLabel);
-		panelHistoryBtn.add(historyLabel);
-		butHistory.add(panelHistoryBtn);
-		
-		//Add to Input Button
-		panelInputBtn.add(inputIconLabel);
-		panelInputBtn.add(inputLabel);
-		butInput.add(panelInputBtn);
 		
 		//Add to panelTop
 		panelAcc.setAccount(person);
@@ -349,6 +289,7 @@ public class Menu extends JPanel{
 		this.add(scrollpane);	
 	}
 	
+	@Deprecated
 	private ImageIcon createImageIcon(String path, String description) {
 		java.net.URL imgURL = getClass().getResource(path);
 		if (imgURL != null) {
