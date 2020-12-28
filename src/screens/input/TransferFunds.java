@@ -2,20 +2,13 @@ package screens.input;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -26,7 +19,6 @@ import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.FontUIResource;
 
-import giantsweetroll.gui.swing.Gbm;
 import giantsweetroll.gui.swing.ScrollPaneManager;
 import models.Account;
 import models.Admin;
@@ -181,6 +173,7 @@ public class TransferFunds extends TriplePanelPage
 					long millis = System.currentTimeMillis(); 
 					Date date = new java.sql.Date(millis);
 					double amount = Double.parseDouble(tfAmount.getText());
+					labWarning.setText("");
 					String notes = tfNotes.getText();
 					Transaction trans = new Transaction(categoryId, adminId, userId, date, date, amount, notes);
 					Constants.DATABASE_SERVICE.insert(trans);
