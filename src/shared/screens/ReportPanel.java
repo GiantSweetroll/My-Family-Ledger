@@ -38,7 +38,7 @@ public abstract class ReportPanel extends JPanel{
 	private AccountPanel panelAcc;
 	private Person person;
 	private JTable table1, table2;
-	private JScrollPane scrollTableTop, scrollTableBottom,scrollUsers;
+	private JScrollPane scrollTableTop, scrollTableBottom;
 	
 	public ReportPanel(Person person) {
 		//Initialization
@@ -298,7 +298,6 @@ public abstract class ReportPanel extends JPanel{
 	private void initUsers() {
 		this.panelUsers = new RoundedPanel(false);
 		this.panelUsersComp = new JPanel();
-		this.scrollUsers = new JScrollPane();
 		this.usersLabel = new JLabel("Users");
 		JSeparator sep = new JSeparator(SwingConstants.HORIZONTAL);
 		JSeparator sep2 = new JSeparator(SwingConstants.HORIZONTAL);
