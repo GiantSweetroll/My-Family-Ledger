@@ -21,6 +21,7 @@ import giantsweetroll.gui.swing.Gbm;
 import giantsweetroll.gui.swing.ScrollPaneManager;
 import main.Main;
 import models.Account;
+import models.Category;
 import models.Person;
 import models.Transaction;
 import models.User;
@@ -49,19 +50,17 @@ public class ReportPage extends ReportPanel{
 	private ListView lvUsers;
 	private JScrollPane scrollUsers;
 	private JTable tableTrans,tableUsers;
-	
-	/*String[][] dataTop = {
-			{"01/01/01", "Food", "Gardyan", "1000000", "google.com", "Yesterday"},
-			{"01/01/01", "Food", "Gardyan", "1000000", "google.com", "2 Days Ago"},
-			{"01/01/01", "Food", "Gardyan", "1000000", "google.com", "Yesterday"}
-	};*/
+	private DefaultTableModel modelTop;
+	private int columnsTop = 6;
+	String[] columnTopNames = {"Date", "Category", "Name", "Amount (Rp.)", "Receipt Link", "Last Modified"};
+	String[] columnBottomNames = {"First Name", "Last Name", "Email", "Total Income (Rp.)",
+			"Total Expenditure (Rp.)", "Balance (Rp.)"};
 	
 	String [][] dataBottom = {
 			{"Adam","Smith","adam@gmail.com","150000","20000","90000"}
 	};
 	
-	String[] columnBottomNames = {"First Name", "Last Name", "Email", "Total Income (Rp.)",
-								"Total Expenditure (Rp.)", "Balance (Rp.)"};
+	
 	
 	//Constructor
 	public ReportPage(Person person) {
@@ -128,7 +127,7 @@ public class ReportPage extends ReportPanel{
 		//Properties
 		this.lvUsers.setMultipleSelection(false);
 		this.scrollUsers.getViewport().setOpaque(false);
-		this.scrollUsers.setOpaque(false);
+		//this.scrollUsers.setOpaque(false);
 		this.scrollUsers.getViewport().setBorder(null);
 		this.scrollUsers.setBorder(null);
 		panelCenter.setOpaque(false);
@@ -183,19 +182,14 @@ public class ReportPage extends ReportPanel{
 	}
 	
 	private void initTableTop() {
-		List<Transaction> trans = Constants.DATABASE_SERVICE.getAllTransactions();
-		int row = trans.size();
-		int col = 6;
-		
-		String[] columnTopNames = {"Date", "Category", "Name", "Amount (Rp.)", "Receipt Link", "Last Modified"};
-		String[][] dataTop = this.maketableTop(row, col, trans);
-		TableModel modelTop = new DefaultTableModel(dataTop, columnTopNames){
-			public boolean isCellEditable(int row, int column){
-				return false;//This causes all cells to be not editable
+		this.modelTop = new DefaultTableModel(this.columnTopNames,0) {
+			public boolean isCellEditable(int row, int column) {
+				return false;
 			}
 		};
 		
-		this.tableTrans = new JTable(modelTop);
+		this.tableTrans = new JTable(this.modelTop);
+		updateTableTop();
 
 		//Properties
 		this.tableTrans.getTableHeader().setFont(Constants.FONT_SMALLER_BOLD);
@@ -229,23 +223,23 @@ public class ReportPage extends ReportPanel{
 		
 	}
 	
-	private String[][] maketableTop(int row, int col, List<Transaction> trans){
-
-		
-		String[][] transactionHistory = new String[row][col];
-		//get data from database and insert into lists
-				for(int i=0; i<row; i++) {
-					Transaction t = trans.get(i);
-					transactionHistory[i][0] = String.valueOf(t.getDateInput());
-					transactionHistory[i][1] = String.valueOf(t.getCategoryID());
-					transactionHistory[i][2] = t.getDesc();
-					transactionHistory[i][3] = String.valueOf(t.getAmount());
-					transactionHistory[i][4] = t.getLinkReceipt();
-					transactionHistory[i][5] = String.valueOf(t.getDateEdit());
-				}
-					
-		return transactionHistory;	
+	private void updateTableTop() {
+		List <Transaction> transactions = Constants.DATABASE_SERVICE.getAllTransactions();
+		List <Category> categories = Constants.DATABASE_SERVICE.getAllCategories();
+		String[] currentData = new String[this.columnsTop];
+		for (Transaction t: transactions) {
+			currentData[0] = String.valueOf(t.getDateInput());
+			currentData[1] = categories.get(t.getCategoryID()-1).getName();
+			currentData[2] = t.getDesc();
+			currentData[3] = String.valueOf(t.getAmount());
+			currentData[4] = t.getLinkReceipt();
+			currentData[5] = String.valueOf(t.getDateEdit());
+			this.modelTop.addRow(currentData);
+			
+		}
 	}
+	
+
 	
 
 	
