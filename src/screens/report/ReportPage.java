@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SpringLayout;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -21,6 +22,7 @@ import giantsweetroll.gui.swing.ScrollPaneManager;
 import main.Main;
 import models.Account;
 import models.Person;
+import models.Transaction;
 import models.User;
 import screens.menu.Menu;
 import shared.Constants;
@@ -48,16 +50,16 @@ public class ReportPage extends ReportPanel{
 	private JScrollPane scrollUsers;
 	private JTable tableTrans,tableUsers;
 	
-	String[][] dataTop = {
+	/*String[][] dataTop = {
 			{"01/01/01", "Food", "Gardyan", "1000000", "google.com", "Yesterday"},
 			{"01/01/01", "Food", "Gardyan", "1000000", "google.com", "2 Days Ago"},
 			{"01/01/01", "Food", "Gardyan", "1000000", "google.com", "Yesterday"}
-	};
+	};*/
 	
 	String [][] dataBottom = {
 			{"Adam","Smith","adam@gmail.com","150000","20000","90000"}
 	};
-	String[] columnTopNames = {"Date", "Category", "Name", "Amount (Rp.)", "Receipt Link", "Last Modified"};
+	
 	String[] columnBottomNames = {"First Name", "Last Name", "Email", "Total Income (Rp.)",
 								"Total Expenditure (Rp.)", "Balance (Rp.)"};
 	
@@ -93,25 +95,56 @@ public class ReportPage extends ReportPanel{
 		}
 		this.tilesUsers = currentTiles;
 		this.lvUsers.updateData(tilesUsers);
+		this.revalidate();
+		this.repaint();
+	}
+	
+	public void deselectAllReceivers()
+	{
+		for (ListTile tile : this.tilesUsers)
+		{
+			if (tile instanceof SimpleUserTile)
+			{
+				((SimpleUserTile)tile).setSelected(false);
+			}
+		}
+	}
+	
+	private int getSelectedUsersID() {
+		//to get the selected tiles value.
+		ListTile tile = lvUsers.getSelectedTiles().get(0);
+		Person person = ((SimpleUserTile) tile).getPerson();
+		return person.getID();
 	}
 	
 	private void initPanelUsers()
 	{
 		//Initialization
 		this.lvUsers = new ListView();
-		this.persons = new ArrayList<Person>();
-		this.scrollUsers = ScrollPaneManager.generateDefaultScrollPane(this.lvUsers);
-		JPanel panelCenter = new JPanel();
+		this.scrollUsers = ScrollPaneManager.generateDefaultScrollPane(this.lvUsers, 10, 10);
+		SpringLayout spr = new SpringLayout();
+		JPanel panelCenter = new JPanel(spr);
 		
 		//Properties
-		this.scrollUsers.getViewport().setOpaque(true);
+		this.lvUsers.setMultipleSelection(false);
+		this.scrollUsers.getViewport().setOpaque(false);
 		this.scrollUsers.setOpaque(false);
+		this.scrollUsers.getViewport().setBorder(null);
 		this.scrollUsers.setBorder(null);
 		panelCenter.setOpaque(false);
-		panelCenter.add(scrollUsers);
 		updateListViewUsers();
-		this.setusersPanel(panelCenter);
 		
+		//SpringLayout constraints
+		spr.putConstraint(SpringLayout.WEST, this.scrollUsers, 10, SpringLayout.WEST, panelCenter);
+		spr.putConstraint(SpringLayout.EAST, this.scrollUsers, -10, SpringLayout.EAST, panelCenter);
+		spr.putConstraint(SpringLayout.HORIZONTAL_CENTER, this.scrollUsers, 0, SpringLayout.HORIZONTAL_CENTER, panelCenter);
+		
+		//Add to Panel 
+		//Add to panelCenter
+		panelCenter.add(this.scrollUsers);
+		
+		//Add to main panel
+		this.setusersPanel(panelCenter);
 	}
 	
 	
@@ -150,7 +183,13 @@ public class ReportPage extends ReportPanel{
 	}
 	
 	private void initTableTop() {
-		TableModel modelTop = new DefaultTableModel(this.dataTop, this.columnTopNames){
+		List<Transaction> trans = Constants.DATABASE_SERVICE.getAllTransactions();
+		int row = trans.size();
+		int col = 6;
+		
+		String[] columnTopNames = {"Date", "Category", "Name", "Amount (Rp.)", "Receipt Link", "Last Modified"};
+		String[][] dataTop = this.maketableTop(row, col, trans);
+		TableModel modelTop = new DefaultTableModel(dataTop, columnTopNames){
 			public boolean isCellEditable(int row, int column){
 				return false;//This causes all cells to be not editable
 			}
@@ -165,9 +204,15 @@ public class ReportPage extends ReportPanel{
 	    this.tableTrans.setFillsViewportHeight(true);
 	    this.tableTrans.setRowHeight(30);   
 	}
+		
 	
 	private void initTableBottom() {
 		TableModel modell = new DefaultTableModel(this.dataBottom,this.columnBottomNames) {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			public boolean isCellEditable(int row, int column){
 				return false;//This causes all cells to be not editable
 			}
@@ -184,6 +229,26 @@ public class ReportPage extends ReportPanel{
 		
 	}
 	
+	private String[][] maketableTop(int row, int col, List<Transaction> trans){
+
+		
+		String[][] transactionHistory = new String[row][col];
+		//get data from database and insert into lists
+				for(int i=0; i<row; i++) {
+					Transaction t = trans.get(i);
+					transactionHistory[i][0] = String.valueOf(t.getDateInput());
+					transactionHistory[i][1] = String.valueOf(t.getCategoryID());
+					transactionHistory[i][2] = t.getDesc();
+					transactionHistory[i][3] = String.valueOf(t.getAmount());
+					transactionHistory[i][4] = t.getLinkReceipt();
+					transactionHistory[i][5] = String.valueOf(t.getDateEdit());
+				}
+					
+		return transactionHistory;	
+	}
+	
+
+	
 	@Override
 	public void BackButtonPressed() {
 		Globals.activeUser = person;
@@ -194,7 +259,10 @@ public class ReportPage extends ReportPanel{
 
 	@Override
 	public void RefreshButtonPressed() {
+		this.initTableTop();
+		
 		// TODO Auto-generated method stub
+		
 		
 	}
 
@@ -203,6 +271,7 @@ public class ReportPage extends ReportPanel{
 		// TODO Auto-generated method stub
 		this.dateFrom.resetDefaults();
 		this.dateTo.resetDefaults();
+		this.deselectAllReceivers();
 		
 	}
 	
