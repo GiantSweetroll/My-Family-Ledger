@@ -82,9 +82,9 @@ public class ReportPage extends ReportPanel{
 	
 	public void updateListViewUsers()
 	{
-		
-		List<User> users = Constants.DATABASE_SERVICE.getAllUsers();
-		List <Account> accounts = Constants.DATABASE_SERVICE.getAllAccounts();
+		Globals.activeUser = person;
+		int adminID = Constants.DATABASE_SERVICE.getAdminID(person.getEmail());
+		List<User> users = Constants.DATABASE_SERVICE.getAllUsers(adminID);
 		List <ListTile> currentTiles = new ArrayList<ListTile>();
 		
 		//Add the data 

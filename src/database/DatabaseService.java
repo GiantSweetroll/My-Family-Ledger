@@ -1558,6 +1558,7 @@ public final class DatabaseService
 		return categoryName;
 	}
 	
+	
 	public double getBalance(int userAccountId) {
 		double balance = 0;
 		PreparedStatement ps = null;
@@ -1751,6 +1752,41 @@ public final class DatabaseService
 		
 		return users;
 	}
+	
+	public int getAdminID(String email) {
+		int adminID = 0;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String query = "SELECT admin_id FROM OF_Admins WHERE email=?";
+		try
+		{
+			ps = this.prepStatement(query);
+			ps.setString(1, email);
+			rs = ps.executeQuery();
+			
+			if(rs.next())
+			{
+			adminID = rs.getInt(Admin.ID);
+			};
+		
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch(SQLException ex) {}
+			}
+		}
+		return adminID;
+	}
 
 	/**
 	 * Get the login information of the either the Admin or the User. If there are no matches
@@ -1842,9 +1878,11 @@ public final class DatabaseService
 //		System.out.println(date1);
 //		System.out.println(date2);
 		
-//		DatabaseService ds = new DatabaseService();
-//		Account acc1 = new Account(3, 2000000);
-//		Admin admin1 = new Admin(1, "Gardyan", "Akbar");
+		//DatabaseService ds = new DatabaseService();
+		//Account acc1 = new Account(3, 2000000);
+		//Admin admin1 = new Admin(1, "Gardyan", "Akbar","gardyan@mail.com","manusia");
+
+	
 //		User user1 = new User(3, acc1.getID(), admin1.getID(), "William", "Tok", "wtok@gmail.com", "lel");
 //		Category category1 = new Category(3, admin1.getID(), "Clothes???", "Clothes");
 //		AdminCategory adminc1 = new AdminCategory(3, admin1.getID(), category1.getID());
