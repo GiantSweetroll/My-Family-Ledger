@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,10 @@ import javax.swing.table.TableModel;
 
 import giantsweetroll.gui.swing.Gbm;
 import models.Account;
+import models.Admin;
+import models.Category;
 import models.Person;
+import models.Transaction;
 import models.User;
 import shared.Constants;
 import shared.Methods;
@@ -51,23 +55,21 @@ public class TransferHistory extends HistoryPanel
 	private JTextField tfValue;
 	private JScrollPane scrollReceiver;
 	private List<Person> persons;
+	private Person person;
 	private List<ListTile> tiles;
 	private DatePicker dateFrom, dateTo;
 	private ListView listView;
 	private JTable tableTransfer;
-	
-	String[][] data = {
-			{"01/01/01", "Food", "Gardyan", "1000000", "google.com", "none", "none"},
-			{"01/01/01", "Food", "Gardyan", "1000000", "google.com", "none", "none"},
-			{"01/01/01", "Food", "Gardyan", "1000000", "google.com", "none", "none"}
-	};
-	String[] columnNames = {"Date", "Category", "Name", "Amount (Rp.)", "Receipt Link", "Last Modified", "Action"};
+	private String[] columnNames = {"Date", "Category", "Name", "Amount (Rp.)", "Description"};
+	private DefaultTableModel model;
+	private int columns = 5;
 	
 	//Constructor
 	public TransferHistory(Person person)
 	{
 		//Initialization
 		super(person);
+		this.person = person;
 		this.initFilters();
 		this.initTable();
 		
@@ -212,13 +214,15 @@ public class TransferHistory extends HistoryPanel
 	
 	public void initTable() {
 		//Initialization
-		TableModel model = new DefaultTableModel(this.data, this.columnNames){
+		this.model = new DefaultTableModel(this.columnNames,0){
 			public boolean isCellEditable(int row, int column){
 				return false;//This causes all cells to be not editable
 			}
 		};
+		this.tableTransfer = new JTable(this.model);
+		updateTableData();
 		
-		this.tableTransfer = new JTable(model);
+		//{"Date", "Category", "Name", "Amount (Rp.)", "Last Modified"};
 		
 		//Properties
 		this.tableTransfer.getTableHeader().setFont(Constants.FONT_SMALLER_BOLD);
@@ -240,15 +244,21 @@ public class TransferHistory extends HistoryPanel
 	{
 		try
 		{
-			//Date dateStart = convertUtilToSql(this.dateFrom.getSelectedDate());
-			//Date dateEnd =  convertUtilToSql(this.dateTo.getSelectedDate());
+			ListTile selectedTiles = listView.getSelectedTiles().get(0);
+			Person userPerson = ((SimpleUserTile) selectedTiles).getPerson();
+			User user = Constants.DATABASE_SERVICE.getUser(userPerson.getID());
+			
+			Date dateStart = this.dateFrom.getSelectedDate();
+			Date dateEnd =  this.dateTo.getSelectedDate();
 			Object operand = this.comboOperand.getSelectedItem();
 			double value = Double.parseDouble(this.tfValue.getText());
+			int userId = user.getID();
 			this.labWarning.setText("");
-			//System.out.println("Date start: " + convertUtilToSql(this.dateFrom.getSelectedDate()));
-			System.out.println("Date end: " + this.dateTo.getSelectedDate());
+			System.out.println("Date start: " + dateStart);
+			System.out.println("Date end: " + dateEnd);
 			System.out.println("Operand: " + operand);
 			System.out.println("Value: " + value);
+			System.out.println("User id: " + userId);
 		}
 		catch(NumberFormatException ex)
 		{
@@ -259,17 +269,31 @@ public class TransferHistory extends HistoryPanel
 	private void updateListView() {
 		List<User> users = Constants.DATABASE_SERVICE.getAllUsers();
 		List<Account> accounts = Constants.DATABASE_SERVICE.getAllAccounts();
-		List<ListTile> currentTiles = new ArrayList<ListTile>();
-		
+		this.tiles.clear();
 		//Add the data
 		for(int i=0; i<users.size(); i++) {
 			SimpleUserTile sut = new SimpleUserTile(users.get(i));
 			sut.setTopRightText("Rp. " + String.valueOf(accounts.get(i).getBalance()));
-			currentTiles.add(sut);
+			this.tiles.add(sut);
 		}
 		
-		this.tiles = currentTiles;
 		this.listView.updateData(this.tiles);
+	}
+	
+	private void updateTableData() {
+		List<Transaction> transactions = Constants.DATABASE_SERVICE.getAllTransactions(); //hrusnya ambil semua transaction sesuai filter source_id = person.id
+		List<Category> categories = Constants.DATABASE_SERVICE.getAllCategories();
+		List<User> user = Constants.DATABASE_SERVICE.getAllUsers(); //nanti getAllUsers(admin_id) aja
+		
+		String[] currentData = new String[this.columns];
+		for (Transaction tr: transactions) {
+			currentData[0] = tr.getDateInput().toString();
+			currentData[1] = categories.get(tr.getCategoryID()-1).getName();
+			currentData[2] = user.get(tr.getUserID()-1).getFullName();
+			currentData[3] = Double.toString(tr.getAmount());
+			currentData[4] = tr.getDesc();
+			this.model.addRow(currentData);
+		}
 	}
 	
 	//Testing
@@ -278,7 +302,7 @@ public class TransferHistory extends HistoryPanel
 		Methods.setUIFont(new FontUIResource(Constants.FONT_TYPE_GENERAL, Font.PLAIN, Constants.FONT_GENERAL_SIZE));
 		//Initialization
 		JFrame frame = new JFrame();
-		TransferHistory th = new TransferHistory(new Person("Person", "Hai"));
+		TransferHistory th = new TransferHistory(new Admin(1, "Jocelyn", "Thiojaya"));
 		
 		//Properties
 		frame.setSize(500, 500);
