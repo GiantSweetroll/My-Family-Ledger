@@ -1707,7 +1707,7 @@ public final class DatabaseService
 		
 		try
 		{
-			ps = this.prepStatement("SELECT * FROM " + TABLE_USERS + " WHERE " + User.ID + " = " + adminId);
+			ps = this.prepStatement("SELECT * FROM " + TABLE_USERS + " WHERE " + User.ADMIN_ID + " = " + adminId);
 			rs = ps.executeQuery();
 			
 			//Loop through the result set
