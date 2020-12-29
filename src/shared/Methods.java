@@ -12,7 +12,6 @@ import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
 
 import models.Category;
-import models.Transaction;
 
 public class Methods 
 {
