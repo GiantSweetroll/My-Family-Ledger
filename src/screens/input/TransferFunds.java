@@ -20,6 +20,7 @@ import javax.swing.SwingConstants;
 import javax.swing.plaf.FontUIResource;
 
 import giantsweetroll.gui.swing.ScrollPaneManager;
+import main.Main;
 import models.Account;
 import models.Admin;
 import models.Person;
@@ -71,6 +72,7 @@ public class TransferFunds extends TriplePanelPage
 						scrollPrevTransfer;
 	private Runnable receiverChecker;
 	private Thread receiverThread;
+	private Transaction oldTransaction;
 	
 	//Constants
 	private final String RECEIVER_NOT_SELECTED = "<html><i>No receivers chosen yet</i></html>",
@@ -80,6 +82,33 @@ public class TransferFunds extends TriplePanelPage
 	public TransferFunds(Person person)
 	{
 		super();
+		this.init(person);
+	}
+	public TransferFunds(Person person, Transaction tf)
+	{
+		super();
+		this.init(person);
+		this.oldTransaction = tf;
+		
+		//Update selection
+		for (ListTile tile : this.tilesReceivers) 
+		{
+			if (((SimpleUserTile) tile).getPerson().getID() == tf.getUserID())
+			{
+				tile.setSelected(true);
+				break;
+			}
+		}
+		this.tfAmount.setText(Double.toString(tf.getAmount()));
+		if (!tf.getDesc().equals(""))
+		{
+			this.tfNotes.setText(tf.getDesc());
+		}
+	}
+
+	//Private methods
+	private void init(Person person)
+	{
 		//Initialization
 		this.person = person;
 		this.panelAcc = new AccountPanel();
@@ -126,8 +155,6 @@ public class TransferFunds extends TriplePanelPage
 				});
 		tfThread.start();
 	}
-
-	//Private methods
 	private void initPanelTransfer()
 	{
 		//Initialization
@@ -174,18 +201,40 @@ public class TransferFunds extends TriplePanelPage
 					Date date = new java.sql.Date(millis);
 					double amount = Double.parseDouble(tfAmount.getText());
 					labWarning.setText("");
-					String notes = tfNotes.getText();
-					Transaction trans = new Transaction(categoryId, adminId, userId, date, date, amount, notes);
-					Constants.DATABASE_SERVICE.insert(trans);
+					String notes = tfNotes.getText().trim().equals("") || tfNotes.getText().trim().equalsIgnoreCase("Notes") ? "" : tfNotes.getText().trim();
+					if (oldTransaction == null) //new entry
+					{
+						Transaction trans = new Transaction(categoryId, adminId, userId, date, date, amount, notes);
+						Constants.DATABASE_SERVICE.insert(trans);
+					}
+					else
+					{
+						Transaction trans = new Transaction(oldTransaction.getID(), categoryId, adminId, userId, oldTransaction.getDateInput(), date, amount, notes);
+						Constants.DATABASE_SERVICE.update(trans.getID(), trans);
+					}
 					
 					//Update the account balance
+					if (oldTransaction != null)		//if not new entry, remove old balance
+					{
+						User oldUser = Constants.DATABASE_SERVICE.getUser(oldTransaction.getUserID());
+						Account oldAccount = Constants.DATABASE_SERVICE.getAccount(oldUser.getAccountID());
+						oldAccount.updateBalance(oldTransaction.getAmount() * -1d);
+						Constants.DATABASE_SERVICE.update(oldUser.getID(), oldAccount);
+					}
 					Account userAccount = Constants.DATABASE_SERVICE.getAccount(user.getAccountID());
 					userAccount.updateBalance(amount);
 					Constants.DATABASE_SERVICE.update(userId, userAccount);
 					
-					//Reset
-					updateListViewReceivers();
-					resetFields();
+					if (oldTransaction == null)		//new entry
+					{
+						//Reset
+						updateListViewReceivers();
+						resetFields();
+					}
+					else
+					{
+						Main.popScreen();
+					}
 				}
 				catch(NumberFormatException ex)
 				{
