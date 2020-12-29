@@ -238,6 +238,7 @@ public class ReportPage extends ReportPanel{
 		List<User> users = Constants.DATABASE_SERVICE.getAllUsers(adminID);
 		String[] currentData = new String[this.columnsNumber];
 		double totalBalance = 0;
+		double totalIncome = 0;
 		
 		for (User u: users) {
 			currentData[0] =  u.getFirstName();
@@ -245,7 +246,8 @@ public class ReportPage extends ReportPanel{
 			currentData[2] = u.getEmail();
 			
 			//Replace this with total income and total expenditure.
-			//currentData[3] =  u.getFirstName();
+			totalIncome = Constants.DATABASE_SERVICE.getIncome(u.getID(), adminID);
+			currentData[3] =  String.valueOf(totalIncome);
 			//currentData[4] = u.getLastName();
 			totalBalance = Constants.DATABASE_SERVICE.getBalance(u.getID());
 			currentData[5] = String.valueOf(totalBalance);

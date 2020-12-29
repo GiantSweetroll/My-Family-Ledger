@@ -1150,7 +1150,7 @@ public final class DatabaseService
 		
 		try
 		{
-			ps = this.prepStatement("SELECT * FROM " + TABLE_TRANSACTIONS + " WHERE " + Transaction.ID + " = " + userID
+			ps = this.prepStatement("SELECT * FROM " + TABLE_TRANSACTIONS + " WHERE " + Transaction.USER_ID + " = " + userID
 										+ " AND " + Transaction.DATE_INPUT + " >= " + dateMin
 										+ " AND " + Transaction.DATE_INPUT + " <= " + dateMax);
 			rs = ps.executeQuery();
@@ -1787,6 +1787,44 @@ public final class DatabaseService
 		}
 		return adminID;
 	}
+	
+	public double getIncome(int user_id, int source_id)
+	{
+		double Income = 0;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String query = "SELECT SUM(amount) FROM OF_Transactions WHERE user_id =? AND source_id =?";
+		try
+		{
+			ps = this.prepStatement(query);
+			ps.setInt(1, user_id);
+			ps.setInt(2, source_id);
+			rs = ps.executeQuery();
+			
+			if(rs.next())
+			{
+			Income = rs.getDouble(1);
+			};
+		
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch(SQLException ex) {}
+			}
+		}
+		return Income;
+		
+	}
 
 	/**
 	 * Get the login information of the either the Admin or the User. If there are no matches
@@ -1874,11 +1912,13 @@ public final class DatabaseService
 		String dateString = "2020-12-12";
 		Date date1 = Date.valueOf(dateString);
 		long millis = System.currentTimeMillis();
-		Date date2 = new Date(millis);
+		//Date date2 = new Date(millis);
 //		System.out.println(date1);
 //		System.out.println(date2);
 		
-		//DatabaseService ds = new DatabaseService();
+//		DatabaseService ds = new DatabaseService();
+	
+		
 		//Account acc1 = new Account(3, 2000000);
 		//Admin admin1 = new Admin(1, "Gardyan", "Akbar","gardyan@mail.com","manusia");
 
