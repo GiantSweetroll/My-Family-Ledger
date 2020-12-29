@@ -1150,8 +1150,8 @@ public final class DatabaseService
 		try
 		{
 			ps = this.prepStatement("SELECT * FROM " + TABLE_TRANSACTIONS + " WHERE " + Transaction.USER_ID + " = " + userID
-										+ " AND " + Transaction.DATE_INPUT + " >= " + dateMin
-										+ " AND " + Transaction.DATE_INPUT + " <= " + dateMax);
+										+ " AND " + Transaction.DATE_INPUT + " >= \'" + dateMin + "\'"
+										+ " AND " + Transaction.DATE_INPUT + " <= \'" + dateMax + "\'");
 			rs = ps.executeQuery();
 			
 			//Loop through the result set
@@ -1212,8 +1212,8 @@ public final class DatabaseService
 		try
 		{
 			ps = this.prepStatement("SELECT * FROM " + TABLE_TRANSACTIONS 
-										+ " WHERE " + Transaction.DATE_INPUT + " >= " + dateMin
-										+ " AND " + Transaction.DATE_INPUT + " <= " + dateMax);
+										+ " WHERE " + Transaction.DATE_INPUT + " >= \'" + dateMin + "\'"
+										+ " AND " + Transaction.DATE_INPUT + " <= \'" + dateMax + "\'");
 			rs = ps.executeQuery();
 			
 			//Loop through the result set
@@ -1274,9 +1274,9 @@ public final class DatabaseService
 		List<Transaction> transactions = new ArrayList<Transaction>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String query = "SELECT * FROM " + TABLE_TRANSACTIONS + " WHERE " + Transaction.ID + " = " + userID
-						+ " AND " + Transaction.DATE_INPUT + " >= " + dateMin
-						+ " AND " + Transaction.DATE_INPUT + " <= " + dateMax;
+		String query = "SELECT * FROM " + TABLE_TRANSACTIONS + " WHERE " + Transaction.USER_ID + " = " + userID
+						+ " AND " + Transaction.DATE_INPUT + " >= \'" + dateMin + "\'"
+						+ " AND " + Transaction.DATE_INPUT + " <= \'" + dateMax + "\'";
 		if (value >= 0)
 		{
 			if (flag == LESS_THAN)
@@ -1950,14 +1950,18 @@ public final class DatabaseService
 	
 	public static void main (String args[])
 	{
-		String dateString = "2020-12-12";
+		String dateString = "2020-12-25";
 		Date date1 = Date.valueOf(dateString);
 		long millis = System.currentTimeMillis();
-		//Date date2 = new Date(millis);
+		Date date2 = new Date(millis);
 //		System.out.println(date1);
 //		System.out.println(date2);
 		
-//		DatabaseService ds = new DatabaseService();
+		DatabaseService ds = new DatabaseService();
+		
+		List<Transaction> transactions = ds.getAllTransactions(4, date1, date2, DatabaseService.GREATER_THAN, 70000000, -1);
+		
+		System.out.println(transactions.size());
 	
 		
 		//Account acc1 = new Account(3, 2000000);
@@ -1979,5 +1983,7 @@ public final class DatabaseService
 //		for(int i = 0; i < transactions.size(); i++) {
 //			System.out.println(transactions.get(i).getID());
 //		}
+		
+		
 	}
 }
