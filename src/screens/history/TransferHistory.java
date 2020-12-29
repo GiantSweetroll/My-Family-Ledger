@@ -70,6 +70,7 @@ public class TransferHistory extends HistoryPanel
 	{
 		//Initialization
 		super(person);
+		this.person = person;
 		this.initFilters();
 		this.initTable(Constants.DATABASE_SERVICE.getAllTransactions(this.person.getID(), 1));
 	}
