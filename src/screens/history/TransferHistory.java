@@ -21,12 +21,14 @@ import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
 
 import giantsweetroll.gui.swing.Gbm;
+import main.Main;
 import models.Account;
 import models.Admin;
 import models.Category;
 import models.Person;
 import models.Transaction;
 import models.User;
+import screens.menu.Menu;
 import shared.Constants;
 import shared.Methods;
 import shared.components.DatePicker;
@@ -68,7 +70,6 @@ public class TransferHistory extends HistoryPanel
 	{
 		//Initialization
 		super(person);
-		this.person = person;
 		this.initFilters();
 		this.initTable(Constants.DATABASE_SERVICE.getAllTransactions(this.person.getID(), 1));
 	}
@@ -246,8 +247,7 @@ public class TransferHistory extends HistoryPanel
 	@Override
 	public void backButtonPressed() 
 	{
-		// TODO Auto-generated method stub
-		
+		Main.changeScreen(new Menu(this.person, true));
 	}
 
 	@Override
