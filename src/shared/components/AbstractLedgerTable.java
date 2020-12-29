@@ -44,6 +44,12 @@ public abstract class AbstractLedgerTable extends JTable
 	
 	//Protected Methods
 	/**
+	 * Converts a List of DatabaseItem objects to data that can be represented in the table.
+	 * @param data a List of DatabaseItem objects
+	 * @return a 2D String array
+	 */
+	protected abstract String[][] convertToTableRowData(List<? extends DatabaseItem> data);
+	/**
 	 * Method to update the data and display it in the table.
 	 * @param data a List of DatabaseItem objects
 	 * @param tableData a 2D String array to be displayed on the table
