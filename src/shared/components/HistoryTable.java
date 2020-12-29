@@ -1,41 +1,34 @@
 package shared.components;
 
-import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.plaf.FontUIResource;
-
-import giantsweetroll.gui.swing.ScrollPaneManager;
-import models.DatabaseItem;
 import models.Transaction;
-import shared.Constants;
-import shared.Methods;
 
-public class HistoryTable extends AbstractLedgerTable implements MouseListener{
+public abstract class HistoryTable extends AbstractLedgerTable implements MouseListener{
 	
-//	private final String[] columnNames2 = {"Date", "Category", "Name", "Amount (Rp.)", "Receipt Link", "Last Modified", "Action"};
-	private final String[] columnNames = {"Id", "Category Id", "User Id", "DateInput" , "DateEdit" , "Amount (Rp.)", "Desc", "Receipt Link", "Action", "Action"};
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4203762518720892771L;
 	
-	
-	public HistoryTable(List<Transaction> transaction) {
+	//Constructors
+	public HistoryTable(List<Transaction> transaction, String[] headers) {
 		super();
 		this.init(transaction);
+		this.headers = headers;
 	}
 	
-	public HistoryTable()
+	public HistoryTable(String[] headers)
 	{
 		super();
 		this.init(new ArrayList<Transaction>());
+		this.headers = headers;
 	}
 	
+	//Private methods
 	private void init(List<Transaction> transaction)
 	{
 		//Initialization
@@ -43,22 +36,50 @@ public class HistoryTable extends AbstractLedgerTable implements MouseListener{
 		this.setTableHeader(null);		//Remove table headers
 		this.addMouseListener(this);
 		this.setRowHeight(50);
-	
 	}
 	
+	//Abstract methods
+	protected abstract void onEditPressed(Transaction tr);
+	protected abstract void onDeletePressed(int index);
+	
+	//Overridden Methods
 	@Override
-	public void updateData(List<? extends DatabaseItem> transaction) 
-	{
-		this.updateData(transaction, Methods.convertTransactionToTableRowData((List<Transaction>) transaction), columnNames);
+	public void mouseClicked(MouseEvent e) 
+	{	
+		int row = this.rowAtPoint(e.getPoint());
+		int col = this.columnAtPoint(e.getPoint());
 		
-		//Apply icon renderer
-		if (this.tableData.length > 0)
+		if (col == this.tableData[0].length-1)		//If last column is pressed
 		{
-			this.getColumnModel().getColumn(this.tableData[0].length-1).setCellRenderer(new IconCellRenderer(Constants.ICON_EDIT));
-			this.getColumnModel().getColumn(this.tableData[0].length-2).setCellRenderer(new IconCellRenderer(Constants.ICON_DELETE));
+			int selectedIndex = this.convertRowIndexToModel(row);
+			this.onEditPressed((Transaction)this.data.get(selectedIndex));
+		}
+		else if (col == this.tableData[0].length-2)		//If last column is pressed
+		{
+			int selectedIndex = this.convertRowIndexToModel(row);
+			this.onDeletePressed(selectedIndex);
 		}
 	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {}
+
+	@Override
+	public boolean isCellEditable(int row, int column) {                
+        return false;               
+	};
 	
+	//Testing
+	/*
 	public static void main(String args[])
 	{
 		Methods.setUIFont(new FontUIResource(Constants.FONT_TYPE_GENERAL, Font.PLAIN, Constants.FONT_GENERAL_SIZE));
@@ -91,51 +112,5 @@ public class HistoryTable extends AbstractLedgerTable implements MouseListener{
 		frame.add(label);
 		
 		frame.setVisible(true);
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) 
-	{	
-		int row = this.rowAtPoint(e.getPoint());
-		int col = this.columnAtPoint(e.getPoint());
-		
-		if (col == this.tableData[0].length-1)		//If last column is pressed
-		{
-			int selectedIndex = this.convertRowIndexToModel(row);
-			System.out.println("Future to be deleted Transaction ID: " + this.data.get(selectedIndex).getID());
-		}
-		else if (col == this.tableData[0].length-2)		//If last column is pressed
-		{
-			int selectedIndex = this.convertRowIndexToModel(row);
-			System.out.println("Future to be deleted lalalalala: " + this.data.get(selectedIndex).getID());
-		}
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	public boolean isCellEditable(int row, int column) {                
-        return false;               
-	};
-
-	@Override
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	}	*/
 }
