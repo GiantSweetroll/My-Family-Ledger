@@ -71,10 +71,7 @@ public class TransferHistory extends HistoryPanel
 		super(person);
 		this.person = person;
 		this.initFilters();
-		this.initTable();
-		
-		//Properties
-		this.setTable(tableTransfer);
+		this.initTable(Constants.DATABASE_SERVICE.getAllTransactions(this.person.getID(), 1));
 	}
 	
 	//Public methods
@@ -212,7 +209,7 @@ public class TransferHistory extends HistoryPanel
 		this.setFilterPanel(panelFilter);
 	}
 	
-	public void initTable() {
+	public void initTable(List<Transaction> trans) {
 		//Initialization
 		this.model = new DefaultTableModel(this.columnNames,0){
 			public boolean isCellEditable(int row, int column){
@@ -220,7 +217,20 @@ public class TransferHistory extends HistoryPanel
 			}
 		};
 		this.tableTransfer = new JTable(this.model);
-		updateTableData();
+		
+		List<Transaction> transactions = trans; //hrusnya ambil semua transaction sesuai filters
+		List<Category> categories = Constants.DATABASE_SERVICE.getAllCategories();
+		List<User> user = Constants.DATABASE_SERVICE.getAllUsers(this.person.getID());
+		
+		String[] currentData = new String[this.columns];
+		for (Transaction tr: transactions) {
+			currentData[0] = tr.getDateInput().toString();
+			currentData[1] = categories.get(tr.getCategoryID()-1).getName();
+			currentData[2] = user.get(tr.getUserID()-1).getFullName();
+			currentData[3] = Double.toString(tr.getAmount());
+			currentData[4] = tr.getDesc();
+			this.model.addRow(currentData);
+		}
 		
 		//{"Date", "Category", "Name", "Amount (Rp.)", "Last Modified"};
 		
@@ -230,6 +240,8 @@ public class TransferHistory extends HistoryPanel
 		this.tableTransfer.setPreferredScrollableViewportSize(new Dimension(500, 220));
 	    this.tableTransfer.setFillsViewportHeight(true);
 	    this.tableTransfer.setRowHeight(30);
+	    
+	    this.setTable(this.tableTransfer);
 	}
 	
 	@Override
@@ -254,11 +266,37 @@ public class TransferHistory extends HistoryPanel
 			double value = Double.parseDouble(this.tfValue.getText());
 			int userId = user.getID();
 			this.labWarning.setText("");
+			
+			int op = 0;
+			if (operand == "=") {
+				op = Constants.DATABASE_SERVICE.EQUAL_TO;
+			}
+			else if (operand == "<") {
+				op = Constants.DATABASE_SERVICE.LESS_THAN;
+			}
+			else if (operand == "<=") {
+				op = Constants.DATABASE_SERVICE.LESS_THAN_EQUAL;
+			}
+			else if (operand == ">") {
+				op = Constants.DATABASE_SERVICE.GREATER_THAN;
+			}
+			else if (operand == ">=") {
+				op = Constants.DATABASE_SERVICE.GREATER_THAN_EQUAL;
+			}
+			else {
+				System.out.println("Operand error");
+			}
+			
 			System.out.println("Date start: " + dateStart);
 			System.out.println("Date end: " + dateEnd);
-			System.out.println("Operand: " + operand);
+			System.out.println("Operand: " + op);
 			System.out.println("Value: " + value);
 			System.out.println("User id: " + userId);
+			
+			List<Transaction> currentTrans = Constants.DATABASE_SERVICE.getAllTransactions(userId, dateStart, dateEnd, op, value, "Transfer");
+			initTable(currentTrans);
+			System.out.println(currentTrans);
+			
 		}
 		catch(NumberFormatException ex)
 		{
@@ -282,10 +320,10 @@ public class TransferHistory extends HistoryPanel
 		this.listView.updateData(this.tiles);
 	}
 	
-	private void updateTableData() {
-		List<Transaction> transactions = Constants.DATABASE_SERVICE.getAllTransactions(); //hrusnya ambil semua transaction sesuai filter source_id = person.id
+	private void updateTableData(List<Transaction> trans) {
+		List<Transaction> transactions = trans; //hrusnya ambil semua transaction sesuai filters
 		List<Category> categories = Constants.DATABASE_SERVICE.getAllCategories();
-		List<User> user = Constants.DATABASE_SERVICE.getAllUsers(); //nanti getAllUsers(admin_id) aja
+		List<User> user = Constants.DATABASE_SERVICE.getAllUsers(this.person.getID());
 		
 		String[] currentData = new String[this.columns];
 		for (Transaction tr: transactions) {
