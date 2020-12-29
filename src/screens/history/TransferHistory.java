@@ -19,7 +19,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 import giantsweetroll.gui.swing.Gbm;
 import models.Account;
@@ -263,7 +262,13 @@ public class TransferHistory extends HistoryPanel
 			Date dateStart = this.dateFrom.getSelectedDate();
 			Date dateEnd =  this.dateTo.getSelectedDate();
 			Object operand = this.comboOperand.getSelectedItem();
-			double value = Double.parseDouble(this.tfValue.getText());
+			String valueStr = this.tfValue.getText();
+			double value = -1;
+			if (!valueStr.equals("") && !valueStr.equalsIgnoreCase("value"))
+			{
+				value = Double.parseDouble(valueStr);
+			}
+			
 			int userId = user.getID();
 			this.labWarning.setText("");
 			
@@ -287,15 +292,15 @@ public class TransferHistory extends HistoryPanel
 				System.out.println("Operand error");
 			}
 			
-			System.out.println("Date start: " + dateStart);
-			System.out.println("Date end: " + dateEnd);
-			System.out.println("Operand: " + op);
-			System.out.println("Value: " + value);
-			System.out.println("User id: " + userId);
+//			System.out.println("Date start: " + dateStart);
+//			System.out.println("Date end: " + dateEnd);
+//			System.out.println("Operand: " + op);
+//			System.out.println("Value: " + value);
+//			System.out.println("User id: " + userId);
 			
-			List<Transaction> currentTrans = Constants.DATABASE_SERVICE.getAllTransactions(userId, dateStart, dateEnd, op, value, "Transfer");
+			List<Transaction> currentTrans = Constants.DATABASE_SERVICE.getAllTransactions(userId, dateStart, dateEnd, op, value, 1);
 			initTable(currentTrans);
-			System.out.println(currentTrans);
+//			System.out.println(currentTrans);
 			
 		}
 		catch(NumberFormatException ex)
