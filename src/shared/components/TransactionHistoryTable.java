@@ -19,6 +19,7 @@ public class TransactionHistoryTable extends HistoryTable
 											"Category",
 											"Description",
 											"Amount (Rp)", 
+											"Receipt Link",
 											"Last Modified",
 											"", ""};	//For the actions
 	
@@ -77,6 +78,7 @@ public class TransactionHistoryTable extends HistoryTable
 			arr[i][++j] = Constants.DATABASE_SERVICE.getCategoryName(tr.getCategoryID());
 			arr[i][++j] = tr.getDesc();
 			arr[i][++j] = Double.toString(tr.getAmount());
+			arr[i][++j] = tr.getLinkReceipt();
 			arr[i][++j] = Constants.DATE_FORMAT.format(tr.getDateEdit());
 			arr[i][++j] = "";
 			arr[i][++j] = "";

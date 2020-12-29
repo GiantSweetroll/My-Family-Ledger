@@ -37,6 +37,7 @@ import shared.components.DatePicker;
 import shared.components.HintTextField;
 import shared.components.HistoryTableCellRenderer;
 import shared.components.IconCellRenderer;
+import shared.components.TransactionHistoryTable;
 
 public class TransactionHistory extends HistoryPanel{
 	
@@ -54,7 +55,7 @@ public class TransactionHistory extends HistoryPanel{
 	private JComboBox cbCategory,
 						cbEquals;
 	private JTextField tfValue;
-	private JTable tableTrans;
+	private TransactionHistoryTable tableTrans;
 	private DatePicker dateFrom, dateTo;
 	private DefaultTableModel model;
 	private int columns = 8;
@@ -132,14 +133,11 @@ public class TransactionHistory extends HistoryPanel{
 
 	private void initTable(){
 		//Initialization
-		this.model = new DefaultTableModel(this.columnNames, 0){
-			public boolean isCellEditable(int row, int column){
-				return false;//This causes all cells to be not editable
-			}
-		};
 		
-		this.tableTrans = new JTable(this.model);
-		updateTable();
+		List<Transaction> transactions = Constants.DATABASE_SERVICE.getAllTransactions();
+		this.tableTrans = new TransactionHistoryTable(transactions);
+		this.tableTrans.updateData(transactions);
+//		updateTable();
 		
 		//Properties
 		this.tableTrans.getTableHeader().setFont(Constants.FONT_SMALLER_BOLD);
