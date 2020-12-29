@@ -45,7 +45,11 @@ public class Main
 	 */
 	public static void changeScreen(JPanel panel)
 	{
-		Main.frame.remove(Main.panel);
+		try
+		{
+			Main.frame.remove(Main.panel);
+		}
+		catch(NullPointerException ex) {}
 		Main.panel = panel;
 		Main.frame.add(Main.panel);
 		Main.frame.revalidate();
