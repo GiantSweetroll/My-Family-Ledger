@@ -75,6 +75,30 @@ public class TriplePanelPage extends JPanel
 		this.panelWrapper.add(this.panelCenter);
 		this.panelWrapper.add(this.panelRight);
 	}
+	/**
+	 * Get the center JPanel
+	 * @return a JPanel object
+	 */
+	public JPanel panelGetCenterPanel()
+	{
+		return this.panelCenter;
+	}
+	/**
+	 * Get the right JPanel
+	 * @return a JPanel object
+	 */
+	public JPanel panelGetRightPanel()
+	{
+		return this.panelRight;
+	}
+	/**
+	 * Get the left JPanel
+	 * @return a JPanel object
+	 */
+	public JPanel panelGetLeftPanel()
+	{
+		return this.panelLeft;
+	}
 	
 	//Private Methods
 	private void init(JPanel panelTop, 
