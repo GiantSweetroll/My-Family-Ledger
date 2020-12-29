@@ -49,7 +49,7 @@ public class CategoryTable extends AbstractLedgerTable implements MouseListener
 	@Override
 	public void updateData(List<? extends DatabaseItem> categories)
 	{
-		this.updateData(categories, Methods.convertCategoryToTableRowData((List<Category>) categories), HEADERS);
+		this.updateData(categories, this.convertToTableRowData((List<Category>) categories), HEADERS);
 		
 		//Apply icon renderer
 		if (this.tableData.length > 0)
@@ -100,6 +100,22 @@ public class CategoryTable extends AbstractLedgerTable implements MouseListener
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {}
+	
+	@Override
+	protected String[][] convertToTableRowData(List<? extends DatabaseItem> data) 
+	{
+		String[][] arr = new String[data.size()][3];
+		
+		for (int i=0; i<data.size(); i++)
+		{
+			Category cat = (Category)data.get(i);
+			arr[i][0] = Integer.toString(cat.getID());
+			arr[i][1] = cat.getName();
+			arr[i][2] = "";				//Make it empty because not needed (only to make columns the same as header)
+		}
+		
+		return arr;
+	}
 	
 	//Private Methods
 	private void init(List<Category> categories)
