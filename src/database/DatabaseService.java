@@ -16,7 +16,6 @@ import models.Category;
 import models.Person;
 import models.Transaction;
 import models.User;
-import shared.Constants;
 import shared.Methods;
 import shared.SecurityServices;
 
@@ -1266,11 +1265,11 @@ public final class DatabaseService
 	 * @param dateMin
 	 * @param dateMax
 	 * @param flag - Use either DatabaseService.LESS_THAN, DatabaseService.GREATER_THAN, DatabaseService.EQUAL_TO, DatabaseService.LESS_THAN_EQUAL, or DatabaseService.GREATER_THAN_EQUAL
-	 * @param value - Parse empty String "" to disable filter by value
-	 * @param category - Parse empty String "" to disable filter by category
+	 * @param value - Parse -1 to disable filter by value
+	 * @param categoryID - Parse -1 to disable filter by category
 	 * @return
 	 */
-	public List<Transaction> getAllTransactions(int userID, Date dateMin, Date dateMax, int flag, double value, String category)
+	public List<Transaction> getAllTransactions(int userID, Date dateMin, Date dateMax, int flag, double value, int categoryID)
 	{
 		List<Transaction> transactions = new ArrayList<Transaction>();
 		PreparedStatement ps = null;
@@ -1278,29 +1277,35 @@ public final class DatabaseService
 		String query = "SELECT * FROM " + TABLE_TRANSACTIONS + " WHERE " + Transaction.ID + " = " + userID
 						+ " AND " + Transaction.DATE_INPUT + " >= " + dateMin
 						+ " AND " + Transaction.DATE_INPUT + " <= " + dateMax;
-		if (flag == LESS_THAN)
+		if (value >= 0)
 		{
-			query += " AND " + Transaction.AMOUNT + " < " + value;
-			
-		}
-		else if (flag == GREATER_THAN)
-		{
-			query += " AND " + Transaction.AMOUNT + " > " + value;
-		}
-		else if (flag == EQUAL_TO)
-		{
-			query += " AND " + Transaction.AMOUNT + " = " + value;
-		}
-		else if (flag == LESS_THAN_EQUAL)
-		{
-			query += " AND " + Transaction.AMOUNT + " <= " + value;
-		}
-		else if (flag == GREATER_THAN_EQUAL)
-		{
-			query += " AND " + Transaction.AMOUNT + " >= " + value;
+			if (flag == LESS_THAN)
+			{
+				query += " AND " + Transaction.AMOUNT + " < " + value;
+				
+			}
+			else if (flag == GREATER_THAN)
+			{
+				query += " AND " + Transaction.AMOUNT + " > " + value;
+			}
+			else if (flag == EQUAL_TO)
+			{
+				query += " AND " + Transaction.AMOUNT + " = " + value;
+			}
+			else if (flag == LESS_THAN_EQUAL)
+			{
+				query += " AND " + Transaction.AMOUNT + " <= " + value;
+			}
+			else if (flag == GREATER_THAN_EQUAL)
+			{
+				query += " AND " + Transaction.AMOUNT + " >= " + value;
+			}
 		}
 		
-		//TODO: Query for category name
+		if (categoryID >= 0)
+		{
+			query += " AND " + Transaction.CATEGORY_ID + " = " + categoryID;
+		}
 		
 		try
 		{
