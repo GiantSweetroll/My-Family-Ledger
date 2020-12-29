@@ -274,6 +274,8 @@ public class TransferFunds extends TriplePanelPage
 		updateListViewReceivers();
 		
 		//SpringLayout constraints
+		spr.putConstraint(SpringLayout.NORTH, this.scrollReceiver, 5, SpringLayout.NORTH, panelCenter);
+		spr.putConstraint(SpringLayout.SOUTH, this.scrollReceiver, -20, SpringLayout.SOUTH, panelCenter);
 		spr.putConstraint(SpringLayout.WEST, this.scrollReceiver, 20, SpringLayout.WEST, panelCenter);
 		spr.putConstraint(SpringLayout.EAST, this.scrollReceiver, -20, SpringLayout.EAST, panelCenter);
 		spr.putConstraint(SpringLayout.HORIZONTAL_CENTER, this.scrollReceiver, 0, SpringLayout.HORIZONTAL_CENTER, panelCenter);
@@ -319,6 +321,8 @@ public class TransferFunds extends TriplePanelPage
 		updateListViewPrevTransfers();
 		
 		//SpringLayout Constraints
+		spr.putConstraint(SpringLayout.NORTH, this.scrollPrevTransfer, 5, SpringLayout.NORTH, panelCenter);
+		spr.putConstraint(SpringLayout.SOUTH, this.scrollPrevTransfer, -20, SpringLayout.SOUTH, panelCenter);
 		spr.putConstraint(SpringLayout.WEST, this.scrollPrevTransfer, 20, SpringLayout.WEST, panelCenter);
         spr.putConstraint(SpringLayout.EAST, this.scrollPrevTransfer, -20, SpringLayout.EAST, panelCenter);
         spr.putConstraint(SpringLayout.HORIZONTAL_CENTER, this.scrollPrevTransfer, 0, SpringLayout.HORIZONTAL_CENTER, panelCenter);
