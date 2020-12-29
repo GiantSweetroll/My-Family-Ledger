@@ -147,8 +147,11 @@ public class RoundedPanel extends JPanel
         height - shadowGap, arcs.width, arcs.height);
         graphics.setColor(getForeground());
         graphics.setStroke(new BasicStroke(strokeSize));
-        graphics.drawRoundRect(0, 0, width - shadowGap,
-        height - shadowGap, arcs.width, arcs.height);
+        if (this.strokeSize > 0)
+        {
+        	graphics.drawRoundRect(0, 0, width - shadowGap,
+        	        height - shadowGap, arcs.width, arcs.height);
+        }
 
         //Sets strokes to default, is better.
         graphics.setStroke(new BasicStroke());
