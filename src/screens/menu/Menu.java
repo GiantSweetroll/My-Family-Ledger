@@ -5,23 +5,23 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.FontUIResource;
 
 import giantsweetroll.ImageManager;
+import giantsweetroll.gui.swing.Gbm;
 import giantsweetroll.gui.swing.ScrollPaneManager;
 import main.Main;
 import models.Person;
@@ -48,61 +48,107 @@ public class Menu extends JPanel{
 					butInput, butCategories;
 	private AccountPanel panelAcc;
 	private LogoLabel logo;
-	private JLabel logoDesc, 
-					addCatIconLabel, addCatLabel;
+	private JLabel logoDesc;
 	private boolean asAdmin;
+	private JPanel panelTop, panelCenter, panelBelow;
+	private JScrollPane scroll;
 	
-	
+	//Constructor
 	public Menu (Person person, boolean asAdmin)
 	{
+		//Initialization
 		super();
 		this.asAdmin = asAdmin;
-		this.setLayout(new BorderLayout());
+		this.initPanelTop(person);
+		this.initPanelBelow();
+		this.initPanelCenter(person, asAdmin);
+		this.scroll = ScrollPaneManager.generateDefaultScrollPane(this.panelCenter, 10, 10);
 		
-		if (!this.asAdmin) {
-		this.initMenuUser(person);
+		//Properties
+		this.setLayout(new BorderLayout());
+		this.setBackground(Color.WHITE);
+		
+		//Add to panel
+		this.add(this.panelTop, BorderLayout.NORTH);
+		this.add(this.scroll, BorderLayout.CENTER);
+		this.add(this.panelBelow, BorderLayout.SOUTH);
+	}
+	
+	//Private methods
+	private void initPanelBelow()
+	{
+		//Initialization
+		this.panelBelow = new JPanel();
+		this.butExit = new AppButton("Exit");
+		
+		//Properties
+		this.panelBelow.setOpaque(false);
+		this.butExit.setBackground(Constants.COLOR_BUTTON_BASE);
+		this.butExit.addActionListener( new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent evt) {
+				System.exit(0);
+			}
+		});
+		
+		//Add to panel
+		this.panelBelow.add(this.butExit);
+	}
+	private void initPanelTop(Person person)
+	{
+		//Initialization
+		this.panelTop = new JPanel(new BorderLayout());
+		this.panelAcc = new AccountPanel();
+		this.logo = new LogoLabel(LogoLabel.BIG);
+		this.logoDesc = new JLabel("Our Funds Motto or smth");
+		JPanel panelLogo = new JPanel(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		
+		//Properties
+		this.panelTop.setOpaque(false);
+		this.panelAcc.setAccount(person);
+		this.panelAcc.setStrokeSize(0);
+		panelLogo.setOpaque(false);
+		
+		///Add to panel
+		//Add to panelLogo
+		Gbm.goToOrigin(c);
+		panelLogo.add(this.logo, c);		//Logo
+		Gbm.newGridLine(c);
+		panelLogo.add(this.logoDesc, c);	//Logo description
+		//Add to panelTop
+		this.panelTop.add(this.panelAcc, BorderLayout.NORTH);
+		this.panelTop.add(panelLogo, BorderLayout.CENTER);
+	}
+	private void initPanelCenter(Person person, boolean asAdmin)
+	{
+		//Initialization
+		this.panelCenter = new JPanel(new BorderLayout());
+		if (!this.asAdmin) 
+		{
+			this.initMenuUser(person);
 		}
-		else {
+		else 
+		{
 			this.initMenuAdmin(person);	
 		}
 		
-		//Properties 	
+		//Properties
+		this.panelCenter.setOpaque(false);
+		
 	}
-	
-	
 	private void initMenuAdmin(Person person)
 	{
 		//Initialization
-		this.panelAcc = new AccountPanel();
 		this.butHistory = new AppButton("History", Constants.ICON_HISTORY);
 		this.butTransfer = new AppButton("Transfer", Constants.ICON_TRANSFER);
 		this.butReport = new AppButton("Report", Constants.ICON_REPORT);
-		this.butCategories = new AppButton();
-		this.butExit = new AppButton("Exit");
-		this.logo = new LogoLabel(LogoLabel.BIG);
-		this.logoDesc = new JLabel("Our Funds Motto or smth");
-		this.addCatIconLabel = new JLabel(Constants.ICON_CATEGORIES);
-		this.addCatLabel = new JLabel ("   Categories");
-		SpringLayout spr = new SpringLayout();
-		JPanel panelCategoriesBtn = new JPanel();
-		JPanel panelTop = new JPanel();
-		JPanel panelButton = new JPanel();
-		JPanel panelCenter = new JPanel();
-		JPanel panelBottom = new JPanel();
-		JPanel mainPanel = new JPanel(new BorderLayout());
-		JScrollPane scrollpane = ScrollPaneManager.generateDefaultScrollPane(mainPanel, 10, 10);
+		this.butCategories = new AppButton("Categories", Constants.ICON_CATEGORIES);
+		JPanel panel = new JPanel(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
 		
 		//Properties 
-		panelCategoriesBtn.setLayout(new BoxLayout(panelCategoriesBtn,BoxLayout.X_AXIS));
-		panelCategoriesBtn.setOpaque(false);
-		panelTop.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		panelButton.setLayout(new FlowLayout(FlowLayout.CENTER,200,200));
-		panelCenter.setLayout(new BoxLayout(panelCenter, BoxLayout.Y_AXIS));
-		panelBottom.setLayout(new FlowLayout(FlowLayout.CENTER));
-		mainPanel.setLayout(new BorderLayout());
-		
-		this.logoDesc.setAlignmentX(Component.CENTER_ALIGNMENT);
-		this.logo.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panel.setOpaque(false);
 		
 		this.butTransfer.setBackground(Constants.COLOR_BUTTON_YELLOW);
 		this.butTransfer.setFont(Constants.FONT_GENERAL_BOLD);
@@ -147,85 +193,37 @@ public class Menu extends JPanel{
 		this.butCategories.setBackground(Constants.COLOR_BUTTON_YELLOW);
 		this.butCategories.setFont(Constants.FONT_GENERAL_BOLD);
 		this.butCategories.setAlignmentX(Component.CENTER_ALIGNMENT);
+		this.butCategories.setForeground(Color.BLACK);
 		this.butCategories.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
 				//Main.pushScreen(new CategoryEditor(admin));
 			}
 		});
-
 		
-		this.butExit.setBackground(Constants.COLOR_BUTTON_BASE);
-		this.butExit.addActionListener( new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent evt) {
-				System.exit(0);
-			}
-		});
-		
-
-	
-		//Add to panelTop 
-		panelAcc.setAccount(person);
-		panelTop.add(panelAcc);
-		
-		//Add to Categories button 
-		panelCategoriesBtn.add(addCatIconLabel);
-		panelCategoriesBtn.add(addCatLabel);
-		butCategories.add(panelCategoriesBtn);
-		
-		//Add to panelButton
-		panelButton.add(butTransfer);
-		panelButton.add(butHistory);
-		panelButton.add(butReport);
-		
-		//Add to panelCenter
-		panelCenter.add(logo);
-		panelCenter.add(Box.createRigidArea(new Dimension(0,20)));
-		panelCenter.add(logoDesc);
-		panelCenter.add(Box.createRigidArea(new Dimension(0,0)));
-		panelCenter.add(panelButton);
-		panelCenter.add(butCategories);
-		
-		//Add to panelBottom 
-		panelBottom.add(Box.createRigidArea(new Dimension(0,20)));
-		panelBottom.add(butExit);
-		
-		//Add to MainPanel
-		mainPanel.add(panelTop,BorderLayout.NORTH);
-		mainPanel.add(panelCenter,BorderLayout.CENTER);
-		mainPanel.add(panelBottom,BorderLayout.SOUTH);	
-		
-		this.add(scrollpane);
-		
+		//Add to panel
+		Gbm.goToOrigin(c);
+		c.insets = new Insets(10, 30, 10, 30);
+		c.fill = GridBagConstraints.VERTICAL;
+		panel.add(this.butTransfer, c);				//Transfer button
+		Gbm.nextGridColumn(c);
+		panel.add(this.butHistory, c);				//History button
+		Gbm.nextGridColumn(c);
+		panel.add(this.butReport, c);				//Report button
+		Gbm.newGridLine(c);
+		c.gridwidth = 3;
+		c.insets = new Insets(30, 30, 10, 30);
+		panel.add(this.butCategories, c);			//Categories button
+		this.panelCenter.add(panel, BorderLayout.CENTER);
 	}
-	
 	private void initMenuUser(Person person) {
 		this.butHistory = new AppButton("History", Constants.ICON_HISTORY);
 		this.butInput = new AppButton("Input", Constants.ICON_INPUT);
-		this.butCategories = new AppButton();
-		this.butExit = new AppButton("Exit");
-		this.logo = new LogoLabel(LogoLabel.BIG);
-		this.logoDesc = new JLabel("Our Funds Motto or smth");
-		this.panelAcc = new AccountPanel();
-		
-		JPanel panelTop = new JPanel();
-		JPanel panelButton = new JPanel();
-		JPanel panelCenter = new JPanel();
-		JPanel panelBottom = new JPanel(); 
-		JPanel mainPanel = new JPanel();
-		JPanel panelCategories = new JPanel();
-		JScrollPane scrollpane = ScrollPaneManager.generateDefaultScrollPane(mainPanel, 10 ,10);
-		
+		JPanel panel = new JPanel(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
 		
 		//Properties 
-		panelTop.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		panelButton.setLayout(new FlowLayout(FlowLayout.CENTER,200,200));
-		panelCenter.setLayout(new BoxLayout(panelCenter, BoxLayout.Y_AXIS));
-		panelBottom.setLayout(new FlowLayout(FlowLayout.CENTER));
-		panelCategories.setLayout(new FlowLayout(FlowLayout.CENTER));
-		mainPanel.setLayout(new BorderLayout());
-		this.logoDesc.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panel.setOpaque(false);
 		
 		this.butInput.setBackground(Constants.COLOR_BUTTON_YELLOW);
 		this.butInput.setFont(Constants.FONT_GENERAL_BOLD);
@@ -251,40 +249,14 @@ public class Menu extends JPanel{
 			}
 		});
 		
-		this.butExit.setBackground(Constants.COLOR_BUTTON_BASE);
-		this.butExit.addActionListener( new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent evt) {
-				System.exit(0);
-			}
-		});
-		
-		//Add to panelTop
-		panelAcc.setAccount(person);
-		panelTop.add(panelAcc);
-		
-		//Add to panelButton 
-		panelButton.add(butInput);
-		panelButton.add(butHistory);
-		
-		//Add to panelCategories
-		panelCategories.add(butCategories);
-		
-		//Add to panelCenter
-		panelCenter.add(logo);
-		panelCenter.add(Box.createRigidArea(new Dimension(0,0)));
-		panelCenter.add(logoDesc);
-		panelCenter.add(Box.createRigidArea(new Dimension(0,0)));
-		panelCenter.add(panelButton);
-		
-		//Add to panelBottom 
-		panelBottom.add(butExit);
-		
-		//Add to MainPanel
-		mainPanel.add(panelTop,BorderLayout.NORTH);
-		mainPanel.add(panelCenter,BorderLayout.CENTER);
-		mainPanel.add(panelBottom,BorderLayout.SOUTH);
-		this.add(scrollpane);	
+		//Add to panel
+		Gbm.goToOrigin(c);
+		c.insets = new Insets(10, 30, 10, 30);
+		c.fill = GridBagConstraints.VERTICAL;
+		panel.add(this.butInput, c);				//Transfer button
+		Gbm.nextGridColumn(c);
+		panel.add(this.butHistory, c);				//History button
+		this.panelCenter.add(panel, BorderLayout.CENTER);
 	}
 	
 	@Deprecated
@@ -298,8 +270,6 @@ public class Menu extends JPanel{
 		}
 	}
 	
-	
-	
 	public static void main(String args[])
 	{
 		Methods.setUIFont(new FontUIResource(Constants.FONT_TYPE_GENERAL, Font.PLAIN, Constants.FONT_GENERAL_SIZE));
@@ -310,7 +280,7 @@ public class Menu extends JPanel{
 		Menu mn = new Menu(Person1,true);
 		
 		//Properties
-		frame.setSize(700, 700);
+		frame.setSize(1280, 768);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
