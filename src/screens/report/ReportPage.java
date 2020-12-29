@@ -239,6 +239,7 @@ public class ReportPage extends ReportPanel{
 		String[] currentData = new String[this.columnsNumber];
 		double totalBalance = 0;
 		double totalIncome = 0;
+		double totalExpenditure = 0;
 		
 		for (User u: users) {
 			currentData[0] =  u.getFirstName();
@@ -248,8 +249,9 @@ public class ReportPage extends ReportPanel{
 			//Replace this with total income and total expenditure.
 			totalIncome = Constants.DATABASE_SERVICE.getIncome(u.getID(), adminID);
 			currentData[3] =  String.valueOf(totalIncome);
-			//currentData[4] = u.getLastName();
-			totalBalance = Constants.DATABASE_SERVICE.getBalance(u.getID());
+			totalExpenditure = Constants.DATABASE_SERVICE.getExpenditure(u.getID());
+			currentData[4] = String.valueOf(totalExpenditure);
+			totalBalance = Constants.DATABASE_SERVICE.getBalance(u.getAccountID());
 			currentData[5] = String.valueOf(totalBalance);
 			this.modelBottom.addRow(currentData);
 			
@@ -272,6 +274,7 @@ public class ReportPage extends ReportPanel{
 	@Override
 	public void RefreshButtonPressed() {
 		this.initTableTop();
+		this.initTableBottom();
 		
 		// TODO Auto-generated method stub
 		
