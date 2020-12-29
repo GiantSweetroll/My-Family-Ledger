@@ -1594,6 +1594,42 @@ public final class DatabaseService
 		return balance;
 	}
 	
+	public double getExpenditure(int userID) {
+		double exp = 0;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String query = "SELECT SUM(amount) FROM OF_Transactions WHERE user_id=? AND source_id IS NULL";
+		try
+		{
+			ps = this.prepStatement(query);
+			ps.setInt(1, userID);
+			rs = ps.executeQuery();
+			
+			if (rs.next()) 
+			{
+			exp = rs.getDouble(1);
+			};
+			
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch(SQLException ex) {}
+		}
+		
+	}
+		return exp;
+	}
+	
 	public Account getAccount(int accountId)
 	{
 		Account a = null;
@@ -1788,7 +1824,8 @@ public final class DatabaseService
 		return adminID;
 	}
 	
-	public double getIncome(int user_id, int source_id)
+	
+	public double getIncome(int user_id, int admin_id)
 	{
 		double Income = 0;
 		PreparedStatement ps = null;
@@ -1798,7 +1835,7 @@ public final class DatabaseService
 		{
 			ps = this.prepStatement(query);
 			ps.setInt(1, user_id);
-			ps.setInt(2, source_id);
+			ps.setInt(2, admin_id);
 			rs = ps.executeQuery();
 			
 			if(rs.next())
@@ -1822,8 +1859,7 @@ public final class DatabaseService
 				catch(SQLException ex) {}
 			}
 		}
-		return Income;
-		
+		return Income;	
 	}
 
 	/**
