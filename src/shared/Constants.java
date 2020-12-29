@@ -51,7 +51,7 @@ public class Constants
 	//Icons
 	public static final ImageIcon ICON_DELETE = new ImageIcon(ImageManager.scaleImage(ImageManager.getImageIcon(Constants.class.getResource("/resources/trash.png")).getImage(), 15, 15));
 	public static final ImageIcon ICON_EDIT = new ImageIcon(ImageManager.scaleImage(ImageManager.getImageIcon(Constants.class.getResource("/resources/editicon.svg.png")).getImage(), 15, 15));
-	public static final ImageIcon ICON_LOGO = new ImageIcon(ImageManager.scaleImage(ImageManager.getImage(Constants.class.getResource("/resources/logo_trans.png")), 300, 300));
+	public static final ImageIcon ICON_LOGO = new ImageIcon(ImageManager.scaleImage(ImageManager.getImage(Constants.class.getResource("/resources/logo_trans.png")), 200, 200));
 	public static final ImageIcon ICON_LOGO_SMALL = new ImageIcon(ImageManager.scaleImage(ImageManager.getImage(Constants.class.getResource("/resources/logo_trans.png")), 100, 100));
 	public static final ImageIcon ICON_CLOSE = new ImageIcon(ImageManager.scaleImage(ImageManager.getImage(Constants.class.getResource("/resources/closeicon.png")), 16, 16));
 	public static final ImageIcon ICON_HISTORY = new ImageIcon(ImageManager.scaleImage(ImageManager.getImage(Constants.class.getResource("/resources/history_icon.png")), 64, 64));
