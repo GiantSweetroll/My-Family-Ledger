@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -24,6 +25,7 @@ import giantsweetroll.ImageManager;
 import giantsweetroll.gui.swing.Gbm;
 import giantsweetroll.gui.swing.ScrollPaneManager;
 import main.Main;
+import models.Admin;
 import models.Person;
 import screens.history.TransactionHistory;
 import screens.history.TransferHistory;
@@ -33,6 +35,7 @@ import screens.report.ReportPage;
 import shared.Constants;
 import shared.Methods;
 import shared.components.AppButton;
+import shared.components.CategoryEditor;
 import shared.components.LogoLabel;
 import shared.screens.AccountPanel;
 
@@ -51,6 +54,7 @@ public class Menu extends JPanel{
 	private JLabel logoDesc;
 	private boolean asAdmin;
 	private JPanel panelTop, panelCenter, panelBelow;
+	private JDialog dialogCategories;
 	private JScrollPane scroll;
 	
 	//Constructor
@@ -67,6 +71,7 @@ public class Menu extends JPanel{
 		//Properties
 		this.setLayout(new BorderLayout());
 		this.setBackground(Color.WHITE);
+		
 		
 		//Add to panel
 		this.add(this.panelTop, BorderLayout.NORTH);
@@ -144,6 +149,7 @@ public class Menu extends JPanel{
 		this.butTransfer = new AppButton("Transfer", Constants.ICON_TRANSFER);
 		this.butReport = new AppButton("Report", Constants.ICON_REPORT);
 		this.butCategories = new AppButton("Categories", Constants.ICON_CATEGORIES);
+		this.dialogCategories = new JDialog();
 		JPanel panel = new JPanel(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		
@@ -197,9 +203,19 @@ public class Menu extends JPanel{
 		this.butCategories.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
-				//Main.pushScreen(new CategoryEditor(admin));
+				//cuman coba biar my categories page nya bisa kebuka 
+				String emailperson = person.getEmail();
+				int adminInfo = Constants.DATABASE_SERVICE.getAdminID(emailperson);
+				Admin a1 = new Admin(adminInfo,person.getFirstName(),person.getLastName());
+				dialogCategories.add(new CategoryEditor(a1));
+				dialogCategories.setModal(true);
+				dialogCategories.setSize(700, 700);
+				dialogCategories.setLocationRelativeTo(null);
+				dialogCategories.setVisible(true);
+				
 			}
 		});
+		
 		
 		//Add to panel
 		Gbm.goToOrigin(c);
