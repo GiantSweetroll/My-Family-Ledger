@@ -50,45 +50,6 @@ public class Methods
 		}
 	}
 	
-	/**
-	 * Converts a list of category into data that can be represented in JTable
-	 * @param list a List containing Category
-	 * @return a 2D String array
-	 */
-	public static String[][] convertCategoryToTableRowData(List<Category> list)
-	{
-		String[][] arr = new String[list.size()][3];
-		
-		for (int i=0; i<list.size(); i++)
-		{
-			arr[i][0] = Integer.toString(list.get(i).getID());
-			arr[i][1] = list.get(i).getName();
-			arr[i][2] = "";		//Make it empty because not needed (only to make columns the same as header)
-		}
-		
-		return arr;
-	}
-		
-	public static String[][] convertTransactionToTableRowData(List<Transaction> list)
-	{
-		String[][] arr = new String[list.size()][10];
-		
-		for (int i=0; i<list.size(); i++)
-		{
-			arr[i][0] = Integer.toString(list.get(i).getID());
-			arr[i][1] = Integer.toString(list.get(i).getCategoryID());
-			arr[i][2] = Integer.toString(list.get(i).getUserID());
-			arr[i][3] = convertDateToString(list.get(i).getDateInput());
-			arr[i][4] = convertDateToString(list.get(i).getDateEdit());
-			arr[i][5] = Double.toString(list.get(i).getAmount());
-			arr[i][6] = list.get(i).getDesc();
-			arr[i][7] = list.get(i).getLinkReceipt();
-			arr[i][8] = "";
-			arr[i][9] = "";
-		}
-		
-		return arr;
-	}
 	public static String convertDateToString(Date date) 
 	{ 
 
