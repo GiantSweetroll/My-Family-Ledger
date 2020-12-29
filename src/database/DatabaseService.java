@@ -16,9 +16,22 @@ import models.Category;
 import models.Person;
 import models.Transaction;
 import models.User;
+import shared.Constants;
 import shared.Methods;
 import shared.SecurityServices;
 
+/**
+ * @author Nicholas
+ *
+ */
+/**
+ * @author Nicholas
+ *
+ */
+/**
+ * @author Nicholas
+ *
+ */
 public final class DatabaseService 
 {
 	private static final String HOST = "jdbc:mysql://localhost:3306/",
@@ -523,6 +536,193 @@ public final class DatabaseService
 			}
 		}
 	}
+	
+	/**
+	 * Delete a certain Admin from the of_admins table
+	 * @param adminId - int admin id to specify which admin we want to delete
+	 */
+	public void deleteAdmin(int adminId) 
+	{
+		PreparedStatement ps = null;
+		try
+		{		
+			ps = this.prepStatement("DELETE FROM " + TABLE_ADMINS + " WHERE " + Admin.ID + " = " + adminId);
+			
+			ps.execute();
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try 
+				{
+					ps.close();
+				}
+				catch (SQLException e) {}
+			}
+		}
+		
+	}
+	
+	/**
+	 * Delete a certain Category from the of_categories table
+	 * @param categoryId - int category id to specify which category we want to delete
+	 */
+	public void deleteCategory(int categoryId) 
+	{
+		PreparedStatement ps = null;
+		try
+		{		
+			ps = this.prepStatement("DELETE FROM " + TABLE_CATEGORIES + " WHERE " + Category.ID + " = " + categoryId);
+			
+			ps.execute();
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try 
+				{
+					ps.close();
+				}
+				catch (SQLException e) {}
+			}
+		}
+		
+	}
+	
+	/**
+	 * Delete a certain Admin Category from the of_admincategories table
+	 * @param adminCategoryId - int admin category id to specify which admin category we want to delete
+	 */
+	public void deleteAdminCategory(int adminCategoryId) 
+	{
+		PreparedStatement ps = null;
+		try
+		{		
+			ps = this.prepStatement("DELETE FROM " + TABLE_ADMIN_CATEGORIES + " WHERE " + AdminCategory.ID + " = " + adminCategoryId);
+			
+			ps.execute();
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try 
+				{
+					ps.close();
+				}
+				catch (SQLException e) {}
+			}
+		}
+		
+	}
+	
+	/**
+	 * Delete a certain user from the of_users table
+	 * @param UserId - int user id to specify which user we want to delete
+	 */
+	public void deleteUser(int UserId) 
+	{
+		PreparedStatement ps = null;
+		try
+		{		
+			ps = this.prepStatement("DELETE FROM " + TABLE_USERS + " WHERE " + User.ID + " = " + UserId);
+			
+			ps.execute();
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try 
+				{
+					ps.close();
+				}
+				catch (SQLException e) {}
+			}
+		}
+		
+	}
+	
+	/**
+	 * Delete a certain transaction from the of_transactions table
+	 * @param transactionId - int transaction id to specify which transaction we want to delete
+	 */
+	public void deleteTransaction(int transactionId) 
+	{
+		PreparedStatement ps = null;
+		try
+		{		
+			ps = this.prepStatement("DELETE FROM " + TABLE_TRANSACTIONS + " WHERE " + Transaction.ID + " = " + transactionId);
+			
+			ps.execute();
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try 
+				{
+					ps.close();
+				}
+				catch (SQLException e) {}
+			}
+		}
+		
+	}
+	
+	/**
+	 * Delete a certain account from the of_account table
+	 * @param AccountId - int account id to specify which account we want to delete
+	 */
+	public void deleteAccount(int AccountId) 
+	{
+		PreparedStatement ps = null;
+		try
+		{		
+			ps = this.prepStatement("DELETE FROM " + TABLE_ACCOUNT + " WHERE " + Account.ID + " = " + AccountId);
+			
+			ps.execute();
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try 
+				{
+					ps.close();
+				}
+				catch (SQLException e) {}
+			}
+		}
+		
+	}
+	
 	/**
 	 * Update the Person record. Will call either the update() method overloaded method for either Admin or User.
 	 * @param id the ID of the record to be updated
@@ -1416,6 +1616,12 @@ public final class DatabaseService
 		return a;
 	}
 	
+	/**
+	 * Get all transactions with a specified source id and category id
+	 * @param int sourceId - the source id used to filter the results
+	 * @param int categoryId - the category id used to filter the results
+	 * @return a list of Transaction objects
+	 */
 	public List<Transaction> getAllTransactions(int sourceId, int categoryId)
 	{
 		List<Transaction> transactions = new ArrayList<Transaction>();
@@ -1527,6 +1733,8 @@ public final class DatabaseService
 	/**
 	 
 	 * Get a category name from category id in the transaction table
+	 * @param int categoryId - category id to filter the results
+	 * @return a String containing a certain category name
 	 */
 	public String getCategoryName(int categoryId) {
 		String categoryName = "";
@@ -1564,6 +1772,12 @@ public final class DatabaseService
 	}
 	
 	
+	
+	/**
+	 * Get a certain balance from a user id or an account id
+	 * @param userAccountId - the user or account id (can input either one of them) to filter the results
+	 * @return a Double balance of a filtered account or user
+	 */
 	public double getBalance(int userAccountId) {
 		double balance = 0;
 		PreparedStatement ps = null;
@@ -1635,6 +1849,11 @@ public final class DatabaseService
 		return exp;
 	}
 	
+	/**
+	 * Get an Account with a certain account id
+	 * @param accountId - account id to filter the results
+	 * @return an account object from a specified account id
+	 */
 	public Account getAccount(int accountId)
 	{
 		Account a = null;
@@ -1688,6 +1907,11 @@ public final class DatabaseService
 		return a;
 	}
 	
+	/**
+	 * Get a user who has a certain user id
+	 * @param userId - user id to filter the results
+	 * @return a user object from a specfied user id
+	 */
 	public User getUser(int userId)
 	{
 		User u = null;
@@ -1741,6 +1965,11 @@ public final class DatabaseService
 		return u;
 	}
 	
+	/**
+	 * Get a list of all users that have a certain admin id
+	 * @param adminId - admin id to filter the results
+	 * @return a list of users objects that a certain admin supervise
+	 */
 	public List<User> getAllUsers(int adminId)
 	{
 		List<User> users = new ArrayList<User>();
@@ -1794,6 +2023,10 @@ public final class DatabaseService
 		return users;
 	}
 	
+	/**
+	 * @param email - email to filter the results
+	 * @return an integer admin id from a specified email 
+	 */
 	public int getAdminID(String email) {
 		int adminID = 0;
 		PreparedStatement ps = null;
@@ -1830,6 +2063,12 @@ public final class DatabaseService
 	}
 	
 	
+	/**
+	 * 
+	 * @param user_id
+	 * @param admin_id
+	 * @return 
+	 */
 	public double getIncome(int user_id, int admin_id)
 	{
 		double Income = 0;
@@ -1983,7 +2222,7 @@ public final class DatabaseService
 //		for(int i = 0; i < transactions.size(); i++) {
 //			System.out.println(transactions.get(i).getID());
 //		}
-		
+//		Constants.DATABASE_SERVICE.deleteTransaction(7);
 		
 	}
 }
