@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 
 import main.Main;
@@ -23,6 +24,7 @@ public class AccountPanel extends RoundedPanel
 	
 	//Fields
 	private JLabel labUsername, labSignOut;
+	private JDialog dialogProfile;
 	private Person person;
 	
 	//Constructor
@@ -33,6 +35,7 @@ public class AccountPanel extends RoundedPanel
 		this.person = new Person("", "");
 		this.labUsername = new JLabel(this.person.getFullName());
 		this.labSignOut = new HyperlinkLabel("Sign Out");
+		this.dialogProfile = new JDialog();
 		
 		//Properties
 		this.setBackground(Color.WHITE);
@@ -47,6 +50,21 @@ public class AccountPanel extends RoundedPanel
 					}
 				});
 		
+		this.labUsername.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				Globals.activeUser = person;
+				dialogProfile.add(new MyProfilePage());
+				dialogProfile.setModal(true);
+				dialogProfile.setSize(700, 700);
+				dialogProfile.setLocationRelativeTo(null);
+				dialogProfile.setVisible(true);	
+				
+			}
+			
+		});
 		//Add to panel
 		this.add(this.labUsername);
 		this.add(this.labSignOut);
