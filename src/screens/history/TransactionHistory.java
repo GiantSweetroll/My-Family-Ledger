@@ -141,7 +141,7 @@ public class TransactionHistory extends HistoryPanel{
 	private void initTable(){
 		//Initialization
 		
-		List<Transaction> transactions = Constants.DATABASE_SERVICE.getAllTransactions();
+		List<Transaction> transactions = Constants.DATABASE_SERVICE.getAllTransactions(person.getID());
 		this.tableTrans = new TransactionHistoryTable(transactions);
 		this.tableTrans.updateData(transactions);
 //		updateTable();
