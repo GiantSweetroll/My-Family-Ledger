@@ -106,5 +106,6 @@ public abstract class AbstractLedgerTable extends JTable
 		this.setBackground(Color.WHITE);
 		this.setAutoCreateRowSorter(true);
 		this.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		this.getTableHeader().setFont(Constants.FONT_GENERAL_BOLD);
 	}
 }
