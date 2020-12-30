@@ -70,7 +70,7 @@ public class TransferHistoryTable extends HistoryTable
 	@Override
 	protected String[][] convertToTableRowData(List<? extends DatabaseItem> data)
 	{
-		String[][] arr = new String[data.size()][10];
+		String[][] arr = new String[data.size()][8];
 		
 		for (int i=0; i<data.size(); i++)
 		{
