@@ -202,14 +202,20 @@ public class TransferFunds extends TriplePanelPage
 					double amount = Double.parseDouble(tfAmount.getText()) * -1d;		//*-1 to make it negative
 					labWarning.setText("");
 					String notes = tfNotes.getText().trim().equals("") || tfNotes.getText().trim().equalsIgnoreCase("Notes") ? "" : tfNotes.getText().trim();
+					
 					if (oldTransaction == null) //new entry
 					{
 						Transaction trans = new Transaction(categoryId, adminId, userId, date, date, amount, notes);
+						Constants.DATABASE_SERVICE.insert(trans);
+						trans = new Transaction(categoryId, adminId, userId, date, date, amount*-1d, notes);		//Make a copy for the receiving user
 						Constants.DATABASE_SERVICE.insert(trans);
 					}
 					else
 					{
 						Transaction trans = new Transaction(oldTransaction.getID(), categoryId, adminId, userId, oldTransaction.getDateInput(), date, amount, notes);
+						Constants.DATABASE_SERVICE.update(trans.getID(), trans);
+						//Update matching transaction
+						trans = new Transaction(oldTransaction.getID() + 1, categoryId, adminId, userId, oldTransaction.getDateInput(), date, amount, notes);
 						Constants.DATABASE_SERVICE.update(trans.getID(), trans);
 					}
 					
