@@ -1,6 +1,6 @@
 package shared.screens;
 
-import java.awt.BorderLayout;
+import java.awt.BorderLayout; 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -28,10 +28,8 @@ import javax.swing.border.Border;
 import javax.swing.plaf.FontUIResource;
 
 import giantsweetroll.gui.swing.Gbm;
-import main.Main;
 import models.Admin;
 import models.Person;
-import screens.menu.Menu;
 import shared.Constants;
 import shared.Methods;
 import shared.components.AppButton;
@@ -146,15 +144,6 @@ public class MyProfilePage extends CenteredPage{
 						person.setEmail(email);
 						Constants.DATABASE_SERVICE.update(person.getID(), person);                             
 						btnSavedaction(evt); 
-						if (person instanceof Admin)
-						{
-							Main.changeScreen(new Menu(person,true));
-							
-						}
-						else
-						{
-							Main.changeScreen(new Menu(person,false));
-						}
 						
 						
 					}
