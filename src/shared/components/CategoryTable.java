@@ -28,7 +28,7 @@ public class CategoryTable extends AbstractLedgerTable implements MouseListener
 	private static final long serialVersionUID = 4951447617549379299L;
 	//Fields
 	//Constants
-	private final String[] HEADERS = {"ID", "Name", ""};
+	private static final String[] HEADERS = {"ID", "Name", ""};
 	
 	//Constructors
 	public CategoryTable(List<Category> categories)
