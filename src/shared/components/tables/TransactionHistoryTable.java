@@ -1,4 +1,4 @@
-package shared.components;
+package shared.components.tables;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,7 @@ import java.util.List;
 import models.DatabaseItem;
 import models.Transaction;
 import shared.Constants;
+import shared.components.IconCellRenderer;
 
 public class TransactionHistoryTable extends HistoryTable
 {

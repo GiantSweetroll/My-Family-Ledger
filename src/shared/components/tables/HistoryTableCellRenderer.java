@@ -1,4 +1,4 @@
-package shared.components;
+package shared.components.tables;
 import java.awt.Color;
 import java.awt.Component;
 

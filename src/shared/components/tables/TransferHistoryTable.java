@@ -1,4 +1,4 @@
-package shared.components;
+package shared.components.tables;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +10,7 @@ import models.User;
 import screens.input.TransferFunds;
 import shared.Constants;
 import shared.Globals;
+import shared.components.IconCellRenderer;
 
 public class TransferHistoryTable extends HistoryTable
 {
