@@ -31,7 +31,7 @@ import giantsweetroll.gui.swing.Gbm;
 import main.Main;
 import models.Admin;
 import models.Person;
-
+import screens.menu.Menu;
 import shared.Constants;
 import shared.Methods;
 import shared.components.AppButton;
@@ -145,7 +145,17 @@ public class MyProfilePage extends CenteredPage{
 						person.setLastName(lastname);
 						person.setEmail(email);
 						Constants.DATABASE_SERVICE.update(person.getID(), person);                             
-						btnSavedaction(evt);        	
+						btnSavedaction(evt); 
+						if (person instanceof Admin)
+						{
+							Main.changeScreen(new Menu(person,true));
+							
+						}
+						else
+						{
+							Main.changeScreen(new Menu(person,false));
+						}
+						
 						
 					}
 				});
