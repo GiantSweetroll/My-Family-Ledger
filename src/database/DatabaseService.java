@@ -16,7 +16,6 @@ import models.Category;
 import models.Person;
 import models.Transaction;
 import models.User;
-import shared.Constants;
 import shared.Methods;
 import shared.SecurityServices;
 
@@ -1288,7 +1287,7 @@ public final class DatabaseService
 		
 		try
 		{
-			ps = this.prepStatement("SELECT * FROM " + TABLE_TRANSACTIONS + " WHERE " + User.ID + " = " + userID);
+			ps = this.prepStatement("SELECT * FROM " + TABLE_TRANSACTIONS + " WHERE " + Transaction.USER_ID + " = " + userID);
 			rs = ps.executeQuery();
 			
 			//Loop through the result set
