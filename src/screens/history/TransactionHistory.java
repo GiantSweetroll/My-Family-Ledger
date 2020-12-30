@@ -4,11 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -17,27 +13,22 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 import main.Main;
-import models.Category;
 import models.Person;
 import models.Transaction;
-import models.User;
 import screens.menu.Menu;
 import shared.Constants;
 import shared.Globals;
 import shared.Methods;
-import shared.screens.HistoryPanel;
 import shared.components.DatePicker;
 import shared.components.HintTextField;
 import shared.components.HistoryTableCellRenderer;
-import shared.components.IconCellRenderer;
 import shared.components.TransactionHistoryTable;
+import shared.screens.HistoryPanel;
 
 public class TransactionHistory extends HistoryPanel{
 	
@@ -59,8 +50,7 @@ public class TransactionHistory extends HistoryPanel{
 	private DatePicker dateFrom, dateTo;
 	private DefaultTableModel model;
 	private int columns = 8;
-	
-	private String[] columnNames = {"Date", "Category", "Name", "Amount (Rp.)", "Receipt Link", "Last Modified", "Action", "Action"};
+
 	//Constructor
 	public TransactionHistory(Person person) {
 		super(person);
@@ -91,7 +81,7 @@ public class TransactionHistory extends HistoryPanel{
 		this.dateTo = new DatePicker();
 		this.cbEquals = new JComboBox<String>(Constants.COMBO_BOX_OPERANDS);
 
-		String categories[] = { "Select Item", "Food", "Transport", "Household" }; //perlu diganti with the actual categories
+		String categories[] = { "Select Item", "Food", "Transport", "Household" }; //TODO: perlu diganti with the actual categories
 		this.cbCategory = new JComboBox<String>(categories);
 
 		
@@ -139,12 +129,12 @@ public class TransactionHistory extends HistoryPanel{
 		this.tableTrans.updateData(transactions);
 //		updateTable();
 		
-		//Properties
-		this.tableTrans.getTableHeader().setFont(Constants.FONT_SMALLER_BOLD);
-		this.tableTrans.setFont(Constants.FONT_SMALLER);
-		this.tableTrans.setPreferredScrollableViewportSize(new Dimension(500, 220));
-	    this.tableTrans.setFillsViewportHeight(true);
-	    this.tableTrans.setRowHeight(30);
+//		//Properties
+//		this.tableTrans.getTableHeader().setFont(Constants.FONT_SMALLER_BOLD);
+//		this.tableTrans.setFont(Constants.FONT_SMALLER);
+//		this.tableTrans.setPreferredScrollableViewportSize(new Dimension(500, 220));
+//	    this.tableTrans.setFillsViewportHeight(true);
+//	    this.tableTrans.setRowHeight(30);
 	}
 	
 	private void updateTable() {
