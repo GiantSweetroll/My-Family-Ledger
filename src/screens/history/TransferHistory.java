@@ -37,6 +37,7 @@ import shared.components.WarningLabel;
 import shared.components.listview.ListTile;
 import shared.components.listview.ListView;
 import shared.components.listview.SimpleUserTile;
+import shared.components.tables.TransferHistoryTable;
 import shared.screens.HistoryPanel;
 
 public class TransferHistory extends HistoryPanel
@@ -61,8 +62,6 @@ public class TransferHistory extends HistoryPanel
 	private DatePicker dateFrom, dateTo;
 	private ListView listView;
 	private JTable tableTransfer;
-	private String[] columnNames = {"Date", "Category", "Name", "Amount (Rp.)", "Description"};
-	private DefaultTableModel model;
 	private int columns = 5;
 	
 	//Constructor
@@ -212,12 +211,6 @@ public class TransferHistory extends HistoryPanel
 	
 	public void initTable(List<Transaction> trans) {
 		//Initialization
-		this.model = new DefaultTableModel(this.columnNames,0){
-			public boolean isCellEditable(int row, int column){
-				return false;//This causes all cells to be not editable
-			}
-		};
-		this.tableTransfer = new JTable(this.model);
 		
 		List<Transaction> transactions = trans; //hrusnya ambil semua transaction sesuai filters
 		List<Category> categories = Constants.DATABASE_SERVICE.getAllCategories();
@@ -230,17 +223,17 @@ public class TransferHistory extends HistoryPanel
 			currentData[2] = user.get(tr.getUserID()-1).getFullName();
 			currentData[3] = Double.toString(tr.getAmount());
 			currentData[4] = tr.getDesc();
-			this.model.addRow(currentData);
 		}
 		
+		this.tableTransfer = new TransferHistoryTable(transactions);
 		//{"Date", "Category", "Name", "Amount (Rp.)", "Last Modified"};
 		
 		//Properties
-		this.tableTransfer.getTableHeader().setFont(Constants.FONT_SMALLER_BOLD);
-		this.tableTransfer.setFont(Constants.FONT_SMALLER);
-		this.tableTransfer.setPreferredScrollableViewportSize(new Dimension(500, 220));
-	    this.tableTransfer.setFillsViewportHeight(true);
-	    this.tableTransfer.setRowHeight(30);
+		//this.tableTransfer.getTableHeader().setFont(Constants.FONT_SMALLER_BOLD);
+		//this.tableTransfer.setFont(Constants.FONT_SMALLER);
+		//this.tableTransfer.setPreferredScrollableViewportSize(new Dimension(500, 220));
+	    //this.tableTransfer.setFillsViewportHeight(true);
+	    //this.tableTransfer.setRowHeight(30);
 	    
 	    this.setTable(this.tableTransfer);
 	}
@@ -324,22 +317,6 @@ public class TransferHistory extends HistoryPanel
 		}
 		
 		this.listView.updateData(this.tiles);
-	}
-	
-	private void updateTableData(List<Transaction> trans) {
-		List<Transaction> transactions = trans; //hrusnya ambil semua transaction sesuai filters
-		List<Category> categories = Constants.DATABASE_SERVICE.getAllCategories();
-		List<User> user = Constants.DATABASE_SERVICE.getAllUsers(this.person.getID());
-		
-		String[] currentData = new String[this.columns];
-		for (Transaction tr: transactions) {
-			currentData[0] = tr.getDateInput().toString();
-			currentData[1] = categories.get(tr.getCategoryID()-1).getName();
-			currentData[2] = user.get(tr.getUserID()-1).getFullName();
-			currentData[3] = Double.toString(tr.getAmount());
-			currentData[4] = tr.getDesc();
-			this.model.addRow(currentData);
-		}
 	}
 	
 	//Testing
