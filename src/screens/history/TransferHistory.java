@@ -1,7 +1,6 @@
 package screens.history;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -18,13 +17,11 @@ import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.plaf.FontUIResource;
-import javax.swing.table.DefaultTableModel;
 
 import giantsweetroll.gui.swing.Gbm;
 import main.Main;
 import models.Account;
 import models.Admin;
-import models.Category;
 import models.Person;
 import models.Transaction;
 import models.User;
@@ -282,6 +279,10 @@ public class TransferHistory extends HistoryPanel
 		catch(NumberFormatException ex)
 		{
 			this.labWarning.setText("Please enter a valid value");
+		}
+		catch(NullPointerException ex)
+		{
+			initTable(new ArrayList<Transaction>());
 		}
 	}
 
