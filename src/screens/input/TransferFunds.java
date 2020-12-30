@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +28,12 @@ import models.Admin;
 import models.Person;
 import models.Transaction;
 import models.User;
+import screens.menu.Menu;
 import shared.Constants;
+import shared.Globals;
 import shared.Methods;
 import shared.components.HintTextField;
+import shared.components.HyperlinkLabel;
 import shared.components.NameEmailPanel;
 import shared.components.WarningLabel;
 import shared.components.listview.ListTile;
@@ -165,7 +170,7 @@ public class TransferFunds extends TriplePanelPage
 		this.tfAmount = new HintTextField("Amount (Rp.)");
 		this.tfNotes = new HintTextField("Notes");
 		this.labWarning = new WarningLabel();
-		this.labBack = new JLabel("Back");
+		this.labBack = new HyperlinkLabel("Back");
 		this.butTf = new JButton("Transfer");
 		SpringLayout spr = new SpringLayout();
 		JPanel panelCenter = new JPanel(spr);
@@ -179,8 +184,15 @@ public class TransferFunds extends TriplePanelPage
 		this.tfNotes.setColumns(10);
 		this.labWarning.setHorizontalAlignment(SwingConstants.CENTER);
 		this.labBack.setFont(Constants.FONT_SMALLER);
-		this.labBack.setForeground(Constants.COLOR_HYPERLINK);
 		this.labBack.setHorizontalAlignment(SwingConstants.CENTER);
+		this.labBack.addMouseListener(new MouseAdapter()
+				{
+					@Override
+					public void mouseClicked(MouseEvent e)
+					{
+						Main.changeScreen(new Menu(Globals.activeUser, true));
+					}
+				});
 		this.butTf.setBackground(Constants.COLOR_BUTTON_BASE);
 		this.butTf.setForeground(Color.WHITE);
 		this.butTf.addActionListener(new ActionListener()
