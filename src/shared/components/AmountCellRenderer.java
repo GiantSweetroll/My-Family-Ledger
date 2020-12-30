@@ -41,7 +41,6 @@ public class AmountCellRenderer extends JLabel implements TableCellRenderer
 		//Decide foreground color
 		boolean isNegative = false;
 		String amount = (String)obj;
-		this.setText(amount);
 		
 		if (amount.length() > 0)
 		{
@@ -51,11 +50,14 @@ public class AmountCellRenderer extends JLabel implements TableCellRenderer
 		if(isNegative)
 		{
 			this.setForeground(Color.RED);
+			amount = amount.substring(1);
 		}
 		else
 		{
 			this.setForeground(Color.BLUE);
 		}
+		
+		this.setText(amount);
 		
 		return this;
 	}
