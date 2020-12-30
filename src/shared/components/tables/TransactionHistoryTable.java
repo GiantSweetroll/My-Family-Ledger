@@ -1,5 +1,6 @@
 package shared.components.tables;
 
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,5 +85,26 @@ public class TransactionHistoryTable extends HistoryTable
 		}
 		
 		return arr;
+	}
+	
+	@Override
+	public void mouseClicked(MouseEvent e) 
+	{	
+		int row = this.rowAtPoint(e.getPoint());
+		int col = this.columnAtPoint(e.getPoint());
+		int selectedIndex = this.convertRowIndexToModel(row);
+		boolean catIsTF = this.tableData[selectedIndex][1].equalsIgnoreCase("Transfer");
+		
+		if (!catIsTF)	//If transaction is not a transfer, allow press
+		{
+			if (col == this.tableData[0].length-1)		//If last column is pressed
+			{
+				this.onEditPressed((Transaction)this.data.get(selectedIndex));
+			}
+			else if (col == this.tableData[0].length-2)		//If last column is pressed
+			{
+				this.onDeletePressed(selectedIndex);
+			}
+		}
 	}
 }
