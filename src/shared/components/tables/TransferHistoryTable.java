@@ -10,6 +10,7 @@ import models.User;
 import screens.input.TransferFunds;
 import shared.Constants;
 import shared.Globals;
+import shared.components.AmountCellRenderer;
 import shared.components.IconCellRenderer;
 
 public class TransferHistoryTable extends HistoryTable
@@ -48,6 +49,7 @@ public class TransferHistoryTable extends HistoryTable
 		//Apply icon renderer
 		if (this.tableData.length > 0)
 		{
+			this.getColumnModel().getColumn(1).setCellRenderer(new AmountCellRenderer());
 			this.getColumnModel().getColumn(this.tableData[0].length-1).setCellRenderer(new IconCellRenderer(Constants.ICON_EDIT));
 			this.getColumnModel().getColumn(this.tableData[0].length-2).setCellRenderer(new IconCellRenderer(Constants.ICON_DELETE));
 		}
