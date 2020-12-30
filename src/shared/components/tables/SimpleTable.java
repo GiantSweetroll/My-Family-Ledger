@@ -86,5 +86,6 @@ public class SimpleTable extends JTable
 		this.setAutoCreateRowSorter(true);
 		this.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		this.getTableHeader().setFont(Constants.FONT_GENERAL_BOLD);
+		this.getTableHeader().setBackground(Constants.COLOR_TABLE_HEADER);
 	}
 }
