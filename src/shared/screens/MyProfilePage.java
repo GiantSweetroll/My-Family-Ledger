@@ -20,6 +20,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -66,6 +67,7 @@ public class MyProfilePage extends CenteredPage{
 		this.closeIconLabel = new JLabel(closeIcon);
 		this.adminIDLabel = new JLabel();
 		this.okButton = new AppButton("OK");
+		this.dialogResetPassword = new JDialog();
 		JPanel topPanel = new JPanel();
 		JPanel centerPanel = new JPanel();
 		GridBagConstraints c = new GridBagConstraints();
@@ -126,6 +128,7 @@ public class MyProfilePage extends CenteredPage{
 		{
 			this.adminIDLabel.setVisible(false);
 		}
+	
 		
 		this.okButton.setFont(Constants.FONT_SMALLER);
 		this.okButton.setBackground(Constants.COLOR_BUTTON_BASE);
@@ -135,6 +138,14 @@ public class MyProfilePage extends CenteredPage{
 					@Override
 					public void actionPerformed(ActionEvent evt) {
 						closeThisWindow();
+						String firstname = tfUsername.getText().trim();
+						String lastname = tfLastname.getText().trim();
+						String email = tfEmail.getText().trim();
+						person.setFirstName(firstname);
+						person.setLastName(lastname);
+						person.setEmail(email);
+						Constants.DATABASE_SERVICE.update(person.getID(), person);                             
+						btnSavedaction(evt);        	
 						
 					}
 				});
@@ -184,6 +195,12 @@ public class MyProfilePage extends CenteredPage{
 		Window w = SwingUtilities.getWindowAncestor(MyProfilePage.this);
 		w.setVisible(false);
 	}
+	
+		private void btnSavedaction(ActionEvent evt) {                                               
+ 
+        JOptionPane.showMessageDialog(this, "Data saved");
+		}
+	
 	
 	
 	
