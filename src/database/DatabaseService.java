@@ -16,6 +16,7 @@ import models.Category;
 import models.Person;
 import models.Transaction;
 import models.User;
+import shared.Globals;
 import shared.Methods;
 import shared.SecurityServices;
 
@@ -1302,7 +1303,7 @@ public final class DatabaseService
 													rs.getDouble(Transaction.AMOUNT),
 													rs.getString(Transaction.DESC),
 													rs.getString(Transaction.LINK_RECEIPT));
-				transactions.add(tr);
+				this.addTransactionToList(transactions, tr);
 			}
 			
 		}
@@ -1365,7 +1366,7 @@ public final class DatabaseService
 													rs.getDouble(Transaction.AMOUNT),
 													rs.getString(Transaction.DESC),
 													rs.getString(Transaction.LINK_RECEIPT));
-				transactions.add(tr);
+				this.addTransactionToList(transactions, tr);
 			}
 			
 		}
@@ -1427,7 +1428,7 @@ public final class DatabaseService
 													rs.getDouble(Transaction.AMOUNT),
 													rs.getString(Transaction.DESC),
 													rs.getString(Transaction.LINK_RECEIPT));
-				transactions.add(tr);
+				this.addTransactionToList(transactions, tr);
 			}
 			
 		}
@@ -1523,7 +1524,7 @@ public final class DatabaseService
 													rs.getDouble(Transaction.AMOUNT),
 													rs.getString(Transaction.DESC),
 													rs.getString(Transaction.LINK_RECEIPT));
-				transactions.add(tr);
+				this.addTransactionToList(transactions, tr);
 			}
 			
 		}
@@ -2184,6 +2185,31 @@ public final class DatabaseService
 		}
 		
 		return p;
+	}
+	
+	//Private Methods
+	/**
+	 * Utility to check if a Transaction should be added to the List of Transaction objects.
+	 * Checks if the Transaction belongs to an Admin or User
+	 * @param list a List of Transaction objects
+	 * @param tr the Transaction to be checked.
+	 */
+	private void addTransactionToList(List<Transaction> list, Transaction tr)
+	{
+		if (Globals.activeUser instanceof Admin)
+		{
+			if (tr.getCategoryID() == 1 && tr.getAmount() < 0)
+			{
+				list.add(tr);
+			}
+		}
+		else
+		{
+			if (tr.getCategoryID() != 1 || tr.getCategoryID() == 1 && tr.getAmount() > 0)
+			{
+				list.add(tr);
+			}
+		}
 	}
 	
 	public static void main (String args[])
