@@ -1,17 +1,10 @@
 package shared.components.tables;
 
-import java.awt.Color;
-import java.awt.Component;
 import java.util.List;
 
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-
 import models.DatabaseItem;
-import shared.Constants;
 
-public abstract class AbstractLedgerTable extends JTable
+public abstract class AbstractLedgerTable extends SimpleTable
 {
 
 	/**
@@ -19,20 +12,18 @@ public abstract class AbstractLedgerTable extends JTable
 	 */
 	private static final long serialVersionUID = 1854537926969311310L;
 	//Fields
-	protected String[][] tableData;
-	protected String[] headers;
 	protected List<? extends DatabaseItem> data;
 	
 	//Constructor
 	public AbstractLedgerTable(List<? extends DatabaseItem> data, String[][] tableData, String[] headers)
 	{
 		super();
-		this.init(data, tableData, headers);
+		this.data = data;
 	}
 	public AbstractLedgerTable()
 	{
 		super();
-		this.init(null, null, null);
+		this.data = null;
 	}
 	
 	//Public Methods
@@ -57,55 +48,10 @@ public abstract class AbstractLedgerTable extends JTable
 	 */
 	protected void updateData(List<? extends DatabaseItem> data, String[][] tableData, String[] headers)
 	{
+		super.updateData(tableData, headers);
 		if (data != null)
 		{
 			this.data = data;
 		}
-		this.tableData = tableData;
-		this.headers = headers;
-		this.setModel(new DefaultTableModel(this.tableData, this.headers));
-	}
-	
-	//Overridden Methods
-	@Override
-	public Component prepareRenderer(TableCellRenderer r, int row, int col)
-	{
-		Component c = super.prepareRenderer(r, row, col);
-		
-		//Table row color pattern
-		if (row%2==1)
-		{
-			c.setBackground(Color.WHITE);
-		}
-		else
-		{
-			c.setBackground(Constants.COLOR_TABLE_EVEN_ROW);
-		}
-		
-		return c;
-	}
-	
-	/*
-	 * Resizes the table cells width to its preferred size or the viewport size, whichever is greater
-	 */
-	@Override
-	public boolean getScrollableTracksViewportWidth()
-	{
-		return this.getPreferredSize().width < this.getParent().getWidth();
-	}
-	
-	//Private methods
-	private void init(List<? extends DatabaseItem> data, String[][] tableData, String[] headers)
-	{
-		//Initialization
-		this.data = data;
-		this.tableData = tableData;
-		this.headers = headers;
-		
-		//Properties
-		this.setBackground(Color.WHITE);
-		this.setAutoCreateRowSorter(true);
-		this.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		this.getTableHeader().setFont(Constants.FONT_GENERAL_BOLD);
 	}
 }
