@@ -39,16 +39,13 @@ public class TransactionHistoryTable extends HistoryTable
 	@Override
 	public void updateData(List<? extends DatabaseItem> transaction) 
 	{
-		this.updateData(transaction, this.convertToTableRowData((List<Transaction>) transaction), this.headers);
+		this.updateData(transaction, this.convertToTableRowData((List<Transaction>) transaction), HEADERS);
 		
 		//Apply icon renderer (only if it is not a Transfer)
-		for (int i=0; i<this.tableData.length; i++)
+		if (this.tableData.length > 0)
 		{
-			if (!this.tableData[i][1].equalsIgnoreCase("Transfer"))
-			{
-				this.getColumnModel().getColumn(this.tableData[i].length-1).setCellRenderer(new IconCellRenderer(Constants.ICON_EDIT));
-				this.getColumnModel().getColumn(this.tableData[i].length-2).setCellRenderer(new IconCellRenderer(Constants.ICON_DELETE));
-			}
+			this.getColumnModel().getColumn(this.tableData[0].length-1).setCellRenderer(new IconCellRenderer(Constants.ICON_EDIT));
+			this.getColumnModel().getColumn(this.tableData[0].length-2).setCellRenderer(new IconCellRenderer(Constants.ICON_DELETE));
 		}
 	}
 	
