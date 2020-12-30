@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -18,12 +20,14 @@ import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
 
 import main.Main;
+import models.Category;
 import models.Person;
 import models.Transaction;
 import screens.menu.Menu;
 import shared.Constants;
 import shared.Globals;
 import shared.Methods;
+import shared.components.ComboBoxRenderer;
 import shared.components.DatePicker;
 import shared.components.HintTextField;
 import shared.components.tables.HistoryTableCellRenderer;
@@ -49,7 +53,6 @@ public class TransactionHistory extends HistoryPanel{
 	private TransactionHistoryTable tableTrans;
 	private DatePicker dateFrom, dateTo;
 	private DefaultTableModel model;
-	private int columns = 8;
 
 	//Constructor
 	public TransactionHistory(Person person) {
@@ -81,8 +84,22 @@ public class TransactionHistory extends HistoryPanel{
 		this.dateTo = new DatePicker();
 		this.cbEquals = new JComboBox<String>(Constants.COMBO_BOX_OPERANDS);
 
-		String categories[] = { "Select Item", "Food", "Transport", "Household" }; //TODO: perlu diganti with the actual categories
-		this.cbCategory = new JComboBox<String>(categories);
+		List <Category> categories = Constants.DATABASE_SERVICE.getAllCategories();
+
+		this.cbCategory = new JComboBox<Category>();
+		for(int i = 0; i < categories.size(); i++) {
+			cbCategory.addItem(categories.get(i));
+			cbCategory.setRenderer(new ComboBoxRenderer(categories.get(i)));
+		}
+		cbCategory.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                // Get the source of the component, which is our combo box.
+                JComboBox cbCategory = (JComboBox) event.getSource();
+                // Print the selected items and the action command.
+                Object selected = cbCategory.getSelectedItem();
+                System.out.println("Selected Item  = " + selected);
+            }
+		});
 
 		
 		//Properties
@@ -137,24 +154,24 @@ public class TransactionHistory extends HistoryPanel{
 //	    this.tableTrans.setRowHeight(30);
 	}
 	
-	private void updateTable() {
-		List<Transaction> transactions = Constants.DATABASE_SERVICE.getAllTransactions();
-		String[] currentData = new String[this.columns];
-		
-		for(Transaction tr: transactions) {
-			currentData[0] = tr.getDateInput().toString();
-			currentData[1] = Constants.DATABASE_SERVICE.getCategoryName(tr.getCategoryID());
-			currentData[2] = tr.getDesc();
-			currentData[3] = Double.toString(tr.getAmount());
-			currentData[4] = tr.getLinkReceipt();
-			currentData[5] = tr.getDateEdit().toString();
-			currentData[6] = "";
-			currentData[7] = "";
-			this.model.addRow(currentData);
-			this.tableTrans.getColumnModel().getColumn(columns - 1).setCellRenderer(new HistoryTableCellRenderer(Constants.ICON_EDIT));
-			this.tableTrans.getColumnModel().getColumn(columns - 2).setCellRenderer(new HistoryTableCellRenderer(Constants.ICON_DELETE));
-		}
-	}
+//	private void updateTable() {
+//		List<Transaction> transactions = Constants.DATABASE_SERVICE.getAllTransactions();
+//		String[] currentData = new String[this.columns];
+//		
+//		for(Transaction tr: transactions) {
+//			currentData[0] = tr.getDateInput().toString();
+//			currentData[1] = Constants.DATABASE_SERVICE.getCategoryName(tr.getCategoryID());
+//			currentData[2] = tr.getDesc();
+//			currentData[3] = Double.toString(tr.getAmount());
+//			currentData[4] = tr.getLinkReceipt();
+//			currentData[5] = tr.getDateEdit().toString();
+//			currentData[6] = "";
+//			currentData[7] = "";
+//			this.model.addRow(currentData);
+//			this.tableTrans.getColumnModel().getColumn(columns - 1).setCellRenderer(new HistoryTableCellRenderer(Constants.ICON_EDIT));
+//			this.tableTrans.getColumnModel().getColumn(columns - 2).setCellRenderer(new HistoryTableCellRenderer(Constants.ICON_DELETE));
+//		}
+//	}
 	
 	public static void main(String args[])
 	{
