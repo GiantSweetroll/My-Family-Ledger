@@ -33,7 +33,7 @@ public abstract class HistoryTable extends AbstractLedgerTable implements MouseL
 	{
 		//Initialization
 		this.updateData(transaction);
-		this.setTableHeader(null);		//Remove table headers
+//		this.setTableHeader(null);		//Remove table headers
 		this.addMouseListener(this);
 		this.setRowHeight(50);
 	}
