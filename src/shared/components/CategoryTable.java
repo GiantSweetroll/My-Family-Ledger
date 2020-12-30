@@ -17,6 +17,7 @@ import models.Category;
 import models.DatabaseItem;
 import shared.Constants;
 import shared.Methods;
+import shared.components.tables.AbstractLedgerTable;
 
 public class CategoryTable extends AbstractLedgerTable implements MouseListener
 {

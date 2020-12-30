@@ -26,8 +26,8 @@ import shared.Globals;
 import shared.Methods;
 import shared.components.DatePicker;
 import shared.components.HintTextField;
-import shared.components.HistoryTableCellRenderer;
-import shared.components.TransactionHistoryTable;
+import shared.components.tables.HistoryTableCellRenderer;
+import shared.components.tables.TransactionHistoryTable;
 import shared.screens.HistoryPanel;
 
 public class TransactionHistory extends HistoryPanel{
