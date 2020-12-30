@@ -56,7 +56,7 @@ public class AccountPanel extends RoundedPanel
 			public void mouseClicked(MouseEvent e)
 			{
 				Globals.activeUser = person;
-				dialogProfile.add(new MyProfilePage());
+				dialogProfile.add(new MyProfilePage(person));
 				dialogProfile.setModal(true);
 				dialogProfile.setSize(700, 700);
 				dialogProfile.setLocationRelativeTo(null);

@@ -8,30 +8,30 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Image;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.Window;
 
-import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.plaf.FontUIResource;
-import javax.swing.JPanel;
 
 import giantsweetroll.gui.swing.Gbm;
-import screens.auth.SignIn;
+import main.Main;
+import models.Person;
+
 import shared.Constants;
 import shared.Methods;
-import shared.components.LogoLabel;
-import shared.screens.CenteredPage;
+import shared.components.AppButton;
+import shared.components.ResetPasswordPanel;
 import giantsweetroll.ImageManager;
 
 public class MyProfilePage extends CenteredPage{
@@ -44,18 +44,18 @@ public class MyProfilePage extends CenteredPage{
 	private JLabel emailLabel;
 	private JLabel resetPassLabel;
 	private JLabel closeIconLabel;
-	private JButton okButton;
+	private AppButton okButton;
 	Border border = BorderFactory.createLineBorder(Constants.COLOR_TEXT_GRAY, 3);
 	
-	public MyProfilePage(){
+	public MyProfilePage(Person person){
 		
 		super();
-		this.init();
+		this.init(person);
 		this.setCenterPanel(this.mainPanel);
 		
 	}
 	
-	private void init() { 
+	private void init(Person person) { 
 		this.mainPanel = new JPanel(new BorderLayout()); 
 		this.myProfileLabel = new JLabel("My Profile");
 		this.usernameLabel = new JLabel("Username");
@@ -63,7 +63,7 @@ public class MyProfilePage extends CenteredPage{
 		this.emailLabel = new JLabel("Email");
 		this.resetPassLabel = new JLabel("Reset Password");
 		this.closeIconLabel = new JLabel(closeIcon);
-		this.okButton = new JButton("OK");
+		this.okButton = new AppButton("OK");
 		JPanel topPanel = new JPanel();
 		JPanel centerPanel = new JPanel();
 		GridBagConstraints c = new GridBagConstraints();
@@ -80,24 +80,46 @@ public class MyProfilePage extends CenteredPage{
 		
 		this.myProfileLabel.setFont(Constants.FONT_SUB_TITLE);
 		
+		
 		this.usernameLabel.setFont(Constants.FONT_GENERAL);
 		this.usernameLabel.setForeground(Constants.COLOR_TEXT_GRAY);
 		this.usernameLabel.setBorder(border);
+		this.usernameLabel.setText(person.getFirstName());
 		
 		this.lastNameLabel.setFont(Constants.FONT_GENERAL);
 		this.lastNameLabel.setForeground(Constants.COLOR_TEXT_GRAY);
 		this.lastNameLabel.setBorder(border);
+		this.lastNameLabel.setText(person.getLastName());
 		
 		this.emailLabel.setFont(Constants.FONT_GENERAL);
 		this.emailLabel.setForeground(Constants.COLOR_TEXT_GRAY);
 		this.emailLabel.setBorder(border);
+		this.emailLabel.setText(person.getEmail());
 		
 		this.resetPassLabel.setForeground(Constants.COLOR_HYPERLINK);
 		this.resetPassLabel.setFont(Constants.FONT_SMALLER);
+		this.resetPassLabel.addMouseListener(new MouseAdapter()
+				{
+					@Override
+					public void mouseClicked(MouseEvent e)
+					{
+						Main.changeScreen(new ResetPasswordPanel(person));
+						
+					}
+				});
 		
 		this.okButton.setFont(Constants.FONT_SMALLER);
 		this.okButton.setBackground(Constants.COLOR_BUTTON_BASE);
 		this.okButton.setForeground(Color.WHITE);
+		this.okButton.addActionListener(new ActionListener()
+				{
+					@Override
+					public void actionPerformed(ActionEvent evt) {
+						Window w = SwingUtilities.getWindowAncestor(MyProfilePage.this);
+						w.setVisible(false);
+						
+					}
+				});
 		
 		topPanel.add(closeIconLabel);
 		
@@ -135,13 +157,16 @@ public class MyProfilePage extends CenteredPage{
 		}
 	}
 	
+	
+	
 	public static void main(String arggs[])
 	{
 		Methods.setUIFont(new FontUIResource(Constants.FONT_TYPE_GENERAL, Font.PLAIN, Constants.FONT_GENERAL_SIZE));
 		
 		//Initialization
 		JFrame frame = new JFrame();
-		CenteredPage cp = new MyProfilePage();
+		Person Person1 = new Person("Adam", "Smith");
+		CenteredPage cp = new MyProfilePage(Person1);
 		
 		//Properties
 		frame.setSize(700, 700);
