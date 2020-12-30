@@ -6,7 +6,9 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
+import java.sql.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -49,7 +51,7 @@ public class TransactionHistory extends HistoryPanel{
 					labelCategory;
 	private JComboBox cbCategory,
 						cbEquals;
-	private JTextField tfValue;
+	private HintTextField tfValue;
 	private TransactionHistoryTable tableTrans;
 	private DatePicker dateFrom, dateTo;
 	private DefaultTableModel model;
@@ -62,6 +64,7 @@ public class TransactionHistory extends HistoryPanel{
 		this.person = person;
 		this.initPanelFilters();
 		this.initTable();
+		this.refreshButtonPressed();
 		
 		//Properties
 		this.setFilterPanel(this.filters);
@@ -88,6 +91,9 @@ public class TransactionHistory extends HistoryPanel{
 
 		this.cbCategory = new JComboBox<Category>();
 		for(int i = 0; i < categories.size(); i++) {
+			if(categories.get(i).getID() == 1) {
+				continue;
+			}
 			cbCategory.addItem(categories.get(i));
 			cbCategory.setRenderer(new ComboBoxRenderer(categories.get(i)));
 		}
@@ -141,7 +147,7 @@ public class TransactionHistory extends HistoryPanel{
 	private void initTable(){
 		//Initialization
 		
-		List<Transaction> transactions = Constants.DATABASE_SERVICE.getAllTransactions(person.getID());
+		List<Transaction> transactions = new ArrayList <Transaction>();
 		this.tableTrans = new TransactionHistoryTable(transactions);
 		this.tableTrans.updateData(transactions);
 //		updateTable();
@@ -173,6 +179,18 @@ public class TransactionHistory extends HistoryPanel{
 //		}
 //	}
 	
+	private static boolean isDigit(String inputText) {
+	    if (inputText == null) {
+	        return false;
+	    }
+	    try {
+	        double d = Double.parseDouble(inputText);
+	    } catch (NumberFormatException nfe) {
+	        return false;
+	    }
+	    return true;
+	}
+	
 	public static void main(String args[])
 	{
 		Methods.setUIFont(new FontUIResource(Constants.FONT_TYPE_GENERAL, Font.PLAIN, Constants.FONT_GENERAL_SIZE));
@@ -197,6 +215,8 @@ public class TransactionHistory extends HistoryPanel{
 		this.tfValue.setText("");
 		this.cbCategory.setSelectedIndex(0);
 		this.cbEquals.setSelectedIndex(0);
+		this.dateFrom.resetDefaults();
+		this.dateTo.resetDefaults();
 	}
 
 	@Override
@@ -209,6 +229,49 @@ public class TransactionHistory extends HistoryPanel{
 	@Override
 	public void refreshButtonPressed() {
 		// TODO Auto-generated method stub
+		try {
+			Category category = (Category) this.cbCategory.getSelectedItem();
+			String operator = (String) this.cbEquals.getSelectedItem();
+			Date dateMin = this.dateFrom.getSelectedDate();
+			Date dateMax = this.dateTo.getSelectedDate();
+			String price = this.tfValue.getData().trim();
+			String flagStr = (String) this.cbEquals.getSelectedItem();
+			if(price.equals("")) {
+				List<Transaction> transactions = Constants.DATABASE_SERVICE.getAllTransactions(dateMin, dateMax);
+				this.tableTrans.updateData(transactions);
+			}
+			else {
+				if(!isDigit(price)) {
+					System.out.println("enter digit plz");
+				}
+				else {
+					int flag = 0;
+					Double priced = Double.parseDouble(price);
+					if(flagStr.equals("<")) {
+						flag = 0;
+					}
+					else if(flagStr.equals(">")){
+						flag = 1;
+					}
+					else if(flagStr.equals("=")){
+						flag = 2;
+					}
+					else if(flagStr.equals("<=")) {
+						flag = 3;
+					}
+					else if(flagStr.equals(">=")) {
+						flag = 4;
+					}
+					List<Transaction> transactions = Constants.DATABASE_SERVICE.getAllTransactions(person.getID(), dateMin, dateMax, flag, priced, category.getID());
+					this.tableTrans.updateData(transactions);
+				}
+			}
+		}
+		catch(NullPointerException ex)
+		{
+			this.tableTrans.updateData(new ArrayList<Transaction>());
+		}
+		
 		
 	}
 

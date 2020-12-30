@@ -38,6 +38,7 @@ import shared.Methods;
 import shared.components.ComboBoxRenderer;
 import shared.components.HintTextField;
 import shared.components.HyperlinkLabel;
+import shared.components.WarningLabel;
 import shared.components.listview.ListTile;
 import shared.components.listview.ListView;
 import shared.components.listview.TransactionTile;
@@ -60,7 +61,8 @@ public class InputTransactions extends TriplePanelPage{
 					labelLastTs,
 					labelInput,
 					labelReceipt,
-					labelBack;
+					labelBack,
+					labelWarning;
 	private JButton buttonTransfer;
 	private JComboBox cbCategory;
 	private HintTextField inputItem, inputPrice;
@@ -117,6 +119,8 @@ public class InputTransactions extends TriplePanelPage{
 		updateListView();
 		
 		//SpringLayout Constraints
+        sprLayout.putConstraint(SpringLayout.NORTH, this.scrollTf, 5, SpringLayout.NORTH, panelCenter);
+		sprLayout.putConstraint(SpringLayout.SOUTH, this.scrollTf, -20, SpringLayout.SOUTH, panelCenter);
 		sprLayout.putConstraint(SpringLayout.WEST, this.scrollTf, 20, SpringLayout.WEST, panelCenter);
         sprLayout.putConstraint(SpringLayout.EAST, this.scrollTf, -20, SpringLayout.EAST, panelCenter);
         sprLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, this.scrollTf, 0, SpringLayout.HORIZONTAL_CENTER, panelCenter);
@@ -142,6 +146,7 @@ public class InputTransactions extends TriplePanelPage{
 		this.labelBack = new HyperlinkLabel("Back");
 		this.inputItem = new HintTextField("Item/Service Name");
 		this.inputPrice = new HintTextField("Price (Rp.)");
+		this.labelWarning = new WarningLabel();
 		this.buttonTransfer = new JButton("Transfer");
 
 		//make combo box
@@ -197,7 +202,6 @@ public class InputTransactions extends TriplePanelPage{
 		this.inputPrice.setFont(Constants.FONT_SMALLER);
 		this.inputPrice.setForeground(Constants.COLOR_TEXT_GRAY);
 		
-		
 		this.cbCategory.setFont(Constants.FONT_SMALLER);
 		this.buttonTransfer.setBackground(Constants.COLOR_BUTTON_BASE);
 		this.buttonTransfer.setForeground(Color.WHITE);
@@ -211,10 +215,10 @@ public class InputTransactions extends TriplePanelPage{
 				long millis = System.currentTimeMillis();
 				Date date = new Date(millis);
 				if(!isDigit(price)){
-					System.out.println("enter digit plz");
+					labelWarning.setText("Please use digits for Price");
 				}
 				if(item.equals("") || price.equals("")) {
-					System.out.println("enter someshit");
+					labelWarning.setText("Invalid Input Detected");
 				}
 				else {
 					double dprice = Double.parseDouble(price);
@@ -233,6 +237,7 @@ public class InputTransactions extends TriplePanelPage{
 		panelContent.add(this.cbCategory);
 		panelContent.add(this.inputItem);
 		panelContent.add(this.inputPrice);
+		panelContent.add(this.labelWarning);
 		panelContent.add(Box.createRigidArea(new Dimension(0, 200)));
 		panelContent.add(panelButtons);
 		panelContent.add(Box.createRigidArea(new Dimension(0, 350)));
@@ -286,9 +291,10 @@ public class InputTransactions extends TriplePanelPage{
 	}
 	
 	private void resetInputPage() {
-		cbCategory.setSelectedIndex(0);
-		inputItem.setText("");
-		inputPrice.setText("");
+		this.cbCategory.setSelectedIndex(0);
+		this.inputItem.setText("");
+		this.inputPrice.setText("");
+		this.labelWarning.setText("");
 		this.updateListView();
 	}
 	
