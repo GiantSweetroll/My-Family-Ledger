@@ -72,14 +72,15 @@ public class TransactionHistoryTable extends HistoryTable
 		{
 			Transaction tr = (Transaction)data.get(i);
 			int j = 0;
+			int catID = tr.getCategoryID();
 			arr[i][j] = Constants.DATE_FORMAT.format(tr.getDateInput());
-			arr[i][++j] = Constants.DATABASE_SERVICE.getCategoryName(tr.getCategoryID());
+			arr[i][++j] = Constants.DATABASE_SERVICE.getCategoryName(catID);
 			arr[i][++j] = tr.getDesc();
 			arr[i][++j] = Double.toString(tr.getAmount());
 			arr[i][++j] = tr.getLinkReceipt();
 			arr[i][++j] = Constants.DATE_FORMAT.format(tr.getDateEdit());
-			arr[i][++j] = "";
-			arr[i][++j] = "";
+			arr[i][++j] = catID == 1? null : "";
+			arr[i][++j] = catID == 1? null : "";
 		}
 		
 		return arr;
