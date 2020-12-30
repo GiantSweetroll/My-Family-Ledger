@@ -1,10 +1,9 @@
 package screens.report;
  
-
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,13 +11,16 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.SpringLayout;
 import javax.swing.plaf.FontUIResource;
-
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import giantsweetroll.gui.swing.Gbm;
 import giantsweetroll.gui.swing.ScrollPaneManager;
 import main.Main;
+import models.Account;
 import models.Category;
 import models.Person;
 import models.Transaction;
@@ -28,10 +30,10 @@ import shared.Constants;
 import shared.Globals;
 import shared.Methods;
 import shared.components.DatePicker;
+import shared.components.NameEmailPanel;
 import shared.components.listview.ListTile;
 import shared.components.listview.ListView;
 import shared.components.listview.SimpleUserTile;
-import shared.components.tables.SimpleTable;
 import shared.screens.ReportPanel;
 
 public class ReportPage extends ReportPanel{
@@ -45,7 +47,18 @@ public class ReportPage extends ReportPanel{
 	private List<ListTile> tilesUsers;
 	private ListView lvUsers;
 	private JScrollPane scrollUsers;
-	private SimpleTable tableTrans,tableUsers;
+	private JTable tableTrans,tableUsers;
+	private DefaultTableModel modelTop, modelBottom;
+	private int columnsNumber = 6;
+	String[] columnTopNames = {"Date", "Category", "Name", "Amount (Rp.)", "Receipt Link", "Last Modified"};
+	String[] columnBottomNames = {"First Name", "Last Name", "Email", "Total Income (Rp.)",
+			"Total Expenditure (Rp.)", "Balance (Rp.)"};
+	
+	String [][] dataBottom = {
+			{"Adam","Smith","adam@gmail.com","150000","20000","90000"}
+	};
+	
+	
 	
 	//Constructor
 	public ReportPage(Person person) {
@@ -55,12 +68,13 @@ public class ReportPage extends ReportPanel{
 		this.person = person;
 		this.initDate();
 		this.initPanelUsers();
-		this.updateTableBottom();
-		
+		this.initTableTop();
+		this.initTableBottom();
 		
 		
 		//Properties
-
+		this.setTableTop(tableTrans);
+		this.setTable2(tableUsers);
 		
 	}
 	
@@ -93,7 +107,12 @@ public class ReportPage extends ReportPanel{
 		}
 	}
 	
-
+	private int getSelectedUsersID() {
+		//to get the selected tiles value.
+		ListTile tile = lvUsers.getSelectedTiles().get(0);
+		Person person = ((SimpleUserTile) tile).getPerson();
+		return person.getID();
+	}
 	
 	private void initPanelUsers()
 	{
@@ -159,60 +178,84 @@ public class ReportPage extends ReportPanel{
 		this.setDatePanel(panelCenter);	
 	}
 	
-	private void initTableTop(String[][] tabledata, String [] headers) {
-		String[][] tableData = tabledata;
-		String [] Headers = headers;
-		this.tableTrans = new SimpleTable(tableData,Headers); 
+	private void initTableTop() {
+		this.modelTop = new DefaultTableModel(this.columnTopNames,0) {
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
 		
-		this.setTableTop(tableTrans);
-		
-	
+		this.tableTrans = new JTable(this.modelTop);
+		updateTableTop();
+
+		//Properties
+		this.tableTrans.getTableHeader().setFont(Constants.FONT_SMALLER_BOLD);
+		this.tableTrans.setFont(Constants.FONT_SMALLER);
+		this.tableTrans.setPreferredScrollableViewportSize(new Dimension(400, 300));
+	    this.tableTrans.setFillsViewportHeight(true);
+	    this.tableTrans.setRowHeight(30);   
 	}
 		
 	
-	private void initTableBottom(String[][] tabledata, String [] headers) { 
-		String[][] tableData = tabledata;
-		String [] Headers = headers;
-		this.tableUsers = new SimpleTable(tableData,Headers); 
+	private void initTableBottom() {
+		this.modelBottom = new DefaultTableModel(this.columnBottomNames,0) {
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
 		
+		this.tableUsers = new JTable(this.modelBottom);
+		updateTableBottom();
 		
-		this.setTable2(tableUsers);
+		//Properties
 		
-
-		
+		this.tableUsers.getTableHeader().setFont(Constants.FONT_SMALLER_BOLD);
+		this.tableUsers.setFont(Constants.FONT_SMALLER);
+		this.tableUsers.setPreferredScrollableViewportSize(new Dimension(400, 300));
+	    this.tableUsers.setFillsViewportHeight(true);
+	    this.tableUsers.setRowHeight(30);	
 	}
 	
-
+	private void updateTableTop() {
+		List <Transaction> transactions = Constants.DATABASE_SERVICE.getAllTransactions();
+		List <Category> categories = Constants.DATABASE_SERVICE.getAllCategories();
+		String[] currentData = new String[this.columnsNumber];
+		for (Transaction t: transactions) {
+			currentData[0] = String.valueOf(t.getDateInput());
+			currentData[1] = categories.get(t.getCategoryID()-1).getName();
+			currentData[2] = t.getDesc();
+			currentData[3] = String.valueOf(t.getAmount());
+			currentData[4] = t.getLinkReceipt();
+			currentData[5] = String.valueOf(t.getDateEdit());
+			this.modelTop.addRow(currentData);
+			
+		}
+	}
 	
 	private void updateTableBottom() {
 		Globals.activeUser = person;
 		int adminID = Constants.DATABASE_SERVICE.getAdminID(person.getEmail());
 		List<User> users = Constants.DATABASE_SERVICE.getAllUsers(adminID);
-		
-		String[] columnBottomNames = {"First Name", "Last Name", "Email", "Total Income (Rp.)",
-				"Total Expenditure (Rp.)", "Balance (Rp.)"};
-		int col = 6;
-		int row = users.size();
-		String [][] currentData = new String [row][col];
+		String[] currentData = new String[this.columnsNumber];
 		double totalBalance = 0;
 		double totalIncome = 0;
 		double totalExpenditure = 0;
 		
-		for (int i =0 ; i < row; i++) {
-			User u = users.get(i);
-			currentData[i][0] =  u.getFirstName();
-			currentData[i][1] = u.getLastName();
-			currentData[i][2] = u.getEmail();
+		for (User u: users) {
+			currentData[0] =  u.getFirstName();
+			currentData[1] = u.getLastName();
+			currentData[2] = u.getEmail();
 			
 			//Replace this with total income and total expenditure.
 			totalIncome = Constants.DATABASE_SERVICE.getIncome(u.getID(), adminID);
-			currentData[i][3] =  String.valueOf(totalIncome);
+			currentData[3] =  String.valueOf(totalIncome);
 			totalExpenditure = Constants.DATABASE_SERVICE.getExpenditure(u.getID());
-			currentData[i][4] = String.valueOf(totalExpenditure);
+			currentData[4] = String.valueOf(totalExpenditure);
 			totalBalance = Constants.DATABASE_SERVICE.getBalance(u.getAccountID());
-			currentData[i][5] = String.valueOf(totalBalance);	
+			currentData[5] = String.valueOf(totalBalance);
+			this.modelBottom.addRow(currentData);
+			
 		}
-		initTableBottom(currentData,columnBottomNames);
 		
 	}
 	
@@ -230,38 +273,8 @@ public class ReportPage extends ReportPanel{
 
 	@Override
 	public void RefreshButtonPressed() {
-		try {
-			ListTile tile = lvUsers.getSelectedTiles().get(0);
-			Person person = ((SimpleUserTile) tile).getPerson();
-			User user = Constants.DATABASE_SERVICE.getUser(person.getID());
-			int userId = user.getID();
-			Date dateStart = this.dateFrom.getSelectedDate();
-			Date dateEnd =  this.dateTo.getSelectedDate();
-			List<Transaction> currentTrans = Constants.DATABASE_SERVICE.getAllTransactions(userId,dateStart,dateEnd);
-			List <Category> categories = Constants.DATABASE_SERVICE.getAllCategories();
-			String[] columnTopNames = {"Date", "Category", "Name", "Amount (Rp.)", "Receipt Link", "Last Modified"};
-			int row = currentTrans.size();
-			System.out.println(row);
-			System.out.println(userId);
-			int col = 6;
-			String [][] filteredTransactions = new String [row][col];
-			for (int i = 0 ; i< row ; i++)
-			{
-				Transaction trans = currentTrans.get(i);
-				filteredTransactions[i][0] = String.valueOf(trans.getDateInput());
-				filteredTransactions[i][1] = categories.get(trans.getCategoryID()-1).getName();
-				filteredTransactions[i][2] = trans.getDesc();
-				filteredTransactions[i][3] = String.valueOf(trans.getAmount());
-				filteredTransactions[i][4] = trans.getLinkReceipt();
-				filteredTransactions[i][5] = String.valueOf(trans.getDateEdit());
-			}
-			
-			initTableTop(filteredTransactions, columnTopNames);
-		}
-		catch (Exception ex)
-		{
-			ex.getMessage();
-		}
+		this.initTableTop();
+		this.initTableBottom();
 		
 		// TODO Auto-generated method stub
 		

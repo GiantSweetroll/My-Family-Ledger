@@ -2,18 +2,12 @@ package shared.components.tables;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Font;
 
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
-import giantsweetroll.gui.swing.ScrollPaneManager;
 import shared.Constants;
-import shared.Methods;
 
 public class SimpleTable extends JTable
 {
@@ -88,13 +82,10 @@ public class SimpleTable extends JTable
 		this.headers = headers;
 		
 		//Properties
-		this.updateData(tableData, headers);
 		this.setBackground(Color.WHITE);
 		this.setAutoCreateRowSorter(true);
 		this.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		this.getTableHeader().setFont(Constants.FONT_GENERAL_BOLD);
 		this.getTableHeader().setBackground(Constants.COLOR_TABLE_HEADER);
 	}
-	
-	
 }
