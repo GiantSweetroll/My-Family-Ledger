@@ -4,18 +4,20 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JButton;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.plaf.FontUIResource;
 
 import giantsweetroll.gui.swing.Gbm;
@@ -25,6 +27,7 @@ import models.Category;
 import shared.Constants;
 import shared.Methods;
 import shared.screens.CenteredPage;
+
 
 public class CategoryEditor extends JPanel
 {
@@ -37,7 +40,7 @@ public class CategoryEditor extends JPanel
 	private JScrollPane scrollTable;
 	private JLabel labTitle;
 	private JTextField tf;
-	private JButton butAdd, butSave;
+	private AppButton butAdd, butSave;
 	private Admin admin;
 	private CategoryTable table;
 	private List<Category> categories;
@@ -50,6 +53,14 @@ public class CategoryEditor extends JPanel
 					addCategory();
 				}
 			};
+			
+	private ActionListener saveCatListener = new ActionListener()
+	{
+		public void actionPerformed(ActionEvent e)
+		{
+			saveChanges();
+		}
+	};
 	
 	//Constructor
 	public CategoryEditor(Admin admin)
@@ -61,8 +72,8 @@ public class CategoryEditor extends JPanel
 		this.table = new CategoryTable();
 		this.scrollTable = ScrollPaneManager.generateDefaultScrollPane(this.table, 10, 10);
 		this.tf = new JTextField(10);
-		this.butAdd = new JButton("Add");
-		this.butSave = new JButton("Save");
+		this.butAdd = new AppButton("Add");
+		this.butSave = new AppButton("Save");
 		this.categories = new ArrayList<Category>();
 		GridBagConstraints c = new GridBagConstraints();
 		GridBagConstraints c2 = new GridBagConstraints();
@@ -79,6 +90,7 @@ public class CategoryEditor extends JPanel
 		this.butAdd.addActionListener(this.addCatListener);
 		this.butSave.setBackground(Constants.COLOR_BUTTON_BASE);
 		this.butSave.setForeground(Color.WHITE);
+		this.butSave.addActionListener(this.saveCatListener);
 		panel.setOpaque(false);
 		
 		///Add to panel
@@ -135,6 +147,10 @@ public class CategoryEditor extends JPanel
 	private void saveChanges()
 	{
 		//TODO: Save any changes
+		
+		//Close the window
+		Window w = SwingUtilities.getWindowAncestor(CategoryEditor.this);
+		w.setVisible(false);
 	}
 	
 	//Testing

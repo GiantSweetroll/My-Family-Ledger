@@ -17,6 +17,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -45,6 +46,7 @@ public class MyProfilePage extends CenteredPage{
 	private JLabel resetPassLabel;
 	private JLabel closeIconLabel;
 	private AppButton okButton;
+	private JDialog dialogResetPassword;
 	Border border = BorderFactory.createLineBorder(Constants.COLOR_TEXT_GRAY, 3);
 	
 	public MyProfilePage(Person person){
@@ -103,7 +105,12 @@ public class MyProfilePage extends CenteredPage{
 					@Override
 					public void mouseClicked(MouseEvent e)
 					{
-						Main.changeScreen(new ResetPasswordPanel(person));
+						closeThisWindow();
+						dialogResetPassword.add(new ResetPasswordPanel(person));
+						dialogResetPassword.setModal(true);
+						dialogResetPassword.setSize(700, 700);
+						dialogResetPassword.setLocationRelativeTo(null);
+						dialogResetPassword.setVisible(true);
 						
 					}
 				});
@@ -115,8 +122,7 @@ public class MyProfilePage extends CenteredPage{
 				{
 					@Override
 					public void actionPerformed(ActionEvent evt) {
-						Window w = SwingUtilities.getWindowAncestor(MyProfilePage.this);
-						w.setVisible(false);
+						closeThisWindow();
 						
 					}
 				});
@@ -155,6 +161,11 @@ public class MyProfilePage extends CenteredPage{
 			System.err.println("Couldn't find file: " + path);
 			return null;
 		}
+	}
+	
+	private void closeThisWindow() {
+		Window w = SwingUtilities.getWindowAncestor(MyProfilePage.this);
+		w.setVisible(false);
 	}
 	
 	
