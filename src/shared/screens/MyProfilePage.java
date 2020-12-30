@@ -149,6 +149,15 @@ public class MyProfilePage extends CenteredPage{
 					}
 				});
 		
+		this.closeIconLabel.addMouseListener(new MouseAdapter()
+				{
+				 @Override
+	             public void mouseClicked(MouseEvent e) {
+					 closeThisWindow();
+				 }
+				}
+				);
+		
 		topPanel.add(closeIconLabel);
 		
 		
