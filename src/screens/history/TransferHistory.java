@@ -59,7 +59,6 @@ public class TransferHistory extends HistoryPanel
 	private DatePicker dateFrom, dateTo;
 	private ListView listView;
 	private JTable tableTransfer;
-	private int columns = 5;
 	
 	//Constructor
 	public TransferHistory(Person person)
@@ -68,7 +67,7 @@ public class TransferHistory extends HistoryPanel
 		super(person);
 		this.person = person;
 		this.initFilters();
-		this.initTable(Constants.DATABASE_SERVICE.getAllTransactions(this.person.getID(), 1));
+		this.refreshButtonPressed();
 	}
 	
 	//Public methods
@@ -265,11 +264,11 @@ public class TransferHistory extends HistoryPanel
 				System.out.println("Operand error");
 			}
 			
-//			System.out.println("Date start: " + dateStart);
-//			System.out.println("Date end: " + dateEnd);
-//			System.out.println("Operand: " + op);
-//			System.out.println("Value: " + value);
-//			System.out.println("User id: " + userId);
+			//System.out.println("Date start: " + dateStart);
+			//System.out.println("Date end: " + dateEnd);
+			//System.out.println("Operand: " + op);
+			//System.out.println("Value: " + value);
+			//System.out.println("User id: " + userId);
 			
 			List<Transaction> currentTrans = Constants.DATABASE_SERVICE.getAllTransactions(userId, dateStart, dateEnd, op, value, 1);
 			initTable(currentTrans);
