@@ -150,6 +150,9 @@ public class InputTransactions extends TriplePanelPage{
 
 		this.cbCategory = new JComboBox<Category>();
 		for(int i = 0; i < categories.size(); i++) {
+			if(categories.get(i).getID() == 1) {
+				continue;
+			}
 			cbCategory.addItem(categories.get(i));
 			cbCategory.setRenderer(new ComboBoxRenderer(categories.get(i)));
 		}
