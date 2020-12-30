@@ -213,27 +213,9 @@ public class TransferHistory extends HistoryPanel
 		//Initialization
 		
 		List<Transaction> transactions = trans; //hrusnya ambil semua transaction sesuai filters
-		List<Category> categories = Constants.DATABASE_SERVICE.getAllCategories();
-		List<User> user = Constants.DATABASE_SERVICE.getAllUsers(this.person.getID());
-		
-		String[] currentData = new String[this.columns];
-		for (Transaction tr: transactions) {
-			currentData[0] = tr.getDateInput().toString();
-			currentData[1] = categories.get(tr.getCategoryID()-1).getName();
-			currentData[2] = user.get(tr.getUserID()-1).getFullName();
-			currentData[3] = Double.toString(tr.getAmount());
-			currentData[4] = tr.getDesc();
-		}
 		
 		this.tableTransfer = new TransferHistoryTable(transactions);
 		//{"Date", "Category", "Name", "Amount (Rp.)", "Last Modified"};
-		
-		//Properties
-		//this.tableTransfer.getTableHeader().setFont(Constants.FONT_SMALLER_BOLD);
-		//this.tableTransfer.setFont(Constants.FONT_SMALLER);
-		//this.tableTransfer.setPreferredScrollableViewportSize(new Dimension(500, 220));
-	    //this.tableTransfer.setFillsViewportHeight(true);
-	    //this.tableTransfer.setRowHeight(30);
 	    
 	    this.setTable(this.tableTransfer);
 	}
