@@ -17,12 +17,14 @@ public class IconCellRenderer extends JLabel implements TableCellRenderer
 	 * 
 	 */
 	private static final long serialVersionUID = 558341089679656434L;
-
+	//Fields
+	private Icon icon;
+	
 	//Constructor
 	public IconCellRenderer(Icon icon)
 	{
 		super(icon);
-		
+		this.icon = icon;
 		this.setOpaque(true);
 	}
 	
@@ -39,6 +41,16 @@ public class IconCellRenderer extends JLabel implements TableCellRenderer
 		else
 		{
 			this.setBackground(Constants.COLOR_TABLE_EVEN_ROW);
+		}
+		
+		//Decide if icon should be drawn
+		if (obj == null)
+		{
+			this.setIcon(null);
+		}
+		else
+		{
+			this.setIcon(this.icon);
 		}
 		
 		return this;

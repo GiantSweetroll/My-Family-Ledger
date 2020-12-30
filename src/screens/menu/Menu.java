@@ -103,7 +103,7 @@ public class Menu extends JPanel{
 	{
 		//Initialization
 		this.panelTop = new JPanel(new BorderLayout());
-		this.panelAcc = new AccountPanel();
+		this.panelAcc = new AccountPanel(asAdmin);
 		this.logo = new LogoLabel(LogoLabel.BIG);
 		this.logoDesc = new JLabel("Our Funds Motto or smth");
 		JPanel panelLogo = new JPanel(new GridBagLayout());
