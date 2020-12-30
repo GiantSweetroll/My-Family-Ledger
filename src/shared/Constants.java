@@ -27,6 +27,7 @@ public class Constants
 	public static final Color COLOR_BUTTON_YELLOW = new Color(246, 196, 68);
 	public static final Color COLOR_SELECTED = new Color(119, 211, 83);
 	public static final Color COLOR_TABLE_EVEN_ROW = new Color(192, 204, 218);
+	public static final Color COLOR_TABLE_HEADER = new Color(142, 170, 219);
 	
 	//Insets
 	public static final Insets INSETS_GENERAL = new Insets(5, 5, 5, 5);
