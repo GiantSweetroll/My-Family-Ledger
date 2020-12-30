@@ -200,6 +200,10 @@ public class TransferFunds extends TriplePanelPage
 					long millis = System.currentTimeMillis(); 
 					Date date = new java.sql.Date(millis);
 					double amount = Double.parseDouble(tfAmount.getText()) * -1d;		//*-1 to make it negative
+					if (amount == 0)
+					{
+						throw new NumberFormatException();
+					}
 					labWarning.setText("");
 					String notes = tfNotes.getText().trim().equals("") || tfNotes.getText().trim().equalsIgnoreCase("Notes") ? "" : tfNotes.getText().trim();
 					
