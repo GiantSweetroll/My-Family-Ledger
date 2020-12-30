@@ -99,7 +99,7 @@ public class TransferFunds extends TriplePanelPage
 				break;
 			}
 		}
-		this.tfAmount.setText(Double.toString(tf.getAmount()));
+		this.tfAmount.setText(Double.toString(tf.getAmount() * -1d));	//*-1 to make positive
 		if (!tf.getDesc().equals(""))
 		{
 			this.tfNotes.setText(tf.getDesc());
@@ -199,7 +199,7 @@ public class TransferFunds extends TriplePanelPage
 					int userId = user.getID();
 					long millis = System.currentTimeMillis(); 
 					Date date = new java.sql.Date(millis);
-					double amount = Double.parseDouble(tfAmount.getText());
+					double amount = Double.parseDouble(tfAmount.getText()) * -1d;		//*-1 to make it negative
 					labWarning.setText("");
 					String notes = tfNotes.getText().trim().equals("") || tfNotes.getText().trim().equalsIgnoreCase("Notes") ? "" : tfNotes.getText().trim();
 					if (oldTransaction == null) //new entry
@@ -222,7 +222,7 @@ public class TransferFunds extends TriplePanelPage
 						Constants.DATABASE_SERVICE.update(oldUser.getID(), oldAccount);
 					}
 					Account userAccount = Constants.DATABASE_SERVICE.getAccount(user.getAccountID());
-					userAccount.updateBalance(amount);
+					userAccount.updateBalance(amount * -1d);		//* -1 to make it positive
 					Constants.DATABASE_SERVICE.update(userId, userAccount);
 					
 					if (oldTransaction == null)		//new entry
