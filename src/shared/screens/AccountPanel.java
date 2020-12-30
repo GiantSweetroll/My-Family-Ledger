@@ -26,14 +26,12 @@ public class AccountPanel extends RoundedPanel
 	private JLabel labUsername, labSignOut;
 	private JDialog dialogProfile;
 	private Person person;
-	private boolean asAdmin;
 	
 	//Constructor
-	public AccountPanel(boolean asAdmin)
+	public AccountPanel()
 	{
 		super(false);
 		//Initialization
-		this.asAdmin = asAdmin;
 		this.person = new Person("", "");
 		this.labUsername = new JLabel(this.person.getFullName());
 		this.labSignOut = new HyperlinkLabel("Sign Out");
@@ -52,41 +50,24 @@ public class AccountPanel extends RoundedPanel
 					}
 				});
 		
-		
 		this.labUsername.addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-				setAdminValue(asAdmin);	
+				Globals.activeUser = person;
+				dialogProfile.add(new MyProfilePage(person));
+				dialogProfile.setModal(true);
+				dialogProfile.setSize(700, 700);
+				dialogProfile.setLocationRelativeTo(null);
+				dialogProfile.setVisible(true);	
+				
 			}
 			
 		});
 		//Add to panel
 		this.add(this.labUsername);
 		this.add(this.labSignOut);
-	}
-	
-	private void setAdminValue(Boolean asAdmin)
-	{
-		Globals.activeUser = person;
-		this.asAdmin = asAdmin;
-		if (!this.asAdmin)
-		{
-			dialogProfile.add(new MyProfilePage(person,false));
-			dialogProfile.setModal(true);
-			dialogProfile.setSize(700, 700);
-			dialogProfile.setLocationRelativeTo(null);
-			dialogProfile.setVisible(true);
-		}
-		else
-		{
-			dialogProfile.add(new MyProfilePage(person,true));
-			dialogProfile.setModal(true);
-			dialogProfile.setSize(700, 700);
-			dialogProfile.setLocationRelativeTo(null);
-			dialogProfile.setVisible(true);
-		}
 	}
 	
 	//Public Methods

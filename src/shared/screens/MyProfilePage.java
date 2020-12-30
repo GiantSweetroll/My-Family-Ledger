@@ -21,7 +21,6 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.plaf.FontUIResource;
@@ -31,10 +30,8 @@ import main.Main;
 import models.Person;
 
 import shared.Constants;
-import shared.Globals;
 import shared.Methods;
 import shared.components.AppButton;
-import shared.components.HintTextField;
 import shared.components.ResetPasswordPanel;
 import giantsweetroll.ImageManager;
 
@@ -43,151 +40,29 @@ public class MyProfilePage extends CenteredPage{
 	ImageIcon closeIcon = createImageIcon("/resources/closeicon.png", "Close");
 	private JPanel mainPanel;
 	private JLabel myProfileLabel;
-	private JTextField tfUsername, tfLastName, tfEmail;
-	private JLabel resetPassLabel, closeIconLabel, adminIDLabel;
-	private boolean asAdmin;
+	private JLabel usernameLabel;
+	private JLabel lastNameLabel;
+	private JLabel emailLabel;
+	private JLabel resetPassLabel;
+	private JLabel closeIconLabel;
 	private AppButton okButton;
 	private JDialog dialogResetPassword;
 	Border border = BorderFactory.createLineBorder(Constants.COLOR_TEXT_GRAY, 3);
 	
-	public MyProfilePage(Person person, boolean asAdmin){
+	public MyProfilePage(Person person){
 		
 		super();
-		this.asAdmin = asAdmin;
-		if (!this.asAdmin)
-		{
-			this.initUser(person);
-		}
-		else
-		{
-		this.initAdmin(person);
-		}
+		this.init(person);
 		this.setCenterPanel(this.mainPanel);
 		
 	}
 	
-	private void initAdmin(Person person) { 
+	private void init(Person person) { 
 		this.mainPanel = new JPanel(new BorderLayout()); 
 		this.myProfileLabel = new JLabel("My Profile");
-		this.tfUsername = new JTextField();
-		this.tfLastName = new JTextField();
-		this.tfEmail = new JTextField();
-		this.resetPassLabel = new JLabel("Reset Password");
-		this.closeIconLabel = new JLabel(closeIcon);
-		this.adminIDLabel = new JLabel();
-		this.okButton = new AppButton("OK");
-		JPanel topPanel = new JPanel();
-		JPanel centerPanel = new JPanel();
-		GridBagConstraints c = new GridBagConstraints();
-		
-		topPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		topPanel.setBackground(Color.WHITE);
-		
-		centerPanel.setLayout(new GridBagLayout());
-		centerPanel.setBackground(Color.WHITE);
-		
-		this.closeIconLabel.setMinimumSize(new Dimension(25, 25));
-		this.closeIconLabel.setPreferredSize(new Dimension(25, 25));
-		this.closeIconLabel.setMaximumSize(new Dimension(25, 25));
-		
-		this.myProfileLabel.setFont(Constants.FONT_SUB_TITLE);
-		
-		
-		this.tfUsername.setFont(Constants.FONT_GENERAL);
-		this.tfUsername.setForeground(Constants.COLOR_TEXT_GRAY);
-		this.tfUsername.setBorder(border);
-		this.tfUsername.setText(person.getFirstName());
-		
-		this.tfLastName.setFont(Constants.FONT_GENERAL);
-		this.tfLastName.setForeground(Constants.COLOR_TEXT_GRAY);
-		this.tfLastName.setBorder(border);
-		this.tfLastName.setText(person.getLastName());
-		
-		this.tfEmail.setFont(Constants.FONT_GENERAL);
-		this.tfEmail.setForeground(Constants.COLOR_TEXT_GRAY);
-		this.tfEmail.setBorder(border);
-		this.tfEmail.setText(person.getEmail());
-		
-		this.resetPassLabel.setForeground(Constants.COLOR_HYPERLINK);
-		this.resetPassLabel.setFont(Constants.FONT_SMALLER);
-		this.resetPassLabel.addMouseListener(new MouseAdapter()
-				{
-					@Override
-					public void mouseClicked(MouseEvent e)
-					{
-						closeThisWindow();
-						dialogResetPassword.add(new ResetPasswordPanel(person));
-						dialogResetPassword.setModal(true);
-						dialogResetPassword.setSize(700, 700);
-						dialogResetPassword.setLocationRelativeTo(null);
-						dialogResetPassword.setVisible(true);
-						
-					}
-				});
-		
-		this.adminIDLabel.setFont(Constants.FONT_GENERAL);
-		this.adminIDLabel.setForeground(Constants.COLOR_TEXT_GRAY);
-		this.adminIDLabel.setBorder(border);
-		int adminID = Constants.DATABASE_SERVICE.getAdminID(person.getEmail());
-		this.adminIDLabel.setText(String.valueOf(adminID));
-		
-		this.okButton.setFont(Constants.FONT_SMALLER);
-		this.okButton.setBackground(Constants.COLOR_BUTTON_BASE);
-		this.okButton.setForeground(Color.WHITE);
-		this.okButton.addActionListener(new ActionListener()
-				{
-					@Override
-					public void actionPerformed(ActionEvent evt) {
-						//Check input
-						String username = (tfUsername.getText()).trim();
-						String lastname = (tfLastName.getText()).trim();
-						String email = (tfEmail.getText()).trim();
-						
-						person.setFirstName(username);
-						person.setLastName(lastname);
-						person.setEmail(email);
-						Constants.DATABASE_SERVICE.update(person.getID(), person);
-						Main.popScreen();
-						}
-						
-					}
-				);
-		
-		topPanel.add(closeIconLabel);
-		
-		Gbm.goToOrigin(c);
-		c.insets = new Insets(5, 80, 30, 80);
-		centerPanel.add(this.myProfileLabel, c);		// My Profile
-		Gbm.newGridLine(c);
-		c.insets = new Insets(5, 80, 5, 80);
-		c.fill = GridBagConstraints.HORIZONTAL;
-		centerPanel.add(this.tfUsername, c);			// Username
-		Gbm.newGridLine(c);
-		centerPanel.add(this.tfLastName, c);			// LastName
-		Gbm.newGridLine(c);
-		centerPanel.add(this.tfEmail, c);			// Email
-		Gbm.newGridLine(c);
-		centerPanel.add(this.adminIDLabel,c);
-		Gbm.newGridLine(c);
-		c.fill = GridBagConstraints.NONE;
-		centerPanel.add(this.resetPassLabel, c);		// Reset Password
-		Gbm.newGridLine(c);
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.insets = new Insets(20, 80, 80, 80);
-		centerPanel.add(this.okButton, c);				// Ok Button
-		
-		
-		this.mainPanel.add(topPanel, BorderLayout.NORTH);
-		this.mainPanel.add(centerPanel, BorderLayout.CENTER);
-		
-	}
-	
-	private void initUser(Person person) { 
-		this.mainPanel = new JPanel(new BorderLayout()); 
-		this.myProfileLabel = new JLabel("My Profile");
-		this.tfUsername = new JTextField();
-		this.tfLastName = new JTextField();
-		this.tfEmail = new JTextField();
+		this.usernameLabel = new JLabel("Username");
+		this.lastNameLabel = new JLabel("Last Name");
+		this.emailLabel = new JLabel("Email");
 		this.resetPassLabel = new JLabel("Reset Password");
 		this.closeIconLabel = new JLabel(closeIcon);
 		this.okButton = new AppButton("OK");
@@ -208,20 +83,20 @@ public class MyProfilePage extends CenteredPage{
 		this.myProfileLabel.setFont(Constants.FONT_SUB_TITLE);
 		
 		
-		this.tfUsername.setFont(Constants.FONT_GENERAL);
-		this.tfUsername.setForeground(Constants.COLOR_TEXT_GRAY);
-		this.tfUsername.setBorder(border);
-		this.tfUsername.setText(person.getFirstName());
+		this.usernameLabel.setFont(Constants.FONT_GENERAL);
+		this.usernameLabel.setForeground(Constants.COLOR_TEXT_GRAY);
+		this.usernameLabel.setBorder(border);
+		this.usernameLabel.setText(person.getFirstName());
 		
-		this.tfLastName.setFont(Constants.FONT_GENERAL);
-		this.tfLastName.setForeground(Constants.COLOR_TEXT_GRAY);
-		this.tfLastName.setBorder(border);
-		this.tfLastName.setText(person.getLastName());
+		this.lastNameLabel.setFont(Constants.FONT_GENERAL);
+		this.lastNameLabel.setForeground(Constants.COLOR_TEXT_GRAY);
+		this.lastNameLabel.setBorder(border);
+		this.lastNameLabel.setText(person.getLastName());
 		
-		this.tfEmail.setFont(Constants.FONT_GENERAL);
-		this.tfEmail.setForeground(Constants.COLOR_TEXT_GRAY);
-		this.tfEmail.setBorder(border);
-		this.tfEmail.setText(person.getEmail());
+		this.emailLabel.setFont(Constants.FONT_GENERAL);
+		this.emailLabel.setForeground(Constants.COLOR_TEXT_GRAY);
+		this.emailLabel.setBorder(border);
+		this.emailLabel.setText(person.getEmail());
 		
 		this.resetPassLabel.setForeground(Constants.COLOR_HYPERLINK);
 		this.resetPassLabel.setFont(Constants.FONT_SMALLER);
@@ -239,7 +114,6 @@ public class MyProfilePage extends CenteredPage{
 						
 					}
 				});
-	
 		
 		this.okButton.setFont(Constants.FONT_SMALLER);
 		this.okButton.setBackground(Constants.COLOR_BUTTON_BASE);
@@ -248,20 +122,10 @@ public class MyProfilePage extends CenteredPage{
 				{
 					@Override
 					public void actionPerformed(ActionEvent evt) {
-						//Check input
-						String username = (tfUsername.getText()).trim();
-						String lastname = (tfLastName.getText()).trim();
-						String email = (tfEmail.getText()).trim();
-						
-						person.setFirstName(username);
-						person.setLastName(lastname);
-						person.setEmail(email);
-						Constants.DATABASE_SERVICE.update(person.getID(), person);
-						Main.popScreen();
-						}
+						closeThisWindow();
 						
 					}
-				);
+				});
 		
 		topPanel.add(closeIconLabel);
 		
@@ -271,11 +135,11 @@ public class MyProfilePage extends CenteredPage{
 		Gbm.newGridLine(c);
 		c.insets = new Insets(5, 80, 5, 80);
 		c.fill = GridBagConstraints.HORIZONTAL;
-		centerPanel.add(this.tfUsername, c);			// Username
+		centerPanel.add(this.usernameLabel, c);			// Username
 		Gbm.newGridLine(c);
-		centerPanel.add(this.tfLastName, c);			// LastName
+		centerPanel.add(this.lastNameLabel, c);			// LastName
 		Gbm.newGridLine(c);
-		centerPanel.add(this.tfEmail, c);			// Email
+		centerPanel.add(this.emailLabel, c);			// Email
 		Gbm.newGridLine(c);
 		c.fill = GridBagConstraints.NONE;
 		centerPanel.add(this.resetPassLabel, c);		// Reset Password
@@ -288,8 +152,6 @@ public class MyProfilePage extends CenteredPage{
 		this.mainPanel.add(centerPanel, BorderLayout.CENTER);
 		
 	}
-	
-	
 	
 	private ImageIcon createImageIcon(String path, String description) {
 		java.net.URL imgURL = getClass().getResource(path);
@@ -308,8 +170,6 @@ public class MyProfilePage extends CenteredPage{
 	
 	
 	
-	
-	
 	public static void main(String arggs[])
 	{
 		Methods.setUIFont(new FontUIResource(Constants.FONT_TYPE_GENERAL, Font.PLAIN, Constants.FONT_GENERAL_SIZE));
@@ -317,7 +177,7 @@ public class MyProfilePage extends CenteredPage{
 		//Initialization
 		JFrame frame = new JFrame();
 		Person Person1 = new Person("Adam", "Smith");
-		CenteredPage cp = new MyProfilePage(Person1,true);
+		CenteredPage cp = new MyProfilePage(Person1);
 		
 		//Properties
 		frame.setSize(700, 700);
