@@ -47,6 +47,8 @@ public class ReportPage extends ReportPanel{
 	private JScrollPane scrollUsers;
 	private SimpleTable tableTrans,tableUsers;
 	
+	String[] columnTopNames = {"Date", "Category", "Name", "Amount (Rp.)", "Receipt Link", "Last Modified"};
+	
 	//Constructor
 	public ReportPage(Person person) {
 		super(person);
@@ -55,6 +57,7 @@ public class ReportPage extends ReportPanel{
 		this.person = person;
 		this.initDate();
 		this.initPanelUsers();
+		this.initTableTop(null, columnTopNames);
 		this.updateTableBottom();
 		
 		
@@ -239,16 +242,14 @@ public class ReportPage extends ReportPanel{
 			int userId = user.getID();
 			Date dateStart = this.dateFrom.getSelectedDate();
 			Date dateEnd =  this.dateTo.getSelectedDate();
-			String dateString = "2020-12-25";
-			Date date1 = Date.valueOf(dateString);
-			long millis = System.currentTimeMillis();
-			Date date2 = new Date(millis);
-			List<Transaction> currentTrans = Constants.DATABASE_SERVICE.getAllTransactions(1,date1,date2);
+			List<Transaction> currentTrans = Constants.DATABASE_SERVICE.getAllTransactions(userId,dateStart,dateEnd);
 			List <Category> categories = Constants.DATABASE_SERVICE.getAllCategories();
 			String[] columnTopNames = {"Date", "Category", "Name", "Amount (Rp.)", "Receipt Link", "Last Modified"};
 			int row = currentTrans.size();
 			System.out.println(row);
 			System.out.println(userId);
+			System.out.println(dateStart);
+			System.out.println(dateEnd);
 			int col = 6;
 			String [][] filteredTransactions = new String [row][col];
 			for (int i = 0 ; i< row ; i++)
