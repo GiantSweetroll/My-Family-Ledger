@@ -9,11 +9,14 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.plaf.FontUIResource;
 
 import giantsweetroll.gui.swing.Gbm;
@@ -30,7 +33,7 @@ public class ResetPasswordPanel extends JPanel
 	 */
 	private static final long serialVersionUID = 8037086301150852671L;
 	//Fields
-	private JLabel labTitle, labWarning, labClose;
+	private JLabel labTitle, labWarning, labClose, labCancel;
 	private JTextField tfEmail, tfPass, tfPassConfirm;
 	private AppButton button;
 	
@@ -46,6 +49,7 @@ public class ResetPasswordPanel extends JPanel
 		this.labWarning = new WarningLabel();
 		this.button = new AppButton("Confirm");
 		this.labClose = new JLabel(Constants.ICON_CLOSE);
+		this.labCancel = new HyperlinkLabel("Cancel");
 		JPanel panelTop = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		JPanel panelCenter = new JPanel(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -79,6 +83,16 @@ public class ResetPasswordPanel extends JPanel
 						}
 					}
 				});
+		this.labCancel.setFont(Constants.FONT_SMALLER);
+		this.labCancel.setHorizontalAlignment(SwingConstants.CENTER);
+		this.labCancel.addMouseListener(new MouseAdapter()
+				{
+					@Override
+					public void mouseClicked(MouseEvent e)
+					{
+						Main.popScreen();
+					}
+				});
 		panelTop.setOpaque(false);
 		panelCenter.setOpaque(false);
 		
@@ -101,6 +115,8 @@ public class ResetPasswordPanel extends JPanel
 		panelCenter.add(this.labWarning, c);			//Warning label
 		Gbm.newGridLine(c);
 		panelCenter.add(this.button, c);				//Confirm button
+		Gbm.newGridLine(c);
+		panelCenter.add(this.labCancel, c);				//cancel label
 		//Add to main panel
 		this.add(panelTop, BorderLayout.NORTH);
 		this.add(panelCenter, BorderLayout.CENTER);
