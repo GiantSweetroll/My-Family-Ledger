@@ -1,6 +1,6 @@
 package shared.screens;
 
-import java.awt.BorderLayout; 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -9,7 +9,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Window;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -27,17 +26,22 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.plaf.FontUIResource;
 
+import giantsweetroll.ImageManager;
 import giantsweetroll.gui.swing.Gbm;
 import models.Admin;
 import models.Person;
 import shared.Constants;
 import shared.Methods;
 import shared.components.AppButton;
+import shared.components.HyperlinkLabel;
 import shared.components.ResetPasswordPanel;
-import giantsweetroll.ImageManager;
 
 public class MyProfilePage extends CenteredPage{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9175176544360313055L;
 	ImageIcon closeIcon = createImageIcon("/resources/closeicon.png", "Close");
 	private JPanel mainPanel;
 	private JLabel myProfileLabel;
@@ -61,7 +65,7 @@ public class MyProfilePage extends CenteredPage{
 		this.tfUsername = new JTextField("Username");
 		this.tfLastname = new JTextField("Last Name");
 		this.tfEmail = new JTextField("Email");
-		this.resetPassLabel = new JLabel("Reset Password");
+		this.resetPassLabel = new HyperlinkLabel("Reset Password");
 		this.closeIconLabel = new JLabel(closeIcon);
 		this.adminIDLabel = new JLabel();
 		this.okButton = new AppButton("OK");
