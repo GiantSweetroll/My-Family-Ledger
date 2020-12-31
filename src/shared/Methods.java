@@ -1,5 +1,6 @@
 package shared;
 
+import java.awt.Window; 
 import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -8,10 +9,13 @@ import java.util.Enumeration;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
 
 import models.Category;
+
 
 public class Methods 
 {
@@ -79,5 +83,10 @@ public class Methods
 		ls.add(cat);
 		
 		return ls;
+	}
+	
+	public static void closeThisWindow(JPanel jpanel) {
+		Window w = SwingUtilities.getWindowAncestor(jpanel);
+		w.dispose();
 	}
 }
