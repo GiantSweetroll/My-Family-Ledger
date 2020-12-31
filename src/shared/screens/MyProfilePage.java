@@ -106,7 +106,7 @@ public class MyProfilePage extends CenteredPage{
 					@Override
 					public void mouseClicked(MouseEvent e)
 					{
-						closeThisWindow();
+						Methods.closeThisWindow(MyProfilePage.this);
 						dialogResetPassword.add(new ResetPasswordPanel(person));
 						dialogResetPassword.setModal(true);
 						dialogResetPassword.setSize(700, 700);
@@ -139,7 +139,7 @@ public class MyProfilePage extends CenteredPage{
 				{
 					@Override
 					public void actionPerformed(ActionEvent evt) {
-						closeThisWindow();
+						Methods.closeThisWindow(MyProfilePage.this);
 						String firstname = tfUsername.getText().trim();
 						String lastname = tfLastname.getText().trim();
 						String email = tfEmail.getText().trim();
@@ -157,7 +157,7 @@ public class MyProfilePage extends CenteredPage{
 				{
 				 @Override
 	             public void mouseClicked(MouseEvent e) {
-					 closeThisWindow();
+					 Methods.closeThisWindow(MyProfilePage.this);
 				 }
 				}
 				);
@@ -203,10 +203,7 @@ public class MyProfilePage extends CenteredPage{
 		}
 	}
 	
-	private void closeThisWindow() {
-		Window w = SwingUtilities.getWindowAncestor(MyProfilePage.this);
-		w.setVisible(false);
-	}
+
 	
 		private void btnSavedaction(ActionEvent evt) {                                               
  
