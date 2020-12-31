@@ -928,8 +928,8 @@ public final class DatabaseService
 										+ Transaction.USER_ID + "=" + transaction.getUserID() + ","
 										+ Transaction.CATEGORY_ID + "=" + transaction.getCategoryID() + ","
 										+ Transaction.AMOUNT + "=" + transaction.getAmount() + ","
-										+ Transaction.DATE_INPUT + "=" + transaction.getDateInput() + ","
-										+ Transaction.DATE_EDIT + "=" + transaction.getDateEdit() + ","
+										+ Transaction.DATE_INPUT + "=\'" + transaction.getDateInput() + "\',"
+										+ Transaction.DATE_EDIT + "=\'" + transaction.getDateEdit() + "\',"
 										+ Transaction.DESC + "=\'" + transaction.getDesc() + "\'," 
 										+ Transaction.LINK_RECEIPT + "=\'" + transaction.getLinkReceipt() + "\'" 
 									+ " WHERE " + Transaction.ID + "=" + id);
