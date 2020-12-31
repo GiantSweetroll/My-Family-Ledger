@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.Date;
@@ -150,35 +151,8 @@ public class TransactionHistory extends HistoryPanel{
 		List<Transaction> transactions = new ArrayList <Transaction>();
 		this.tableTrans = new TransactionHistoryTable(transactions);
 		this.tableTrans.updateData(transactions);
-//		updateTable();
-		
-//		//Properties
-//		this.tableTrans.getTableHeader().setFont(Constants.FONT_SMALLER_BOLD);
-//		this.tableTrans.setFont(Constants.FONT_SMALLER);
-//		this.tableTrans.setPreferredScrollableViewportSize(new Dimension(500, 220));
-//	    this.tableTrans.setFillsViewportHeight(true);
-//	    this.tableTrans.setRowHeight(30);
 	}
-	
-//	private void updateTable() {
-//		List<Transaction> transactions = Constants.DATABASE_SERVICE.getAllTransactions();
-//		String[] currentData = new String[this.columns];
-//		
-//		for(Transaction tr: transactions) {
-//			currentData[0] = tr.getDateInput().toString();
-//			currentData[1] = Constants.DATABASE_SERVICE.getCategoryName(tr.getCategoryID());
-//			currentData[2] = tr.getDesc();
-//			currentData[3] = Double.toString(tr.getAmount());
-//			currentData[4] = tr.getLinkReceipt();
-//			currentData[5] = tr.getDateEdit().toString();
-//			currentData[6] = "";
-//			currentData[7] = "";
-//			this.model.addRow(currentData);
-//			this.tableTrans.getColumnModel().getColumn(columns - 1).setCellRenderer(new HistoryTableCellRenderer(Constants.ICON_EDIT));
-//			this.tableTrans.getColumnModel().getColumn(columns - 2).setCellRenderer(new HistoryTableCellRenderer(Constants.ICON_DELETE));
-//		}
-//	}
-	
+		
 	private static boolean isDigit(String inputText) {
 	    if (inputText == null) {
 	        return false;

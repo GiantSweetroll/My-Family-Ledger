@@ -4,6 +4,8 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import models.DatabaseItem;
 import models.Transaction;
 import shared.Constants;
@@ -60,7 +62,13 @@ public class TransactionHistoryTable extends HistoryTable
 	protected void onDeletePressed(int index) 
 	{
 		Transaction tr = (Transaction)this.data.get(index);
-		// TODO delete transaction
+		int option = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this transaction?", "Delete", JOptionPane.YES_NO_OPTION);
+		if (option == 0) {
+			Constants.DATABASE_SERVICE.deleteTransaction(tr.getID());
+			this.updateData(this.data); // this doesnt really refresh the table how plz 
+		}
+		
+		
 		// TODO restore balance
 	}
 
