@@ -31,6 +31,7 @@ public class SimpleTable extends JTable
 	{
 		super();
 		this.init(tableData, headers);
+		this.setRowHeight(50);
 	}
 	
 	public SimpleTable()
