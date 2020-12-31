@@ -113,6 +113,8 @@ public class ReportPage extends ReportPanel{
 		updateListViewUsers();
 		
 		//SpringLayout constraints
+		spr.putConstraint(SpringLayout.NORTH, this.scrollUsers, 5, SpringLayout.NORTH, panelCenter);
+		spr.putConstraint(SpringLayout.SOUTH, this.scrollUsers, -10, SpringLayout.SOUTH, panelCenter);
 		spr.putConstraint(SpringLayout.WEST, this.scrollUsers, 10, SpringLayout.WEST, panelCenter);
 		spr.putConstraint(SpringLayout.EAST, this.scrollUsers, -10, SpringLayout.EAST, panelCenter);
 		spr.putConstraint(SpringLayout.HORIZONTAL_CENTER, this.scrollUsers, 0, SpringLayout.HORIZONTAL_CENTER, panelCenter);
@@ -237,7 +239,11 @@ public class ReportPage extends ReportPanel{
 			int userId = user.getID();
 			Date dateStart = this.dateFrom.getSelectedDate();
 			Date dateEnd =  this.dateTo.getSelectedDate();
-			List<Transaction> currentTrans = Constants.DATABASE_SERVICE.getAllTransactions(userId,dateStart,dateEnd);
+			String dateString = "2020-12-25";
+			Date date1 = Date.valueOf(dateString);
+			long millis = System.currentTimeMillis();
+			Date date2 = new Date(millis);
+			List<Transaction> currentTrans = Constants.DATABASE_SERVICE.getAllTransactions(1,date1,date2);
 			List <Category> categories = Constants.DATABASE_SERVICE.getAllCategories();
 			String[] columnTopNames = {"Date", "Category", "Name", "Amount (Rp.)", "Receipt Link", "Last Modified"};
 			int row = currentTrans.size();
