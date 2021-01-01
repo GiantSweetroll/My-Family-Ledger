@@ -9,8 +9,10 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 
 import main.Main;
+import models.Admin;
 import models.Person;
 import screens.auth.SignIn;
+import shared.Constants;
 import shared.Globals;
 import shared.components.HyperlinkLabel;
 
@@ -23,7 +25,7 @@ public class AccountPanel extends RoundedPanel
 	private static final long serialVersionUID = -8111210618845993008L;
 	
 	//Fields
-	private JLabel labUsername, labSignOut;
+	private JLabel labUsername, labSignOut, labBalance;
 	private JDialog dialogProfile;
 	private Person person;
 	
@@ -36,6 +38,7 @@ public class AccountPanel extends RoundedPanel
 		this.labUsername = new JLabel(this.person.getFullName());
 		this.labSignOut = new HyperlinkLabel("Sign Out");
 		this.dialogProfile = new JDialog();
+		this.labBalance = new JLabel("");
 		
 		//Properties
 		this.setBackground(Color.WHITE);
@@ -67,7 +70,9 @@ public class AccountPanel extends RoundedPanel
 		});
 		//Add to panel
 		this.add(this.labUsername);
+		this.add(this.labBalance);
 		this.add(this.labSignOut);
+		
 	}
 	
 	//Public Methods
@@ -79,5 +84,8 @@ public class AccountPanel extends RoundedPanel
 	{
 		this.person = person;
 		this.labUsername.setText(this.person.getFullName());
+		if(!(person instanceof Admin)) {
+			this.labBalance.setText(String.valueOf(Constants.DATABASE_SERVICE.getBalance(this.person.getID())));
+		}
 	}
 }

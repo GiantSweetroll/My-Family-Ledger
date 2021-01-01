@@ -1783,8 +1783,8 @@ public final class DatabaseService
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String query = "SELECT " + Account.BALANCE + " From " + TABLE_ACCOUNT + " INNER JOIN " + TABLE_USERS + " ON " 
-		+ TABLE_ACCOUNT + "." + Account.ID + " = " + TABLE_USERS + "." + Account.ID + " WHERE " + TABLE_USERS + "." 
-		+ Account.ID + " = " + userAccountId;
+		+ TABLE_ACCOUNT + "." + Account.ID + " = " + TABLE_USERS + "." + User.ID + " WHERE " + TABLE_USERS + "." 
+		+ User.ID + " = " + userAccountId;
 		
 		try
 		{

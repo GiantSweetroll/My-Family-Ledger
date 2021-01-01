@@ -28,6 +28,7 @@ import javax.swing.plaf.FontUIResource;
 
 import giantsweetroll.gui.swing.ScrollPaneManager;
 import main.Main;
+import models.Account;
 import models.Category;
 import models.Person;
 import models.Transaction;
@@ -211,6 +212,7 @@ public class InputTransactions extends TriplePanelPage{
 			public void actionPerformed(ActionEvent arg0) {
 				String item = ((HintTextField) inputItem).getData().trim();
 				String price = ((HintTextField) inputPrice).getData().trim();
+				double dprice = Double.parseDouble(price);
 				Category category = (Category) cbCategory.getSelectedItem();
 				long millis = System.currentTimeMillis();
 				Date date = new Date(millis);
@@ -220,9 +222,14 @@ public class InputTransactions extends TriplePanelPage{
 				if(item.equals("") || price.equals("")) {
 					labelWarning.setText("Invalid Input Detected");
 				}
+				if(dprice > Constants.DATABASE_SERVICE.getBalance(person.getID())) {
+					labelWarning.setText("Go get more money");
+				}
 				else {
-					double dprice = Double.parseDouble(price);
+					Account curAcc = Constants.DATABASE_SERVICE.getAccount(person.getID());
 					Constants.DATABASE_SERVICE.insert(new Transaction(category.getID(), null, person.getID(), date, date, dprice, item));
+					curAcc.updateBalance(dprice * -1d);
+					Constants.DATABASE_SERVICE.update(curAcc.getID(), curAcc);
 					JOptionPane.showMessageDialog(null, "Transaction Successfully Made");
 					resetInputPage();
 				}
@@ -295,6 +302,7 @@ public class InputTransactions extends TriplePanelPage{
 		this.inputItem.setText("");
 		this.inputPrice.setText("");
 		this.labelWarning.setText("");
+		this.panelAcc.setAccount(this.person);
 		this.updateListView();
 	}
 	
