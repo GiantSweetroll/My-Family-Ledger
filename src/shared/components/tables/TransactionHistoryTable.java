@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import models.Account;
 import models.DatabaseItem;
 import models.Transaction;
 import shared.Constants;
@@ -65,7 +66,11 @@ public class TransactionHistoryTable extends HistoryTable
 		int option = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this transaction?", "Delete", JOptionPane.YES_NO_OPTION);
 		if (option == 0) {
 			Constants.DATABASE_SERVICE.deleteTransaction(tr.getID());
-			this.updateData(this.data); // this doesnt really refresh the table how plz 
+			this.updateData(this.data); // this doesnt really refresh the table + account panel how do i do dat through here plz
+										// for now can only refresh it with the refresh button
+			Account curAcc = Constants.DATABASE_SERVICE.getAccount(tr.getUserID());
+			curAcc.updateBalance(tr.getAmount() * -1d);
+			Constants.DATABASE_SERVICE.update(curAcc.getID(), curAcc);
 		}
 		
 		

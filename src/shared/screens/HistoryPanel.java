@@ -39,7 +39,7 @@ public abstract class HistoryPanel extends JPanel
 						butBack,
 						butRefresh;
 	private JLabel labelFilter;
-	private AccountPanel panelAcc;
+	protected AccountPanel panelAcc;
 	private Person person;
 	private JTable table;
 	private JScrollPane scrollTable;

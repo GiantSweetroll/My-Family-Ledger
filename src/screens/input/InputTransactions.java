@@ -210,29 +210,35 @@ public class InputTransactions extends TriplePanelPage{
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				String item = ((HintTextField) inputItem).getData().trim();
-				String price = ((HintTextField) inputPrice).getData().trim();
-				double dprice = Double.parseDouble(price);
-				Category category = (Category) cbCategory.getSelectedItem();
-				long millis = System.currentTimeMillis();
-				Date date = new Date(millis);
-				if(!isDigit(price)){
+				try {
+					String item = ((HintTextField) inputItem).getData().trim();
+					String price = ((HintTextField) inputPrice).getData().trim();
+					double dprice = Double.parseDouble(price);
+					Category category = (Category) cbCategory.getSelectedItem();
+					long millis = System.currentTimeMillis();
+					Date date = new Date(millis);
+					if(item.equals("") || price.equals("")) {
+						labelWarning.setText("Invalid Input Detected");
+					}
+					if(!isDigit(price)){
+						labelWarning.setText("Please use digits for Price");
+					}
+					if(dprice > Constants.DATABASE_SERVICE.getBalance(person.getID())) {
+						labelWarning.setText("Go get more money");
+					}
+					else {
+						Account curAcc = Constants.DATABASE_SERVICE.getAccount(person.getID());
+						Constants.DATABASE_SERVICE.insert(new Transaction(category.getID(), null, person.getID(), date, date, dprice, item));
+						curAcc.updateBalance(dprice * -1d);
+						Constants.DATABASE_SERVICE.update(curAcc.getID(), curAcc);
+						JOptionPane.showMessageDialog(null, "Transaction Successfully Made");
+						resetInputPage();
+					}
+				}
+				catch(NumberFormatException ex){
 					labelWarning.setText("Please use digits for Price");
 				}
-				if(item.equals("") || price.equals("")) {
-					labelWarning.setText("Invalid Input Detected");
-				}
-				if(dprice > Constants.DATABASE_SERVICE.getBalance(person.getID())) {
-					labelWarning.setText("Go get more money");
-				}
-				else {
-					Account curAcc = Constants.DATABASE_SERVICE.getAccount(person.getID());
-					Constants.DATABASE_SERVICE.insert(new Transaction(category.getID(), null, person.getID(), date, date, dprice, item));
-					curAcc.updateBalance(dprice * -1d);
-					Constants.DATABASE_SERVICE.update(curAcc.getID(), curAcc);
-					JOptionPane.showMessageDialog(null, "Transaction Successfully Made");
-					resetInputPage();
-				}
+				
 				
 			}
 		});

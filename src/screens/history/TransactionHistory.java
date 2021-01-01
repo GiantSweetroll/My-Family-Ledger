@@ -211,6 +211,7 @@ public class TransactionHistory extends HistoryPanel{
 			Date dateMax = this.dateTo.getSelectedDate();
 			String price = this.tfValue.getData().trim();
 			String flagStr = (String) this.cbEquals.getSelectedItem();
+			this.panelAcc.setAccount(this.person);
 			if(price.equals("")) {
 				List<Transaction> transactions = Constants.DATABASE_SERVICE.getAllTransactions(dateMin, dateMax);
 				this.tableTrans.updateData(transactions);
@@ -241,6 +242,7 @@ public class TransactionHistory extends HistoryPanel{
 					this.tableTrans.updateData(transactions);
 				}
 			}
+			
 		}
 		catch(NullPointerException ex)
 		{
