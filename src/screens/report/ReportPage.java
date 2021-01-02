@@ -238,18 +238,13 @@ public class ReportPage extends ReportPanel{
 		try {
 			ListTile tile = lvUsers.getSelectedTiles().get(0);
 			Person person = ((SimpleUserTile) tile).getPerson();
-			User user = Constants.DATABASE_SERVICE.getUser(person.getID());
-			int userId = user.getID();
+			int userId = person.getID();
 			Date dateStart = this.dateFrom.getSelectedDate();
 			Date dateEnd =  this.dateTo.getSelectedDate();
 			List<Transaction> currentTrans = Constants.DATABASE_SERVICE.getAllTransactions(userId,dateStart,dateEnd);
 			List <Category> categories = Constants.DATABASE_SERVICE.getAllCategories();
 			String[] columnTopNames = {"Date", "Category", "Name", "Amount (Rp.)", "Receipt Link", "Last Modified"};
 			int row = currentTrans.size();
-			System.out.println(row);
-			System.out.println(userId);
-			System.out.println(dateStart);
-			System.out.println(dateEnd);
 			int col = 6;
 			String [][] filteredTransactions = new String [row][col];
 			for (int i = 0 ; i< row ; i++)
