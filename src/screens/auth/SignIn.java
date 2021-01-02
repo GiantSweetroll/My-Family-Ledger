@@ -76,7 +76,7 @@ public class SignIn extends CenteredPage
 		this.tfPass = new HintPasswordField("Password");
 		this.labWarning = new WarningLabel();
 		this.butSignIn = new JButton("Sign in");
-		this.labForgotPass = new JLabel("Forgot your password?");
+		this.labForgotPass = new HyperlinkLabel("Forgot your password?");
 		JPanel panelTop = new JPanel();
 		JPanel panelCenter = new JPanel();
 		GridBagConstraints c = new GridBagConstraints();
@@ -137,8 +137,15 @@ public class SignIn extends CenteredPage
 						}
 					}
 				});
-		this.labForgotPass.setForeground(Constants.COLOR_HYPERLINK);
 		this.labForgotPass.setFont(Constants.FONT_SMALLER);
+		this.labForgotPass.addMouseListener(new MouseAdapter()
+				{
+					@Override
+					public void mouseClicked(MouseEvent e)
+					{
+						//TODO: Open reset password screen
+					}
+				});
 		
 		///Add to panel
 		//Add to panelTop
