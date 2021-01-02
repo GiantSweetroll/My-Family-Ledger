@@ -111,7 +111,11 @@ public class CategoryEditor extends JPanel
 		Gbm.newGridLine(c);
 		this.add(panel, c);						//Panel (contains the text field and add button)
 		Gbm.newGridLine(c);
-		this.add(this.butSave, c);				//Save button
+		this.add(this.butSave, c);
+		//Save button
+		
+	
+		this.setData(categories);
 	}
 	
 	//Public methods
@@ -121,8 +125,10 @@ public class CategoryEditor extends JPanel
 	 */
 	public void setData(List<Category> categories)
 	{
+		categories = this.getCategories();
 		this.categories.clear();
 		this.categories.addAll(categories);
+		this.table.updateData(categories);
 		
 		this.revalidate();
 		this.repaint();
@@ -133,14 +139,15 @@ public class CategoryEditor extends JPanel
 	 */
 	public List<Category> getCategories()
 	{
-		return this.categories;
+		List<Category> categoryData = Constants.DATABASE_SERVICE.getAllCategories();
+		return categoryData;
 	}
 	
 	//Private methods
 	private void addCategory()
 	{
 		//TODO: Use SQL to generate ID
-		this.categories.add(new Category(this.categories.size()+1, 1, "", this.tf.getText().trim()));		//Add to category list
+		this.categories.add(new Category(this.categories.size()+1, admin.getID(),this.tf.getText().trim(),""));		//Add to category list
 		this.table.updateData(this.categories);		//Update the table model
 		this.tf.setText("");		//Empty the text field
 	}
@@ -149,8 +156,7 @@ public class CategoryEditor extends JPanel
 		//TODO: Save any changes
 		
 		//Close the window
-		Window w = SwingUtilities.getWindowAncestor(CategoryEditor.this);
-		w.setVisible(false);
+		Methods.closeThisWindow(CategoryEditor.this);
 	}
 	
 	//Testing
