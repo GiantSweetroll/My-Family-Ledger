@@ -168,7 +168,7 @@ public class ReportPage extends ReportPanel{
 		String[][] tableData = tabledata;
 		String [] Headers = headers;
 		this.tableTrans = new SimpleTable(tableData,Headers); 
-		
+	
 		this.setTableTop(tableTrans);
 		
 	
@@ -241,7 +241,7 @@ public class ReportPage extends ReportPanel{
 			int userId = person.getID();
 			Date dateStart = this.dateFrom.getSelectedDate();
 			Date dateEnd =  this.dateTo.getSelectedDate();
-			List<Transaction> currentTrans = Constants.DATABASE_SERVICE.getAllTransactions(userId,dateStart,dateEnd);
+			List<Transaction> currentTrans = Constants.DATABASE_SERVICE.getAllTransactionsForAdminReport(userId,dateStart,dateEnd);
 			List <Category> categories = Constants.DATABASE_SERVICE.getAllCategories();
 			String[] columnTopNames = {"Date", "Category", "Name", "Amount (Rp.)", "Receipt Link", "Last Modified"};
 			int row = currentTrans.size();
