@@ -2145,7 +2145,7 @@ public final class DatabaseService
 		double Income = 0;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String query = "SELECT SUM(amount) FROM OF_Transactions WHERE user_id =? AND source_id =?";
+		String query = "SELECT SUM(amount) FROM OF_Transactions WHERE user_id =? AND source_id =? AND amount >= 0  ";
 		try
 		{
 			ps = this.prepStatement(query);
