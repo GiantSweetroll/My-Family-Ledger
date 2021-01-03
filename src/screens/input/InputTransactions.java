@@ -70,6 +70,7 @@ public class InputTransactions extends TriplePanelPage{
 	private ListView listView;
 	private List<ListTile> tiles;
 	private JScrollPane scrollTf;
+	private Transaction lastTransaction;
 	
 	public InputTransactions(Person person) 
 	{
@@ -77,6 +78,22 @@ public class InputTransactions extends TriplePanelPage{
 		//Initialization
 		this.person = person;
 		this.panelAcc = new AccountPanel();
+		this.initPanelPrevTrans();
+		this.initPanelInput();
+		this.initPanelReceipt();
+		
+		//Properties
+		this.setCenterPanels(this.panelPrevTrans, this.panelInput, this.panelReceipt);
+		this.setPanelTop(this.panelAcc);
+		panelAcc.setAccount(person);
+	}
+	
+	public InputTransactions(Person person, Transaction tr) {
+		super();
+		//Initialization
+		this.person = person;
+		this.panelAcc = new AccountPanel();
+		this.lastTransaction = tr;
 		this.initPanelPrevTrans();
 		this.initPanelInput();
 		this.initPanelReceipt();
@@ -151,7 +168,7 @@ public class InputTransactions extends TriplePanelPage{
 		this.buttonTransfer = new JButton("Transfer");
 
 		//make combo box
-
+		
 		List <Category> categories = Constants.DATABASE_SERVICE.getAllCategories();
 
 		this.cbCategory = new JComboBox<Category>();
@@ -162,7 +179,11 @@ public class InputTransactions extends TriplePanelPage{
 			cbCategory.addItem(categories.get(i));
 			cbCategory.setRenderer(new ComboBoxRenderer(categories.get(i)));
 		}
-
+		if (this.lastTransaction != null) {
+			cbCategory.setSelectedItem(Constants.DATABASE_SERVICE.getCategoryName(this.lastTransaction.getCategoryID()));
+			this.inputItem.setText(this.lastTransaction.getDesc());
+			this.inputPrice.setText(Double.toString(this.lastTransaction.getAmount()));
+		}
 		
 		cbCategory.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
@@ -190,9 +211,14 @@ public class InputTransactions extends TriplePanelPage{
 		this.labelBack.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e)
-			{
-				Globals.activeUser = person;
-				Main.changeScreen(new Menu(person, false));
+			{	
+				if(lastTransaction != null) {
+					Main.popScreen();
+				}
+				else {
+					Globals.activeUser = person;
+					Main.changeScreen(new Menu(person, false));
+				}
 			}
 		});
 		
@@ -217,22 +243,42 @@ public class InputTransactions extends TriplePanelPage{
 					Category category = (Category) cbCategory.getSelectedItem();
 					long millis = System.currentTimeMillis();
 					Date date = new Date(millis);
+					Account curAcc = Constants.DATABASE_SERVICE.getAccount(person.getID());
 					if(item.equals("") || price.equals("")) {
 						labelWarning.setText("Invalid Input Detected");
 					}
 					if(!isDigit(price)){
 						labelWarning.setText("Please use digits for Price");
 					}
-					if(dprice > Constants.DATABASE_SERVICE.getBalance(person.getID())) {
-						labelWarning.setText("Go get more money");
-					}
 					else {
-						Account curAcc = Constants.DATABASE_SERVICE.getAccount(person.getID());
-						Constants.DATABASE_SERVICE.insert(new Transaction(category.getID(), null, person.getID(), date, date, dprice, item));
-						curAcc.updateBalance(dprice * -1d);
-						Constants.DATABASE_SERVICE.update(curAcc.getID(), curAcc);
-						JOptionPane.showMessageDialog(null, "Transaction Successfully Made");
-						resetInputPage();
+						if(lastTransaction == null) {
+							if(dprice > Constants.DATABASE_SERVICE.getBalance(person.getID())) {
+								labelWarning.setText("Go get more money");
+							}
+							else {
+								
+								Constants.DATABASE_SERVICE.insert(new Transaction(category.getID(), null, person.getID(), date, date, dprice, item));
+								curAcc.updateBalance(dprice * -1d);
+								Constants.DATABASE_SERVICE.update(curAcc.getID(), curAcc);
+								JOptionPane.showMessageDialog(null, "Transaction Successfully Made");
+								resetInputPage();
+							}
+						}
+						else {
+							if(lastTransaction.getAmount() + curAcc.getBalance() < dprice) {
+								labelWarning.setText("Go get more money");
+							}
+							else {
+								Double balanceAfterEdit = lastTransaction.getAmount() - dprice;
+								Transaction tr = new Transaction(lastTransaction.getID(), category.getID(), null, person.getID(), lastTransaction.getDateInput(), date, dprice, item);
+								Constants.DATABASE_SERVICE.update(lastTransaction.getID(), tr);
+								curAcc.updateBalance(balanceAfterEdit);
+								Constants.DATABASE_SERVICE.update(curAcc.getID(), curAcc);
+								JOptionPane.showMessageDialog(null, "Transaction Sucessfully Edited");
+								Main.popScreen();
+							}	
+						}
+						
 					}
 				}
 				catch(NumberFormatException ex){

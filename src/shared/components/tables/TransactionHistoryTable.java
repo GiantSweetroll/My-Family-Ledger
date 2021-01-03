@@ -6,10 +6,13 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import main.Main;
 import models.Account;
 import models.DatabaseItem;
 import models.Transaction;
+import screens.input.InputTransactions;
 import shared.Constants;
+import shared.Globals;
 import shared.components.IconCellRenderer;
 
 public class TransactionHistoryTable extends HistoryTable
@@ -56,7 +59,7 @@ public class TransactionHistoryTable extends HistoryTable
 	@Override
 	protected void onEditPressed(Transaction tr) 
 	{
-//		Main.pushScreen(new TransferFunds(Globals.activeUser, tr));
+		Main.pushScreen(new InputTransactions(Globals.activeUser, tr));
 	}
 
 	@Override
@@ -73,8 +76,6 @@ public class TransactionHistoryTable extends HistoryTable
 			Constants.DATABASE_SERVICE.update(curAcc.getID(), curAcc);
 		}
 		
-		
-		// TODO restore balance
 	}
 
 	@Override
