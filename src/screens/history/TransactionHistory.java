@@ -34,6 +34,7 @@ import shared.Methods;
 import shared.components.ComboBoxRenderer;
 import shared.components.DatePicker;
 import shared.components.HintTextField;
+import shared.components.WarningLabel;
 import shared.components.tables.HistoryTableCellRenderer;
 import shared.components.tables.TransactionHistoryTable;
 import shared.screens.HistoryPanel;
@@ -57,6 +58,7 @@ public class TransactionHistory extends HistoryPanel{
 	private TransactionHistoryTable tableTrans;
 	private DatePicker dateFrom, dateTo;
 	private DefaultTableModel model;
+	private WarningLabel warningLabel;
 
 	//Constructor
 	public TransactionHistory(Person person) {
@@ -85,6 +87,7 @@ public class TransactionHistory extends HistoryPanel{
 		this.labelPrice = new JLabel("Price (Rp.)");
 		this.labelCategory = new JLabel("Category");
 		this.tfValue = new HintTextField("Value");
+		this.warningLabel = new WarningLabel();
 		this.dateFrom = new DatePicker();
 		this.dateTo = new DatePicker();
 		this.cbEquals = new JComboBox<String>(Constants.COMBO_BOX_OPERANDS);
@@ -140,6 +143,7 @@ public class TransactionHistory extends HistoryPanel{
 		panelCenter.add(this.tfValue);
 		panelCenter.add(this.labelCategory);
 		panelCenter.add(this.cbCategory);
+		panelCenter.add(this.warningLabel);
 		this.filters.add(panelTop);
 		this.filters.add(panelCenter);
 		this.filters.add(Box.createRigidArea(new Dimension(0, 500)));
@@ -210,36 +214,21 @@ public class TransactionHistory extends HistoryPanel{
 			Date dateMin = this.dateFrom.getSelectedDate();
 			Date dateMax = this.dateTo.getSelectedDate();
 			String price = this.tfValue.getData().trim();
-			String flagStr = (String) this.cbEquals.getSelectedItem();
+			int flagStr = this.cbEquals.getSelectedIndex();
 			this.panelAcc.setAccount(this.person);
 			if(price.equals("")) {
-				List<Transaction> transactions = Constants.DATABASE_SERVICE.getAllTransactions(dateMin, dateMax);
+				List<Transaction> transactions = Constants.DATABASE_SERVICE.getAllTransactions(person.getID(), dateMin, dateMax, flagStr, -1, category.getID());
 				this.tableTrans.updateData(transactions);
 			}
 			else {
 				if(!isDigit(price)) {
-					System.out.println("enter digit plz");
+					this.warningLabel.setText("Enter a digit plz");
 				}
 				else {
-					int flag = 0;
 					Double priced = Double.parseDouble(price);
-					if(flagStr.equals("<")) {
-						flag = 0;
-					}
-					else if(flagStr.equals(">")){
-						flag = 1;
-					}
-					else if(flagStr.equals("=")){
-						flag = 2;
-					}
-					else if(flagStr.equals("<=")) {
-						flag = 3;
-					}
-					else if(flagStr.equals(">=")) {
-						flag = 4;
-					}
-					List<Transaction> transactions = Constants.DATABASE_SERVICE.getAllTransactions(person.getID(), dateMin, dateMax, flag, priced, category.getID());
+					List<Transaction> transactions = Constants.DATABASE_SERVICE.getAllTransactions(person.getID(), dateMin, dateMax, flagStr, priced, category.getID());
 					this.tableTrans.updateData(transactions);
+					this.warningLabel.setText("");
 				}
 			}
 			
