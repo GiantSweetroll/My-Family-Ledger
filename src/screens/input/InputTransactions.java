@@ -239,7 +239,7 @@ public class InputTransactions extends TriplePanelPage{
 				try {
 					String item = ((HintTextField) inputItem).getData().trim();
 					String price = ((HintTextField) inputPrice).getData().trim();
-					double dprice = Double.parseDouble(price);
+					double dprice = Double.parseDouble(price) * -1d;
 					Category category = (Category) cbCategory.getSelectedItem();
 					long millis = System.currentTimeMillis();
 					Date date = new Date(millis);
@@ -251,32 +251,29 @@ public class InputTransactions extends TriplePanelPage{
 						labelWarning.setText("Please use digits for Price");
 					}
 					else {
+						// if not from table
 						if(lastTransaction == null) {
-							if(dprice > Constants.DATABASE_SERVICE.getBalance(person.getID())) {
+							if(dprice < Constants.DATABASE_SERVICE.getBalance(person.getID()) * -1d) {
 								labelWarning.setText("Go get more money");
 							}
 							else {
 								
 								Constants.DATABASE_SERVICE.insert(new Transaction(category.getID(), null, person.getID(), date, date, dprice, item));
-								curAcc.updateBalance(dprice * -1d);
+								curAcc.updateBalance(dprice);
 								Constants.DATABASE_SERVICE.update(curAcc.getID(), curAcc);
 								JOptionPane.showMessageDialog(null, "Transaction Successfully Made");
 								resetInputPage();
 							}
 						}
 						else {
-							if(lastTransaction.getAmount() + curAcc.getBalance() < dprice) {
-								labelWarning.setText("Go get more money");
-							}
-							else {
-								Double balanceAfterEdit = lastTransaction.getAmount() - dprice;
-								Transaction tr = new Transaction(lastTransaction.getID(), category.getID(), null, person.getID(), lastTransaction.getDateInput(), date, dprice, item);
-								Constants.DATABASE_SERVICE.update(lastTransaction.getID(), tr);
-								curAcc.updateBalance(balanceAfterEdit);
-								Constants.DATABASE_SERVICE.update(curAcc.getID(), curAcc);
-								JOptionPane.showMessageDialog(null, "Transaction Sucessfully Edited");
-								Main.popScreen();
-							}	
+							
+							Double balanceAfterEdit = lastTransaction.getAmount() - dprice;
+							Transaction tr = new Transaction(lastTransaction.getID(), category.getID(), null, person.getID(), lastTransaction.getDateInput(), date, dprice, item);
+							Constants.DATABASE_SERVICE.update(lastTransaction.getID(), tr);
+							curAcc.updateBalance(balanceAfterEdit * -1d);
+							Constants.DATABASE_SERVICE.update(curAcc.getID(), curAcc);
+							JOptionPane.showMessageDialog(null, "Transaction Sucessfully Edited");
+							Main.popScreen();
 						}
 						
 					}
