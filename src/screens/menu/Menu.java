@@ -55,7 +55,6 @@ public class Menu extends JPanel{
 	private JLabel logoDesc;
 	private boolean asAdmin;
 	private JPanel panelTop, panelCenter, panelBelow;
-	private JDialog dialogCategories;
 	private JScrollPane scroll;
 	
 	//Constructor
@@ -150,7 +149,6 @@ public class Menu extends JPanel{
 		this.butTransfer = new AppButton("Transfer", Constants.ICON_TRANSFER);
 		this.butReport = new AppButton("Report", Constants.ICON_REPORT);
 		this.butCategories = new AppButton("Categories", Constants.ICON_CATEGORIES);
-		this.dialogCategories = new JDialog();
 		JPanel panel = new JPanel(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		
@@ -204,6 +202,7 @@ public class Menu extends JPanel{
 		this.butCategories.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
+				JDialog dialogCategories = new JDialog();
 				dialogCategories.add(new CategoryEditor((Admin)Globals.activeUser));
 				dialogCategories.setModal(true);
 				dialogCategories.setSize(700, 700);
