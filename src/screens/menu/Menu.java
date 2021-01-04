@@ -33,6 +33,7 @@ import screens.input.InputTransactions;
 import screens.input.TransferFunds;
 import screens.report.ReportPage;
 import shared.Constants;
+import shared.Globals;
 import shared.Methods;
 import shared.components.AppButton;
 import shared.components.CategoryEditor;
@@ -203,11 +204,7 @@ public class Menu extends JPanel{
 		this.butCategories.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
-				//cuman coba biar my categories page nya bisa kebuka 
-				String emailperson = person.getEmail();
-				int adminInfo = Constants.DATABASE_SERVICE.getAdminID(emailperson);
-				Admin a1 = new Admin(adminInfo,person.getFirstName(),person.getLastName());
-				dialogCategories.add(new CategoryEditor(a1));
+				dialogCategories.add(new CategoryEditor((Admin)Globals.activeUser));
 				dialogCategories.setModal(true);
 				dialogCategories.setSize(700, 700);
 				dialogCategories.setLocationRelativeTo(null);
