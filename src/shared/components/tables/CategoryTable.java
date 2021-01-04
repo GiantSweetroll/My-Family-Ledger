@@ -1,4 +1,4 @@
-package shared.components;
+package shared.components.tables;
 
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.plaf.FontUIResource;
 
@@ -17,7 +18,6 @@ import models.Category;
 import models.DatabaseItem;
 import shared.Constants;
 import shared.Methods;
-import shared.components.tables.AbstractLedgerTable;
 
 public class CategoryTable extends AbstractLedgerTable implements MouseListener
 {
@@ -84,9 +84,17 @@ public class CategoryTable extends AbstractLedgerTable implements MouseListener
 		
 		if (col == this.tableData[0].length-1)		//If last column is pressed
 		{
-			//TODO: Delete category operation
 			int selectedIndex = this.convertRowIndexToModel(row);
-			System.out.println("Pressed category ID: " + this.data.get(selectedIndex).getID());
+			Category cat = (Category)this.data.get(selectedIndex);
+			int option = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this category?", "Delete", JOptionPane.YES_NO_OPTION);
+			if (option == 0) 
+			{
+				Constants.DATABASE_SERVICE.deleteCategory(cat.getID());	//Delete Admin transaction
+				
+				//Update table
+				List<? extends DatabaseItem> ls = Constants.DATABASE_SERVICE.getAllCategories(cat.getAdminID());
+				this.updateData(ls);
+			}
 		}
 	}
 
