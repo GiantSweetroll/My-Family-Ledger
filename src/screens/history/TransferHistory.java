@@ -227,9 +227,7 @@ public class TransferHistory extends HistoryPanel
 	{
 		try
 		{
-			ListTile selectedTiles = listView.getSelectedTiles().get(0);
-			Person userPerson = ((SimpleUserTile) selectedTiles).getPerson();
-			User user = Constants.DATABASE_SERVICE.getUser(userPerson.getID());
+			
 			
 			Date dateStart = this.dateFrom.getSelectedDate();
 			Date dateEnd =  this.dateTo.getSelectedDate();
@@ -241,7 +239,18 @@ public class TransferHistory extends HistoryPanel
 				value = Double.parseDouble(valueStr);
 			}
 			
-			int userId = user.getID();
+			int userId;
+			try
+			{
+				ListTile selectedTiles = listView.getSelectedTiles().get(0);
+				Person userPerson = ((SimpleUserTile) selectedTiles).getPerson();
+				User user = Constants.DATABASE_SERVICE.getUser(userPerson.getID());
+				userId = user.getID();
+			}
+			catch(NullPointerException ex)
+			{
+				userId = -1;
+			}
 			this.labWarning.setText("");
 			
 			int op = 0;
@@ -279,9 +288,10 @@ public class TransferHistory extends HistoryPanel
 		{
 			this.labWarning.setText("Please enter a valid value");
 		}
-		catch(NullPointerException ex)
+		catch(Exception ex)
 		{
-			initTable(new ArrayList<Transaction>());
+			ex.printStackTrace();
+			this.initTable(new ArrayList<Transaction>());
 		}
 	}
 
