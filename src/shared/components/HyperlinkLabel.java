@@ -39,13 +39,13 @@ public class HyperlinkLabel extends JLabel
 			@Override
 			public void mouseEntered(MouseEvent arg0)
 			{
-				setText("<html>" + "<u>" + getText() + "</u></html>");
+				setData("<html>" + "<u>" + getText() + "</u></html>");
 			}
 
 			@Override
 			public void mouseExited(MouseEvent arg0) 
 			{
-				setText(plainText);
+				setData(plainText);
 			}
 
 			@Override
@@ -55,6 +55,19 @@ public class HyperlinkLabel extends JLabel
 			public void mouseReleased(MouseEvent arg0) {}
 			
 		});
+	}
+	
+	//Overridden Methods
+	public void setText(String text)
+	{
+		super.setText(text);
+		this.plainText = text;
+	}
+	
+	//Private methods
+	private void setData(String text)
+	{
+		super.setText(text);
 	}
 	
 	//Testing
