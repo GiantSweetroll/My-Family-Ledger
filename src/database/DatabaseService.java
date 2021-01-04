@@ -1825,7 +1825,6 @@ public final class DatabaseService
 		return a;
 	}
 	/**
-	 
 	 * Get a category name from category id in the transaction table
 	 * @param int categoryId - category id to filter the results
 	 * @return a String containing a certain category name
@@ -1844,7 +1843,7 @@ public final class DatabaseService
 			rs = ps.executeQuery();
 			
 			rs.next();
-			categoryName = rs.getString(1);
+			categoryName = rs.getString(Category.NAME);
 			
 		}
 		catch(SQLException ex)
@@ -1864,8 +1863,6 @@ public final class DatabaseService
 		}
 		return categoryName;
 	}
-	
-	
 	
 	/**
 	 * Get a certain balance from a user id or an account id
