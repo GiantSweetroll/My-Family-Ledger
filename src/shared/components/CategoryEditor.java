@@ -4,20 +4,18 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-
+import javax.swing.AbstractAction;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.plaf.FontUIResource;
 
 import giantsweetroll.gui.swing.Gbm;
@@ -26,6 +24,8 @@ import models.Admin;
 import models.Category;
 import shared.Constants;
 import shared.Methods;
+import shared.TableCellListener;
+import shared.components.tables.CategoryTable;
 import shared.screens.CenteredPage;
 
 
@@ -45,6 +45,8 @@ public class CategoryEditor extends JPanel
 	private CategoryTable table;
 	private List<Category> categories;
 	private List<Integer> toBeSavedIndexes;
+	private TableCellListener tcl;
+	
 	//Interfaces
 	private ActionListener addCatListener = new ActionListener()
 			{
@@ -70,6 +72,28 @@ public class CategoryEditor extends JPanel
 		this.admin = admin;
 		this.labTitle = new JLabel("My Categories");
 		this.table = new CategoryTable();
+		this.tcl = new TableCellListener(this.table, new AbstractAction()
+				{
+					/**
+					 * 
+					 */
+					private static final long serialVersionUID = -4717754746651568773L;
+
+					public void actionPerformed(ActionEvent e)
+					{
+						TableCellListener tcl = (TableCellListener)e.getSource();
+						int index = tcl.getTable().convertRowIndexToModel(tcl.getRow());
+						
+						//Check if value changes
+						Category cat = categories.get(index);
+						if (!cat.getName().equals((String)tcl.getNewValue()))
+						{
+							//Update the database
+							cat.setName((String)tcl.getNewValue());
+							Constants.DATABASE_SERVICE.update(cat.getID(), cat);
+						}
+					}
+				});
 		this.scrollTable = ScrollPaneManager.generateDefaultScrollPane(this.table, 10, 10);
 		this.tf = new JTextField(10);
 		this.butAdd = new AppButton("Add");
@@ -111,11 +135,9 @@ public class CategoryEditor extends JPanel
 		Gbm.newGridLine(c);
 		this.add(panel, c);						//Panel (contains the text field and add button)
 		Gbm.newGridLine(c);
-		this.add(this.butSave, c);
-		//Save button
+		this.add(this.butSave, c);				//Save button
 		
-	
-		this.setData(categories);
+		this.updateTable();
 	}
 	
 	//Public methods
@@ -123,9 +145,9 @@ public class CategoryEditor extends JPanel
 	 * Sets the data to be displayed in the table. The revalidate() and repaint() methods will be called upon method execution.
 	 * @param categories
 	 */
-	public void setData(List<Category> categories)
+	public void updateTable()
 	{
-		categories = this.getCategories();
+		List<Category> categories = Constants.DATABASE_SERVICE.getAllCategories(this.admin.getID());
 		this.categories.clear();
 		this.categories.addAll(categories);
 		this.table.updateData(categories);
@@ -139,16 +161,15 @@ public class CategoryEditor extends JPanel
 	 */
 	public List<Category> getCategories()
 	{
-		List<Category> categoryData = Constants.DATABASE_SERVICE.getAllCategories();
-		return categoryData;
+		return this.categories;
 	}
 	
 	//Private methods
 	private void addCategory()
 	{
-		//TODO: Use SQL to generate ID
-		this.categories.add(new Category(this.categories.size()+1, admin.getID(),this.tf.getText().trim(),""));		//Add to category list
-		this.table.updateData(this.categories);		//Update the table model
+		Category cat = new Category(admin.getID(), this.tf.getText().trim(), "");
+		Constants.DATABASE_SERVICE.insert(cat);	//insert into database
+		this.updateTable();
 		this.tf.setText("");		//Empty the text field
 	}
 	private void saveChanges()
