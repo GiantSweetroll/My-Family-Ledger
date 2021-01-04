@@ -441,10 +441,11 @@ public class TransferFunds extends TriplePanelPage
 	}
 	
 	private void resetFields() {
-		this.tfAmount.setText("Amount (Rp.)");
-		this.tfNotes.setText("Notes");
+		this.tfAmount.setText("");
+		this.tfNotes.setText("");
 		this.tfAmount.setForeground(Color.GRAY);
 		this.tfNotes.setForeground(Color.GRAY);
+		this.chosen.setNameEmail(this.RECEIVER_NOT_SELECTED, this.RECEIVER_NOT_SELECTED_SUB);
 	}
 	
 	//Testing
