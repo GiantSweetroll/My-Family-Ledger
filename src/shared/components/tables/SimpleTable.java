@@ -40,13 +40,13 @@ public class SimpleTable extends JTable
 		this.init(null, null);
 	}
 	
-	//Protected Methods
+	//Public Methods
 	/**
 	 * Method to update the data and display it in the table.
 	 * @param tableData a 2D String array to be displayed on the table
 	 * @param headers the headers of the table
 	 */
-	protected void updateData(String[][] tableData, String[] headers)
+	public void updateData(String[][] tableData, String[] headers)
 	{
 		this.tableData = tableData;
 		this.headers = headers;
