@@ -1277,125 +1277,139 @@ public final class DatabaseService
 	}
 	/**
 	 * Get all Transactions by the selected user.
-	 * @param userID - the user ID used to filter the results.
+	 * @param userID - the user ID used to filter the results. Set this to -1 to disable the fitler.
 	 * @return a List containing Transaction objects
 	 */
 	public List<Transaction> getAllTransactions(int userID)
 	{
-		List<Transaction> transactions = new ArrayList<Transaction>();
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		
-		try
+		if (userID >= 0)
 		{
-			ps = this.prepStatement("SELECT * FROM " + TABLE_TRANSACTIONS + " WHERE " + Transaction.USER_ID + " = " + userID);
-			rs = ps.executeQuery();
+			List<Transaction> transactions = new ArrayList<Transaction>();
+			PreparedStatement ps = null;
+			ResultSet rs = null;
 			
-			//Loop through the result set
-			while (rs.next())
+			try
 			{
-				Transaction tr = new Transaction(rs.getInt(Transaction.ID),
-													rs.getInt(Transaction.CATEGORY_ID),
-													rs.getInt(Transaction.SOURCE_ID),
-													rs.getInt(Transaction.USER_ID),
-													rs.getDate(Transaction.DATE_INPUT),
-													rs.getDate(Transaction.DATE_EDIT),
-													rs.getDouble(Transaction.AMOUNT),
-													rs.getString(Transaction.DESC),
-													rs.getString(Transaction.LINK_RECEIPT));
-				this.addTransactionToList(transactions, tr);
-			}
-			
-		}
-		catch(SQLException ex)
-		{
-			System.err.println(ex.getMessage());
-		}
-		finally
-		{
-			if (ps != null)
-			{
-				try
+				ps = this.prepStatement("SELECT * FROM " + TABLE_TRANSACTIONS + " WHERE " + Transaction.USER_ID + " = " + userID);
+				rs = ps.executeQuery();
+				
+				//Loop through the result set
+				while (rs.next())
 				{
-					ps.close();
+					Transaction tr = new Transaction(rs.getInt(Transaction.ID),
+														rs.getInt(Transaction.CATEGORY_ID),
+														rs.getInt(Transaction.SOURCE_ID),
+														rs.getInt(Transaction.USER_ID),
+														rs.getDate(Transaction.DATE_INPUT),
+														rs.getDate(Transaction.DATE_EDIT),
+														rs.getDouble(Transaction.AMOUNT),
+														rs.getString(Transaction.DESC),
+														rs.getString(Transaction.LINK_RECEIPT));
+					this.addTransactionToList(transactions, tr);
 				}
-				catch(SQLException ex) {}
+				
+			}
+			catch(SQLException ex)
+			{
+				System.err.println(ex.getMessage());
+			}
+			finally
+			{
+				if (ps != null)
+				{
+					try
+					{
+						ps.close();
+					}
+					catch(SQLException ex) {}
+				}
+				
+				if (rs != null)
+				{
+					try
+					{
+						rs.close();
+					}
+					catch(SQLException ex) {}
+				}
 			}
 			
-			if (rs != null)
-			{
-				try
-				{
-					rs.close();
-				}
-				catch(SQLException ex) {}
-			}
+			return transactions;
 		}
-		
-		return transactions;
+		else
+		{
+			return this.getAllTransactions();
+		}
 	}
 	/**
 	 * Get all Transactions by the selected user within the selected input date range (inclusive).
-	 * @param userID - the user ID used to filter the results.
+	 * @param userID - the user ID used to filter the results. Set this to -1 to disable filter.
 	 * @param dateMin - the lower bound Date object
 	 * @param dateMax - the upper bound Date object
 	 * @return a List containing Transaction objects
 	 */
 	public List<Transaction> getAllTransactions(int userID, Date dateMin, Date dateMax)
 	{
-		List<Transaction> transactions = new ArrayList<Transaction>();
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		
-		try
+		if (userID >= 0)
 		{
-			ps = this.prepStatement("SELECT * FROM " + TABLE_TRANSACTIONS + " WHERE " + Transaction.USER_ID + " = " + userID
-										+ " AND " + Transaction.DATE_INPUT + " >= \'" + dateMin + "\'"
-										+ " AND " + Transaction.DATE_INPUT + " <= \'" + dateMax + "\'");
-			rs = ps.executeQuery();
+			List<Transaction> transactions = new ArrayList<Transaction>();
+			PreparedStatement ps = null;
+			ResultSet rs = null;
 			
-			//Loop through the result set
-			while (rs.next())
+			try
 			{
-				Transaction tr = new Transaction(rs.getInt(Transaction.ID),
-													rs.getInt(Transaction.CATEGORY_ID),
-													rs.getInt(Transaction.SOURCE_ID),
-													rs.getInt(Transaction.USER_ID),
-													rs.getDate(Transaction.DATE_INPUT),
-													rs.getDate(Transaction.DATE_EDIT),
-													rs.getDouble(Transaction.AMOUNT),
-													rs.getString(Transaction.DESC),
-													rs.getString(Transaction.LINK_RECEIPT));
-				this.addTransactionToList(transactions, tr);
-			}
-			
-		}
-		catch(SQLException ex)
-		{
-			System.err.println(ex.getMessage());
-		}
-		finally
-		{
-			if (ps != null)
-			{
-				try
+				ps = this.prepStatement("SELECT * FROM " + TABLE_TRANSACTIONS + " WHERE " + Transaction.USER_ID + " = " + userID
+											+ " AND " + Transaction.DATE_INPUT + " >= \'" + dateMin + "\'"
+											+ " AND " + Transaction.DATE_INPUT + " <= \'" + dateMax + "\'");
+				rs = ps.executeQuery();
+				
+				//Loop through the result set
+				while (rs.next())
 				{
-					ps.close();
+					Transaction tr = new Transaction(rs.getInt(Transaction.ID),
+														rs.getInt(Transaction.CATEGORY_ID),
+														rs.getInt(Transaction.SOURCE_ID),
+														rs.getInt(Transaction.USER_ID),
+														rs.getDate(Transaction.DATE_INPUT),
+														rs.getDate(Transaction.DATE_EDIT),
+														rs.getDouble(Transaction.AMOUNT),
+														rs.getString(Transaction.DESC),
+														rs.getString(Transaction.LINK_RECEIPT));
+					this.addTransactionToList(transactions, tr);
 				}
-				catch(SQLException ex) {}
+				
+			}
+			catch(SQLException ex)
+			{
+				System.err.println(ex.getMessage());
+			}
+			finally
+			{
+				if (ps != null)
+				{
+					try
+					{
+						ps.close();
+					}
+					catch(SQLException ex) {}
+				}
+				
+				if (rs != null)
+				{
+					try
+					{
+						rs.close();
+					}
+					catch(SQLException ex) {}
+				}
 			}
 			
-			if (rs != null)
-			{
-				try
-				{
-					rs.close();
-				}
-				catch(SQLException ex) {}
-			}
+			return transactions;
 		}
-		
-		return transactions;
+		else
+		{
+			return this.getAllTransactions(dateMin, dateMax);
+		}
 	}
 	/**
 	 * Get all Transactions by the selected user within the selected input date range (inclusive).
@@ -1413,9 +1427,14 @@ public final class DatabaseService
 		
 		try
 		{
-			ps = this.prepStatement("SELECT * FROM " + TABLE_TRANSACTIONS + " WHERE " + Transaction.USER_ID + " = " + userID
-										+ " AND " + Transaction.DATE_INPUT + " >= \'" + dateMin + "\'"
-										+ " AND " + Transaction.DATE_INPUT + " <= \'" + dateMax + "\'");
+			String query = "SELECT * FROM " + TABLE_TRANSACTIONS + " WHERE "
+					+ Transaction.DATE_INPUT + " >= \'" + dateMin + "\'"
+					+ " AND " + Transaction.DATE_INPUT + " <= \'" + dateMax + "\'";
+			if (userID >= 0)
+			{
+				query += " AND " + Transaction.USER_ID + " = " + userID;
+			}
+			ps = this.prepStatement(query);
 			rs = ps.executeQuery();
 			
 			//Loop through the result set
@@ -1545,15 +1564,19 @@ public final class DatabaseService
 		List<Transaction> transactions = new ArrayList<Transaction>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String query = "SELECT * FROM " + TABLE_TRANSACTIONS + " WHERE " + Transaction.USER_ID + " = " + userID
-						+ " AND " + Transaction.DATE_INPUT + " >= \'" + dateMin + "\'"
+		String query = "SELECT * FROM " + TABLE_TRANSACTIONS + " WHERE " 
+						+ Transaction.DATE_INPUT + " >= \'" + dateMin + "\'"
 						+ " AND " + Transaction.DATE_INPUT + " <= \'" + dateMax + "\'";
+		if (userID >= 0)
+		{
+			query += " AND " + Transaction.USER_ID + " = " + userID;
+		}
+		
 		if (value >= 0)
 		{
 			if (flag == LESS_THAN)
 			{
 				query += " AND " + Transaction.AMOUNT + " < " + value;
-				
 			}
 			else if (flag == GREATER_THAN)
 			{
@@ -2145,7 +2168,7 @@ public final class DatabaseService
 		double Income = 0;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String query = "SELECT SUM(amount) FROM OF_Transactions WHERE user_id =? AND source_id =? AND amount >= 0  ";
+		String query = "SELECT SUM(amount) FROM OF_Transactions WHERE user_id =? AND source_id =?";
 		try
 		{
 			ps = this.prepStatement(query);
