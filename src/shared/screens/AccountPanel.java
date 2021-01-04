@@ -26,7 +26,6 @@ public class AccountPanel extends RoundedPanel
 	
 	//Fields
 	private JLabel labUsername, labSignOut, labBalance;
-	private JDialog dialogProfile;
 	private Person person;
 	
 	//Constructor
@@ -35,9 +34,8 @@ public class AccountPanel extends RoundedPanel
 		super(false);
 		//Initialization
 		this.person = new Person("", "");
-		this.labUsername = new JLabel(this.person.getFullName());
+		this.labUsername = new HyperlinkLabel(this.person.getFullName());
 		this.labSignOut = new HyperlinkLabel("Sign Out");
-		this.dialogProfile = new JDialog();
 		this.labBalance = new JLabel("");
 		
 		//Properties
@@ -52,21 +50,19 @@ public class AccountPanel extends RoundedPanel
 						Main.changeScreen(new SignIn());
 					}
 				});
-		
+		this.labUsername.setForeground(Color.BLACK);
 		this.labUsername.addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-				Globals.activeUser = person;
+				JDialog dialogProfile = new JDialog();
 				dialogProfile.add(new MyProfilePage(person));
 				dialogProfile.setModal(true);
 				dialogProfile.setSize(700, 700);
 				dialogProfile.setLocationRelativeTo(null);
 				dialogProfile.setVisible(true);	
-				
 			}
-			
 		});
 		//Add to panel
 		this.add(this.labUsername);
