@@ -3,7 +3,10 @@ package shared.components.tables;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import main.Main;
+import models.Account;
 import models.DatabaseItem;
 import models.Transaction;
 import models.User;
@@ -65,8 +68,16 @@ public class TransferHistoryTable extends HistoryTable
 	protected void onDeletePressed(int index) 
 	{
 		Transaction tr = (Transaction)this.data.get(index);
-		// TODO delete transaction
-		// TODO restore balance
+		int option = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this transfer?", "Delete", JOptionPane.YES_NO_OPTION);
+		if (option == 0) 
+		{
+			Constants.DATABASE_SERVICE.deleteTransaction(tr.getID());	//Delete Admin transaction
+			Constants.DATABASE_SERVICE.deleteTransaction(tr.getID() + 1);	//Delete User transaction (that receives the transfer)
+			this.updateData(this.data);	//TODO: Refresh table (currently does not work)
+			Account curAcc = Constants.DATABASE_SERVICE.getAccount(tr.getUserID());
+			curAcc.updateBalance(tr.getAmount());		//Will make use of the negative number to reduce their balance
+			Constants.DATABASE_SERVICE.update(curAcc.getID(), curAcc);
+		}
 	}
 
 	@Override
