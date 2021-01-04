@@ -44,7 +44,6 @@ public class CategoryEditor extends JPanel
 	private Admin admin;
 	private CategoryTable table;
 	private List<Category> categories;
-	private List<Integer> toBeSavedIndexes;
 	private TableCellListener tcl;
 	
 	//Interfaces
@@ -97,7 +96,7 @@ public class CategoryEditor extends JPanel
 		this.scrollTable = ScrollPaneManager.generateDefaultScrollPane(this.table, 10, 10);
 		this.tf = new JTextField(10);
 		this.butAdd = new AppButton("Add");
-		this.butSave = new AppButton("Save");
+		this.butSave = new AppButton("Ok");
 		this.categories = new ArrayList<Category>();
 		GridBagConstraints c = new GridBagConstraints();
 		GridBagConstraints c2 = new GridBagConstraints();
@@ -174,10 +173,8 @@ public class CategoryEditor extends JPanel
 	}
 	private void saveChanges()
 	{
-		//TODO: Save any changes
-		
 		//Close the window
-		Methods.closeThisWindow(CategoryEditor.this);
+		Methods.closeThisWindow(this);
 	}
 	
 	//Testing
