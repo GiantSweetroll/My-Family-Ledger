@@ -13,6 +13,7 @@ import models.Transaction;
 import screens.input.InputTransactions;
 import shared.Constants;
 import shared.Globals;
+import shared.components.AmountCellRenderer;
 import shared.components.IconCellRenderer;
 
 public class TransactionHistoryTable extends HistoryTable
@@ -37,7 +38,7 @@ public class TransactionHistoryTable extends HistoryTable
 		super(transaction, HEADERS);
 	}
 	
-	public TransactionHistoryTable(String[] headers)
+	public TransactionHistoryTable()
 	{
 		super(new ArrayList<Transaction>(), HEADERS);
 	}
@@ -51,6 +52,7 @@ public class TransactionHistoryTable extends HistoryTable
 		//Apply icon renderer (only if it is not a Transfer)
 		if (this.tableData.length > 0)
 		{
+			this.getColumnModel().getColumn(3).setCellRenderer(new AmountCellRenderer());
 			this.getColumnModel().getColumn(this.tableData[0].length-1).setCellRenderer(new IconCellRenderer(Constants.ICON_EDIT));
 			this.getColumnModel().getColumn(this.tableData[0].length-2).setCellRenderer(new IconCellRenderer(Constants.ICON_DELETE));
 		}
