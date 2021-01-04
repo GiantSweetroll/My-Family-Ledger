@@ -68,7 +68,6 @@ public class ReportSummaryTable extends SimpleTable
 		//Apply amount renderer
 		for (int i : amountRendererIndexes)
 		{
-			System.out.println(i);
 			this.getColumnModel().getColumn(i).setCellRenderer(new AmountCellRenderer());
 		}
 	}
