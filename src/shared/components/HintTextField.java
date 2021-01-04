@@ -72,6 +72,17 @@ public class HintTextField extends JTextField
 		return this.fieldEmpty? "" : this.getText();
 	}
 	
+	//Overridden Methods
+	@Override
+	public void setText(String s)
+	{
+		super.setText(s);
+		if (!s.equals(""))
+		{
+			this.setForeground(Color.BLACK);
+		}
+	}
+	
 	//Testing
 	public static void main(String arggs[])
 	{
