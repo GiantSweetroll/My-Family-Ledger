@@ -18,6 +18,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.plaf.FontUIResource;
 
+import database.DatabaseService;
 import giantsweetroll.gui.swing.Gbm;
 import main.Main;
 import models.Account;
@@ -255,19 +256,19 @@ public class TransferHistory extends HistoryPanel
 			
 			int op = 0;
 			if (operand == "=") {
-				op = Constants.DATABASE_SERVICE.EQUAL_TO;
+				op = DatabaseService.EQUAL_TO;
 			}
 			else if (operand == "<") {
-				op = Constants.DATABASE_SERVICE.LESS_THAN;
+				op = DatabaseService.LESS_THAN;
 			}
 			else if (operand == "<=") {
-				op = Constants.DATABASE_SERVICE.LESS_THAN_EQUAL;
+				op = DatabaseService.LESS_THAN_EQUAL;
 			}
 			else if (operand == ">") {
-				op = Constants.DATABASE_SERVICE.GREATER_THAN;
+				op = DatabaseService.GREATER_THAN;
 			}
 			else if (operand == ">=") {
-				op = Constants.DATABASE_SERVICE.GREATER_THAN_EQUAL;
+				op = DatabaseService.GREATER_THAN_EQUAL;
 			}
 			else {
 				System.out.println("Operand error");
