@@ -77,7 +77,6 @@ public class TransactionHistoryTable extends HistoryTable
 			curAcc.updateBalance(tr.getAmount() * -1d);
 			Constants.DATABASE_SERVICE.update(curAcc.getID(), curAcc);
 		}
-		
 	}
 
 	@Override
