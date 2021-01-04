@@ -1825,6 +1825,50 @@ public final class DatabaseService
 		return a;
 	}
 	/**
+	 * Get the category from category id in the transaction table
+	 * @param int categoryId - category id to filter the results
+	 * @return a Category object or null if no matching entry is found in the database with the specified ID
+	 */
+	public Category getCategory(int categoryId) 
+	{
+		Category cat = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String query = "SELECT " + Category.NAME + " FROM " + TABLE_CATEGORIES + " INNER JOIN " + TABLE_TRANSACTIONS 
+						+ " ON " + TABLE_CATEGORIES + "." + Category.ID + " = " + TABLE_TRANSACTIONS + "." 
+						+ Category.ID + " WHERE " + TABLE_CATEGORIES + "." + Category.ID + " = "+ categoryId;
+		
+		try
+		{
+			ps = this.prepStatement(query);
+			rs = ps.executeQuery();
+			
+			rs.next();
+			cat = new Category(rs.getInt(Category.ID),
+								rs.getInt(Category.ADMIN_ID),
+								rs.getString(Category.NAME),
+								rs.getString(Category.DESC));
+			
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch(SQLException ex) {}
+			}
+		}
+		return cat;
+	}
+	
+	/**
 	 * Get a category name from category id in the transaction table
 	 * @param int categoryId - category id to filter the results
 	 * @return a String containing a certain category name
