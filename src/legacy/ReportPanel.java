@@ -1,6 +1,6 @@
-package shared.screens;
+package legacy;
 
-import java.awt.BorderLayout;  
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -22,6 +22,8 @@ import models.Person;
 import shared.Constants;
 import shared.Methods;
 import shared.components.AppButton;
+import shared.screens.AccountPanel;
+import shared.screens.RoundedPanel;
 
 public abstract class ReportPanel extends JPanel{
 	
@@ -239,7 +241,6 @@ public abstract class ReportPanel extends JPanel{
 		this.butRefresh = new AppButton("Refresh");
 		JPanel panelLeft = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JPanel panelRight = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		
 	
 		//Properties
 		this.panelBottomRound.setBackground(Color.WHITE);
@@ -302,7 +303,6 @@ public abstract class ReportPanel extends JPanel{
 		JSeparator sep = new JSeparator(SwingConstants.HORIZONTAL);
 		JSeparator sep2 = new JSeparator(SwingConstants.HORIZONTAL);
 		JPanel paneltop = new JPanel(new BorderLayout());
-
 		
 		//Properties
 		this.panelUsers.setBackground(Color.WHITE);
@@ -320,8 +320,6 @@ public abstract class ReportPanel extends JPanel{
 		//Add to panelUsers
 		this.panelUsers.add(paneltop,BorderLayout.NORTH);
 		this.panelUsers.add(sep2,BorderLayout.SOUTH);
-	
-		
 	}
 	
 	public void initDatePanel() {
@@ -353,8 +351,6 @@ public abstract class ReportPanel extends JPanel{
 		this.panelDate.add(dateLabel,BorderLayout.NORTH);
 		this.panelDate.add(pbutton,BorderLayout.SOUTH);	
 	}
-	
-	
 	
 	public static void main(String args[])
 	{
