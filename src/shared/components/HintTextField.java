@@ -21,6 +21,7 @@ public class HintTextField extends JTextField
 	private static final long serialVersionUID = -4024179785933494052L;
 	//Fields
 	private boolean fieldEmpty;
+	private String hint;
 	
 	//Constructor
 	public HintTextField(String hint)
@@ -28,6 +29,7 @@ public class HintTextField extends JTextField
 		//Initialization
 		super(hint);
 		this.fieldEmpty = true;
+		this.hint = hint;
 		
 		///Properties
 		this.setForeground(Color.GRAY);
@@ -76,10 +78,15 @@ public class HintTextField extends JTextField
 	@Override
 	public void setText(String s)
 	{
-		super.setText(s);
 		if (!s.equals(""))
 		{
 			this.setForeground(Color.BLACK);
+			super.setText(s);
+		}
+		else
+		{
+			this.setForeground(Color.GRAY);
+			super.setText(this.hint);
 		}
 	}
 	
