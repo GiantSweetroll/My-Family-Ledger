@@ -296,7 +296,7 @@ public final class DatabaseService
 			if (category.getID() <= 0)	//If no ID yet
 			{
 				ps = this.prepStatement("INSERT INTO " + TABLE_CATEGORIES + "("
-										+ Category.DESC + ", " + Category.NAME + ", " + Category.ADMIN_ID +") values ("
+										+ Category.NAME + ", " + Category.DESC + ", " + Category.ADMIN_ID +") values ("
 										+ "\'" + category.getName() + "\',"
 										+ "\'" + category.getDesc() + "\',"
 										+ category.getAdminID()
@@ -1650,6 +1650,60 @@ public final class DatabaseService
 		return transactions;
 	}
 	/**
+	 * Get all categories associated with the Admin ID.
+	 * @return a List containing Category objects
+	 */
+	public List<Category> getAllCategories(int adminID)
+	{
+		List<Category> categories = new ArrayList<Category>();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try
+		{
+			ps = this.prepStatement("SELECT * FROM " + TABLE_CATEGORIES + " WHERE "
+									+ Category.ADMIN_ID + " = " + adminID);
+			rs = ps.executeQuery();
+			
+			//Loop through the result set
+			while (rs.next())
+			{
+				Category cat = new Category(rs.getInt(Category.ID),
+											rs.getInt(Category.ADMIN_ID),
+											rs.getString(Category.NAME),
+											rs.getString(Category.DESC));
+				categories.add(cat);
+			}
+			
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch(SQLException ex) {}
+			}
+			
+			if (rs != null)
+			{
+				try
+				{
+					rs.close();
+				}
+				catch(SQLException ex) {}
+			}
+		}
+		
+		return categories;
+	}
+	/**
 	 * Find an Admin with specified ID (must be exact match).
 	 * @param id
 	 * @return an Admin object if the specified ID is found. Otherwise it will return null.
@@ -1865,6 +1919,56 @@ public final class DatabaseService
 				catch(SQLException ex) {}
 			}
 		}
+		return cat;
+	}
+	
+	/**
+	 * Get the last created Category
+	 * @return a Category object.
+	 */
+	public Category getLastCreatedCategory()
+	{
+		Category cat = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try
+		{
+			ps = this.prepStatement("SELECT * FROM " + TABLE_CATEGORIES);
+			rs = ps.executeQuery();
+			
+			//Loop through the result set
+			rs.last();
+			cat = new Category(rs.getInt(Category.ID),
+								rs.getInt(Category.ADMIN_ID),
+								rs.getString(Category.NAME),
+								rs.getString(Category.DESC));
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch(SQLException ex) {}
+			}
+			
+			if (rs != null)
+			{
+				try
+				{
+					rs.close();
+				}
+				catch(SQLException ex) {}
+			}
+		}
+		
 		return cat;
 	}
 	
