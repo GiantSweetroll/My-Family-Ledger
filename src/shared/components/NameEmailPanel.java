@@ -87,8 +87,11 @@ public class NameEmailPanel extends JPanel
 	 */
 	public void setNameEmail(Person person)
 	{
-		this.setFullName(person.getFullName());
-		this.setEmail(person.getEmail());
+		if (person != null)
+		{
+			this.setFullName(person.getFullName());
+			this.setEmail(person.getEmail());
+		}
 	}
 	
 	//Testing
