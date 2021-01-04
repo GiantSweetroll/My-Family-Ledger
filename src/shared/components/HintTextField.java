@@ -40,12 +40,12 @@ public class HintTextField extends JTextField
 					{
 						if (getText().equals(hint))
 						{
-							setText("");
+							setData("");
 							setForeground(Color.BLACK);
 						}
 						else
 						{
-							setText(getText());
+							setData(getText());
 						}
 					}
 					
@@ -54,14 +54,14 @@ public class HintTextField extends JTextField
 					{
 						if (getText().equals(hint) || getText().length() == 0)
 						{
-							setText(hint);
+							setData(hint);
 							setForeground(Color.GRAY);
 							fieldEmpty = true;
 						}
 						else
 						{
 							fieldEmpty = false;
-							setText(getText());
+							setData(getText());
 							setForeground(Color.BLACK);
 						}
 					}
@@ -74,11 +74,17 @@ public class HintTextField extends JTextField
 		return this.fieldEmpty? "" : this.getText();
 	}
 	
+	//Private methods
+	private void setData(String text)
+	{
+		super.setText(text);
+	}
+	
 	//Overridden Methods
 	@Override
 	public void setText(String s)
 	{
-		if (!s.equals(""))
+		if (!s.equals("") && !s.equals(this.hint))
 		{
 			this.setForeground(Color.BLACK);
 			super.setText(s);
