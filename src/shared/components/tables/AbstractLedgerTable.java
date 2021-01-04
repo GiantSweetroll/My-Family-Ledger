@@ -28,7 +28,7 @@ public abstract class AbstractLedgerTable extends SimpleTable
 	
 	//Public Methods
 	/**
-	 * Update the data and display it in the table. Make sure to call the protected version of the overloaded method.
+	 * Update the data and display it in the table. Make sure to call the parent version of the overloaded method.
 	 * @param data a List of DatabaseItem objects
 	 */
 	public abstract void updateData(List<? extends DatabaseItem> data);
