@@ -26,7 +26,6 @@ import giantsweetroll.gui.swing.Gbm;
 import giantsweetroll.gui.swing.ScrollPaneManager;
 import main.Main;
 import models.Admin;
-import models.Category;
 import models.Person;
 import models.Transaction;
 import models.User;
@@ -39,7 +38,8 @@ import shared.components.DatePicker;
 import shared.components.listview.ListTile;
 import shared.components.listview.ListView;
 import shared.components.listview.SimpleUserTile;
-import shared.components.tables.SimpleTable;
+import shared.components.tables.ReportSummaryTable;
+import shared.components.tables.ReportTransactionTable;
 import shared.screens.AccountPanel;
 import shared.screens.RoundedPanel;
 
@@ -67,23 +67,11 @@ public class ReportPage extends JPanel
 	private AccountPanel panelAcc;
 	private List<ListTile> tilesUsers;
 	private ListView lvUsers;
-	private SimpleTable tableTrans, tableSum;
+	private ReportSummaryTable tableSum;
+	private ReportTransactionTable tableTrans;
 	private JScrollPane scrollTableTop, 
 						scrollTableBottom, 
 						scrollUsers;
-	//Constants
-	private static final String[] HEADERS_TRANSACTIONS = {"Date", 
-															"Category", 
-															"Name",
-															"Amount (Rp.)", 
-															"Receipt Link", 
-															"Last Modified"};
-	private static final String[] HEADERS_SUM = {"First Name", 
-												"Last Name", 
-												"Email", 
-												"Total Income (Rp.)",
-												"Total Expenditure (Rp.)", 
-												"Balance (Rp.)"};
 	
 	//Constructor
 	public ReportPage(Person person)
@@ -248,7 +236,7 @@ public class ReportPage extends JPanel
 	{
 		//Initialization
 		this.panelTableTop = new RoundedPanel(false);
-		this.tableTrans = new SimpleTable(null, HEADERS_TRANSACTIONS);
+		this.tableTrans = new ReportTransactionTable();
 		this.scrollTableTop = ScrollPaneManager.generateDefaultScrollPane(this.tableTrans, 10, 10);
 		
 		//Properties
@@ -265,7 +253,7 @@ public class ReportPage extends JPanel
 	private void initPanelTableBelow()
 	{
 		this.panelTableBelow = new RoundedPanel(false);
-		this.tableSum = new SimpleTable(null, HEADERS_SUM);
+		this.tableSum = new ReportSummaryTable();
 		this.scrollTableBottom = ScrollPaneManager.generateDefaultScrollPane(this.tableSum, 10, 10);;
 		
 		//Properties
@@ -381,31 +369,7 @@ public class ReportPage extends JPanel
 	//Operations
 	private void updateTableSum()
 	{
-		int adminID = Globals.activeUser.getID();
-		List<User> users = Constants.DATABASE_SERVICE.getAllUsers(adminID);
-		
-		int col = 6;
-		int row = users.size();
-		String [][] currentData = new String [row][col];
-		double totalBalance = 0;
-		double totalIncome = 0;
-		double totalExpenditure = 0;
-		
-		for (int i =0 ; i < row; i++) {
-			User u = users.get(i);
-			currentData[i][0] =  u.getFirstName();
-			currentData[i][1] = u.getLastName();
-			currentData[i][2] = u.getEmail();
-			
-			//Replace this with total income and total expenditure.
-			totalIncome = Constants.DATABASE_SERVICE.getIncome(u.getID(), adminID);
-			currentData[i][3] =  String.valueOf(totalIncome);
-			totalExpenditure = Constants.DATABASE_SERVICE.getExpenditure(u.getID());
-			currentData[i][4] = String.valueOf(totalExpenditure);
-			totalBalance = Constants.DATABASE_SERVICE.getBalance(u.getAccountID());
-			currentData[i][5] = String.valueOf(totalBalance);	
-		}
-		this.tableSum.updateData(currentData, HEADERS_SUM);
+		this.tableSum.updateData(dateFrom.getSelectedDate(), dateTo.getSelectedDate());
 	}
 	private void updateTableTrans()
 	{
@@ -426,22 +390,8 @@ public class ReportPage extends JPanel
 			Date dateStart = this.dateFrom.getSelectedDate();
 			Date dateEnd =  this.dateTo.getSelectedDate();
 			List<Transaction> currentTrans = Constants.DATABASE_SERVICE.getAllTransactionsForAdminReport(userId,dateStart,dateEnd);
-			List <Category> categories = Constants.DATABASE_SERVICE.getAllCategories();
 			
-			int row = currentTrans.size();
-			int col = 6;
-			String [][] filteredTransactions = new String [row][col];
-			for (int i = 0 ; i< row ; i++)
-			{
-				Transaction trans = currentTrans.get(i);
-				filteredTransactions[i][0] = String.valueOf(trans.getDateInput());
-				filteredTransactions[i][1] = categories.get(trans.getCategoryID()-1).getName();
-				filteredTransactions[i][2] = trans.getDesc();
-				filteredTransactions[i][3] = String.valueOf(trans.getAmount());
-				filteredTransactions[i][4] = trans.getLinkReceipt();
-				filteredTransactions[i][5] = String.valueOf(trans.getDateEdit());
-			}
-			this.tableTrans.updateData(filteredTransactions, HEADERS_TRANSACTIONS);
+			this.tableTrans.updateData(currentTrans);
 		}
 		catch(Exception ex)
 		{
