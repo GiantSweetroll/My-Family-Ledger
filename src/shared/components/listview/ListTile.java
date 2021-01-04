@@ -103,6 +103,10 @@ public class ListTile extends RoundedPanel implements MouseListener
 	{
 		this.selected = b;
 		this.setBackground(this.selected? Constants.COLOR_SELECTED : Color.WHITE);
+		if (this.listView != null)
+		{
+			this.listView.notifySelection(this);
+		}
 	}
 	
 	//Protected methods
@@ -156,7 +160,7 @@ public class ListTile extends RoundedPanel implements MouseListener
 		this.labTitle.setBorder(BorderFactory.createEmptyBorder(1, 10, 1, 10));
 		this.labSubtitle.setFont(Constants.FONT_SMALLER);
 		this.labSubtitle.setBorder(BorderFactory.createEmptyBorder(1, 10, 1, 10));
-		
+		 
 		//Add to panel
 		this.panelCenter.add(this.labTitle);
 		this.panelCenter.add(this.labSubtitle);
@@ -166,11 +170,7 @@ public class ListTile extends RoundedPanel implements MouseListener
 	@Override
 	public void mouseClicked(MouseEvent arg0) 
 	{
-		this.setSelected(!this.selected);
-		if (this.listView != null)
-		{
-			this.listView.notifySelection(this);
-		}
+		this.setSelected(!this.selected);	
 	}
 
 	@Override
