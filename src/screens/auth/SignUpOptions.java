@@ -22,13 +22,14 @@ import javax.swing.plaf.FontUIResource;
 import giantsweetroll.gui.swing.Gbm;
 import main.Main;
 import shared.Constants;
+import shared.GUIListener;
 import shared.Methods;
 import shared.components.HyperlinkLabel;
 import shared.components.LogoLabel;
 import shared.screens.CenteredPage;
 import shared.screens.SignUpOption;
 
-public class SignUpOptions extends CenteredPage
+public class SignUpOptions extends CenteredPage implements GUIListener
 {
 	/**
 	 * 
@@ -131,6 +132,13 @@ public class SignUpOptions extends CenteredPage
 		panelMain.add(panelTop, BorderLayout.NORTH);
 		panelMain.add(panelCenter, BorderLayout.CENTER);
 	}
+	
+	//Overridden Methods
+	@Override
+	public void resetDefaults() {}
+
+	@Override
+	public void onDisplayed() {}
 	
 	//Testing
 	public static void main(String args[])

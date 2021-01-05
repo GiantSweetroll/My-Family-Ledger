@@ -20,13 +20,14 @@ import giantsweetroll.gui.swing.TextAreaManager;
 import main.Main;
 import screens.menu.Menu;
 import shared.Constants;
+import shared.GUIListener;
 import shared.Globals;
 import shared.Methods;
 import shared.components.AppButton;
 import shared.components.LogoLabel;
 import shared.screens.CenteredPage;
 
-public class SignUpAdminConfirm extends CenteredPage
+public class SignUpAdminConfirm extends CenteredPage implements GUIListener
 {
 
 	/**
@@ -86,6 +87,13 @@ public class SignUpAdminConfirm extends CenteredPage
 		//Add to main panel
 		this.setCenterPanel(panel);
 	}
+	
+	//Overridden Methods
+	@Override
+	public void resetDefaults() {}
+
+	@Override
+	public void onDisplayed() {}
 	
 	//Testing
 	public static void main(String arggs[])

@@ -27,6 +27,7 @@ import models.Admin;
 import models.Person;
 import screens.menu.Menu;
 import shared.Constants;
+import shared.GUIListener;
 import shared.Globals;
 import shared.Methods;
 import shared.components.HintPasswordField;
@@ -37,7 +38,7 @@ import shared.components.ResetPasswordPanel;
 import shared.components.WarningLabel;
 import shared.screens.CenteredPage;
 
-public class SignIn extends CenteredPage
+public class SignIn extends CenteredPage implements GUIListener
 {
 	/**
 	 * 
@@ -185,6 +186,13 @@ public class SignIn extends CenteredPage
 		this.panelMain.add(panelTop, BorderLayout.NORTH);
 		this.panelMain.add(panelCenter, BorderLayout.CENTER);
 	}
+	
+	//Overridden Methods
+	@Override
+	public void resetDefaults() {}
+
+	@Override
+	public void onDisplayed() {}
 	
 	//Testing
 	public static void main(String arggs[])

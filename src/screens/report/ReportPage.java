@@ -31,6 +31,7 @@ import models.Transaction;
 import models.User;
 import screens.menu.Menu;
 import shared.Constants;
+import shared.GUIListener;
 import shared.Globals;
 import shared.Methods;
 import shared.components.AppButton;
@@ -43,7 +44,7 @@ import shared.components.tables.ReportTransactionTable;
 import shared.screens.AccountPanel;
 import shared.screens.RoundedPanel;
 
-public class ReportPage extends JPanel
+public class ReportPage extends JPanel implements GUIListener
 {
 
 	/**
@@ -398,6 +399,13 @@ public class ReportPage extends JPanel
 			ex.printStackTrace();
 		}
 	}
+	
+	//Overridden Methods
+	@Override
+	public void resetDefaults() {}
+
+	@Override
+	public void onDisplayed() {}
 	
 	//Testing
 	public static void main(String args[])

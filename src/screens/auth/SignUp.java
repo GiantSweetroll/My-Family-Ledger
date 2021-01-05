@@ -31,6 +31,7 @@ import models.Admin;
 import models.User;
 import screens.menu.Menu;
 import shared.Constants;
+import shared.GUIListener;
 import shared.Globals;
 import shared.Methods;
 import shared.TextFieldHintListener;
@@ -41,7 +42,7 @@ import shared.components.LogoLabel;
 import shared.components.WarningLabel;
 import shared.screens.CenteredPage;
 
-public class SignUp extends CenteredPage
+public class SignUp extends CenteredPage implements GUIListener
 {
 	/**
 	 * 
@@ -234,6 +235,13 @@ public class SignUp extends CenteredPage
 		this.panelMain.add(panelTop, BorderLayout.NORTH);
 		this.panelMain.add(panelCenter, BorderLayout.CENTER);
 	}
+	
+	//Overridden Methods
+	@Override
+	public void resetDefaults() {}
+
+	@Override
+	public void onDisplayed() {}
 	
 	//Testing
 	public static void main(String args[])

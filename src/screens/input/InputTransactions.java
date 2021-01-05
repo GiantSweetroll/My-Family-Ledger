@@ -34,6 +34,7 @@ import models.Person;
 import models.Transaction;
 import screens.menu.Menu;
 import shared.Constants;
+import shared.GUIListener;
 import shared.Globals;
 import shared.Methods;
 import shared.components.ComboBoxRenderer;
@@ -47,7 +48,8 @@ import shared.screens.AccountPanel;
 import shared.screens.RoundedPanel;
 import shared.screens.TriplePanelPage;
 
-public class InputTransactions extends TriplePanelPage{
+public class InputTransactions extends TriplePanelPage implements GUIListener
+{
 	/**
 	 * 
 	 */
@@ -362,6 +364,13 @@ public class InputTransactions extends TriplePanelPage{
 		this.panelAcc.setAccount(this.person);
 		this.updateListView();
 	}
+	
+	//Overridden Methods
+	@Override
+	public void resetDefaults() {}
+
+	@Override
+	public void onDisplayed() {}
 	
 	public static void main(String args[])
 	{

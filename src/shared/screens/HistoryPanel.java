@@ -19,10 +19,11 @@ import javax.swing.plaf.FontUIResource;
 
 import models.Person;
 import shared.Constants;
+import shared.GUIListener;
 import shared.Methods;
 import shared.components.AppButton;
 
-public abstract class HistoryPanel extends JPanel
+public abstract class HistoryPanel extends JPanel implements GUIListener
 {
 
 	/**
@@ -311,6 +312,12 @@ public abstract class HistoryPanel extends JPanel
 						System.out.println("Refresh button pressed...");
 						
 					}
+
+					@Override
+					public void resetDefaults() {}
+
+					@Override
+					public void onDisplayed() {}
 				};
 		
 		//Properties

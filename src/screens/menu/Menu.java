@@ -33,6 +33,7 @@ import screens.input.InputTransactions;
 import screens.input.TransferFunds;
 import screens.report.ReportPage;
 import shared.Constants;
+import shared.GUIListener;
 import shared.Globals;
 import shared.Methods;
 import shared.components.AppButton;
@@ -41,7 +42,8 @@ import shared.components.LogoLabel;
 import shared.screens.AccountPanel;
 
 
-public class Menu extends JPanel{
+public class Menu extends JPanel implements GUIListener
+{
 	
 	private static final long serialVersionUID = -4877032747183645341L;
 
@@ -281,6 +283,13 @@ public class Menu extends JPanel{
 			return null;
 		}
 	}
+	
+	//Overridden Methods
+	@Override
+	public void resetDefaults() {}
+
+	@Override
+	public void onDisplayed() {}
 	
 	public static void main(String args[])
 	{

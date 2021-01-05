@@ -169,4 +169,7 @@ public class ListView extends JPanel implements GUIListener
 		
 		frame.setVisible(true);
 	}
+
+	@Override
+	public void onDisplayed() {}
 }

@@ -20,6 +20,7 @@ import javax.swing.plaf.FontUIResource;
 
 import database.DatabaseService;
 import giantsweetroll.gui.swing.Gbm;
+import giantsweetroll.gui.swing.ScrollPaneManager;
 import main.Main;
 import models.Account;
 import models.Admin;
@@ -125,7 +126,7 @@ public class TransferHistory extends HistoryPanel
 		//Initialization
 		this.listView = new ListView();
 		this.tiles = new ArrayList<ListTile>();
-		this.scrollReceiver = new JScrollPane(this.listView);
+		this.scrollReceiver = ScrollPaneManager.generateDefaultScrollPane(this.listView, 10, 10);
 		
 		//Properties
 		this.listView.setMultipleSelection(false);
@@ -206,10 +207,11 @@ public class TransferHistory extends HistoryPanel
 		this.setFilterPanel(panelFilter);
 	}
 	
-	public void initTable(List<Transaction> trans) {
-		//Initialization
+	public void initTable(List<Transaction> trans) 
+	{
 		
-		List<Transaction> transactions = trans; //hrusnya ambil semua transaction sesuai filters
+		//Initialization
+		List<Transaction> transactions = trans; //harusnya ambil semua transaction sesuai filters
 		
 		this.tableTransfer = new TransferHistoryTable(transactions);
 		//{"Date", "Category", "Name", "Amount (Rp.)", "Last Modified"};
@@ -227,9 +229,7 @@ public class TransferHistory extends HistoryPanel
 	public void refreshButtonPressed() 
 	{
 		try
-		{
-			
-			
+		{	
 			Date dateStart = this.dateFrom.getSelectedDate();
 			Date dateEnd =  this.dateTo.getSelectedDate();
 			Object operand = this.comboOperand.getSelectedItem();
@@ -310,6 +310,15 @@ public class TransferHistory extends HistoryPanel
 		}
 		
 		this.listView.updateData(this.tiles);
+	}
+	
+	@Override
+	public void resetDefaults() {}
+
+	@Override
+	public void onDisplayed()
+	{
+		this.refreshButtonPressed();
 	}
 	
 	//Testing

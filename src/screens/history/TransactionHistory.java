@@ -6,10 +6,9 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -17,9 +16,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
 
@@ -35,11 +32,11 @@ import shared.components.ComboBoxRenderer;
 import shared.components.DatePicker;
 import shared.components.HintTextField;
 import shared.components.WarningLabel;
-import shared.components.tables.HistoryTableCellRenderer;
 import shared.components.tables.TransactionHistoryTable;
 import shared.screens.HistoryPanel;
 
-public class TransactionHistory extends HistoryPanel{
+public class TransactionHistory extends HistoryPanel
+{
 	
 	/**
 	 * 
@@ -190,7 +187,6 @@ public class TransactionHistory extends HistoryPanel{
 
 	@Override
 	public void resetFilters() {
-		// TODO Auto-generated method stub
 		this.tfValue.setText("");
 		this.cbCategory.setSelectedIndex(0);
 		this.cbEquals.setSelectedIndex(0);
@@ -200,14 +196,12 @@ public class TransactionHistory extends HistoryPanel{
 
 	@Override
 	public void backButtonPressed() {
-		// TODO Auto-generated method stub
 		Globals.activeUser = person;
 		Main.changeScreen(new Menu(person, false));
 	}
 
 	@Override
 	public void refreshButtonPressed() {
-		// TODO Auto-generated method stub
 		try {
 			Category category = (Category) this.cbCategory.getSelectedItem();
 			String operator = (String) this.cbEquals.getSelectedItem();
@@ -237,8 +231,14 @@ public class TransactionHistory extends HistoryPanel{
 		{
 			this.tableTrans.updateData(new ArrayList<Transaction>());
 		}
-		
-		
 	}
+	
+	@Override
+	public void resetDefaults() {}
 
+	@Override
+	public void onDisplayed() 
+	{
+		this.refreshButtonPressed();
+	}
 }

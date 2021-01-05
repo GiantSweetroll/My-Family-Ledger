@@ -105,6 +105,8 @@ public class DatePicker extends JPanel implements GUIListener
 		LocalDateTime date = LocalDateTime.now();		//Current Date
 		this.picker.getModel().setDate(date.getYear(), date.getMonthValue()-1, date.getDayOfMonth());
 	}
+	@Override
+	public void onDisplayed() {}
 	
 	//Testing
 	public static void main(String args[])
