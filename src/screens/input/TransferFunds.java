@@ -30,6 +30,7 @@ import models.Transaction;
 import models.User;
 import screens.menu.Menu;
 import shared.Constants;
+import shared.GUIListener;
 import shared.Globals;
 import shared.Methods;
 import shared.components.HintTextField;
@@ -44,7 +45,7 @@ import shared.screens.AccountPanel;
 import shared.screens.RoundedPanel;
 import shared.screens.TriplePanelPage;
 
-public class TransferFunds extends TriplePanelPage
+public class TransferFunds extends TriplePanelPage implements GUIListener
 {
 
 	/**
@@ -231,6 +232,7 @@ public class TransferFunds extends TriplePanelPage
 						Transaction trans = new Transaction(oldTransaction.getID(), categoryId, adminId, userId, oldTransaction.getDateInput(), date, amount, notes);
 						Constants.DATABASE_SERVICE.update(trans.getID(), trans);
 						//Update matching transaction
+						amount *= -1;		//Matching transaction is always in opposite value
 						trans = new Transaction(oldTransaction.getID() + 1, categoryId, adminId, userId, oldTransaction.getDateInput(), date, amount, notes);
 						Constants.DATABASE_SERVICE.update(trans.getID(), trans);
 					}
@@ -454,6 +456,13 @@ public class TransferFunds extends TriplePanelPage
 		this.tfNotes.setForeground(Color.GRAY);
 		this.chosen.setNameEmail(this.RECEIVER_NOT_SELECTED, this.RECEIVER_NOT_SELECTED_SUB);
 	}
+	
+	//Overridden Methods
+	@Override
+	public void resetDefaults() {}
+
+	@Override
+	public void onDisplayed() {}
 	
 	//Testing
 	public static void main(String args[])
