@@ -146,7 +146,6 @@ public class InputTransactions extends TriplePanelPage implements GUIListener
 		this.labelLastTs.setHorizontalAlignment(SwingConstants.CENTER);
 		panelTop.setOpaque(false);
 		panelCenter.setOpaque(false);
-		this.listView.setMultipleSelection(false);
 		this.scrollTf.getViewport().setOpaque(false);
 		this.scrollTf.setOpaque(false);
 		this.scrollTf.getViewport().setBorder(null);
@@ -353,6 +352,7 @@ public class InputTransactions extends TriplePanelPage implements GUIListener
 			}
 		}
 		this.listView.updateData(this.tiles);
+		this.listView.setAllowSelection(false);
 	}
 	
 	private static boolean isDigit(String inputText) {

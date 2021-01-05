@@ -386,7 +386,6 @@ public class TransferFunds extends TriplePanelPage implements GUIListener
 		this.labLastTf.setHorizontalAlignment(SwingConstants.CENTER);
 		panelTop.setOpaque(false);
 		panelCenter.setOpaque(false);
-		this.lvPrevTransfers.setMultipleSelection(false);
 		this.scrollPrevTransfer.getViewport().setOpaque(false);
 		this.scrollPrevTransfer.setOpaque(false);
 		this.scrollPrevTransfer.getViewport().setBorder(null);
@@ -447,6 +446,7 @@ public class TransferFunds extends TriplePanelPage implements GUIListener
 		}
 		
 		this.lvPrevTransfers.updateData(this.tilesPrevTransfers);
+		this.lvPrevTransfers.setAllowSelection(false);
 	}
 	
 	private void resetFields() {
