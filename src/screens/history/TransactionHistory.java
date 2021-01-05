@@ -123,6 +123,7 @@ public class TransactionHistory extends HistoryPanel
 		this.tfValue.setForeground(Constants.COLOR_TEXT_GRAY);
 		this.cbCategory.setFont(Constants.FONT_SMALLER);
 		this.cbEquals.setFont(Constants.FONT_SMALLER);
+		this.warningLabel.setAlignmentX(CENTER_ALIGNMENT);
 		
 		this.labelFrom.setBorder(BorderFactory.createEmptyBorder(0,10,0,0));
 		this.labelTo.setBorder(BorderFactory.createEmptyBorder(0,10,0,0));
@@ -142,9 +143,12 @@ public class TransactionHistory extends HistoryPanel
 		panelCenter.add(this.tfValue);
 		panelCenter.add(this.labelCategory);
 		panelCenter.add(this.cbCategory);
-		panelCenter.add(this.warningLabel);
+		this.filters.add(Box.createRigidArea(new Dimension(0, 10)));
 		this.filters.add(panelTop);
+		this.filters.add(Box.createRigidArea(new Dimension(0, 10)));
 		this.filters.add(panelCenter);
+		this.filters.add(Box.createRigidArea(new Dimension(0, 5)));
+		this.filters.add(this.warningLabel);
 		this.filters.add(Box.createRigidArea(new Dimension(0, 500)));
 		
 	}
@@ -218,7 +222,7 @@ public class TransactionHistory extends HistoryPanel
 			}
 			else {
 				if(!isDigit(price)) {
-					this.warningLabel.setText("Enter a digit plz");
+					this.warningLabel.setText("Invalid input for Price");
 				}
 				else {
 					Double priced = Double.parseDouble(price);

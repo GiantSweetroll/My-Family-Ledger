@@ -265,18 +265,13 @@ public class InputTransactions extends TriplePanelPage implements GUIListener
 					}
 					else {
 						// if not from table
-						if(lastTransaction == null) {
-							if(dprice < Constants.DATABASE_SERVICE.getBalance(person.getID()) * -1d) {
-								labelWarning.setText("Go get more money");
-							}
-							else {
-								
-								Constants.DATABASE_SERVICE.insert(new Transaction(category.getID(), null, person.getID(), date, date, dprice, item));
-								curAcc.updateBalance(dprice);
-								Constants.DATABASE_SERVICE.update(curAcc.getID(), curAcc);
-								JOptionPane.showMessageDialog(null, "Transaction Successfully Made");
-								resetInputPage();
-							}
+						if(lastTransaction == null) 
+						{
+							Constants.DATABASE_SERVICE.insert(new Transaction(category.getID(), null, person.getID(), date, date, dprice, item));
+							curAcc.updateBalance(dprice);
+							Constants.DATABASE_SERVICE.update(curAcc.getID(), curAcc);
+							JOptionPane.showMessageDialog(null, "Transaction Successfully Made");
+							resetInputPage();
 						}
 						else {
 							
@@ -292,20 +287,25 @@ public class InputTransactions extends TriplePanelPage implements GUIListener
 					}
 				}
 				catch(NumberFormatException ex){
-					labelWarning.setText("Please use digits for Price");
+					labelWarning.setText("Invalid input");
 				}
 				
 				
 			}
 		});
 		
+		this.labelWarning.setAlignmentX(CENTER_ALIGNMENT);
+		
 		//Add to panels
 		panelButtons.add(this.labelBack);
 		panelButtons.add(this.buttonTransfer);
 		panelContent.add(Box.createRigidArea(new Dimension(0, 40)));
 		panelContent.add(this.cbCategory);
+		panelContent.add(Box.createRigidArea(new Dimension(0, 5)));
 		panelContent.add(this.inputItem);
+		panelContent.add(Box.createRigidArea(new Dimension(0, 5)));
 		panelContent.add(this.inputPrice);
+		panelContent.add(Box.createRigidArea(new Dimension(0, 5)));
 		panelContent.add(this.labelWarning);
 		panelContent.add(Box.createRigidArea(new Dimension(0, 200)));
 		panelContent.add(panelButtons);
