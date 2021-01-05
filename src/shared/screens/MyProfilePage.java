@@ -8,7 +8,6 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -22,7 +21,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.plaf.FontUIResource;
 
@@ -48,7 +46,6 @@ public class MyProfilePage extends CenteredPage{
 	private JTextField tfUsername, tfLastname, tfEmail;
 	private JLabel resetPassLabel, closeIconLabel, adminIDLabel;
 	private AppButton okButton;
-	private JDialog dialogResetPassword;
 	Border border = BorderFactory.createLineBorder(Constants.COLOR_TEXT_GRAY, 3);
 	
 	public MyProfilePage(Person person){
@@ -69,7 +66,6 @@ public class MyProfilePage extends CenteredPage{
 		this.closeIconLabel = new JLabel(closeIcon);
 		this.adminIDLabel = new JLabel();
 		this.okButton = new AppButton("OK");
-		this.dialogResetPassword = new JDialog();
 		JPanel topPanel = new JPanel();
 		JPanel centerPanel = new JPanel();
 		GridBagConstraints c = new GridBagConstraints();
@@ -107,6 +103,7 @@ public class MyProfilePage extends CenteredPage{
 					public void mouseClicked(MouseEvent e)
 					{
 						Methods.closeThisWindow(MyProfilePage.this);
+						JDialog dialogResetPassword = new JDialog();
 						dialogResetPassword.add(new ResetPasswordPanel(person));
 						dialogResetPassword.setModal(true);
 						dialogResetPassword.setSize(700, 700);
@@ -117,9 +114,9 @@ public class MyProfilePage extends CenteredPage{
 				});
 		
 		this.adminIDLabel.setFont(Constants.FONT_GENERAL);
-		this.adminIDLabel.setBorder(border);
+//		this.adminIDLabel.setBorder(border);
 		int adminid = Constants.DATABASE_SERVICE.getAdminID(person.getEmail());
-		this.adminIDLabel.setText(String.valueOf(adminid));
+		this.adminIDLabel.setText("Admin ID: " + adminid);
 		
 		if (person instanceof Admin)
 		{
@@ -177,9 +174,9 @@ public class MyProfilePage extends CenteredPage{
 		Gbm.newGridLine(c);
 		centerPanel.add(this.tfLastname, c);			// LastName
 		Gbm.newGridLine(c);
-		centerPanel.add(this.tfEmail, c);			// Email
+		centerPanel.add(this.tfEmail, c);				// Email
 		Gbm.newGridLine(c);
-		centerPanel.add(this.adminIDLabel,c);
+		centerPanel.add(this.adminIDLabel,c);			//Admin ID label
 		Gbm.newGridLine(c);
 		c.fill = GridBagConstraints.NONE;
 		centerPanel.add(this.resetPassLabel, c);		// Reset Password
