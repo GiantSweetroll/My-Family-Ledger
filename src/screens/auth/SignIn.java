@@ -96,7 +96,7 @@ public class SignIn extends CenteredPage implements GUIListener
 					@Override
 					public void mouseClicked(MouseEvent arg0) 
 					{
-						Main.changeScreen(new SignUpOptions());
+						Main.changeScreen(new SignUpOptions(), Constants.FRAME_SIGNUP);
 					}
 				});
 		this.labSignIn.setFont(Constants.FONT_SUB_TITLE);
@@ -130,11 +130,11 @@ public class SignIn extends CenteredPage implements GUIListener
 								Globals.activeUser = person;
 								if (person instanceof Admin)
 								{
-									Main.changeScreen(new Menu(Globals.activeUser, true));
+									Main.changeScreen(new Menu(Globals.activeUser, true), Constants.FRAME_MAIN_MENU);
 								}
 								else
 								{
-									Main.changeScreen(new Menu(Globals.activeUser, false));
+									Main.changeScreen(new Menu(Globals.activeUser, false), Constants.FRAME_MAIN_MENU);
 								}
 							}
 						}

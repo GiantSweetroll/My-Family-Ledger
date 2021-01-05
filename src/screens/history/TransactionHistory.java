@@ -203,7 +203,7 @@ public class TransactionHistory extends HistoryPanel
 	@Override
 	public void backButtonPressed() {
 		Globals.activeUser = person;
-		Main.changeScreen(new Menu(person, false));
+		Main.changeScreen(new Menu(person, false), Constants.FRAME_MAIN_MENU);
 	}
 
 	@Override

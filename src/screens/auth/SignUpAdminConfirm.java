@@ -69,7 +69,7 @@ public class SignUpAdminConfirm extends CenteredPage implements GUIListener
 				{
 					public void actionPerformed(ActionEvent e)
 					{
-						Main.changeScreen(new Menu(Globals.activeUser, true));
+						Main.changeScreen(new Menu(Globals.activeUser, true), Constants.FRAME_MAIN_MENU);
 					}
 				});
 		

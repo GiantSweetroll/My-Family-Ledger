@@ -207,7 +207,7 @@ public class ReportPage extends JPanel implements GUIListener
 				{
 					public void actionPerformed(ActionEvent e)
 					{
-						Main.changeScreen(new Menu(Globals.activeUser, true));
+						Main.changeScreen(new Menu(Globals.activeUser, true), Constants.FRAME_MAIN_MENU);
 					}
 				});
 		this.butRefresh.setBackground(Constants.COLOR_BUTTON_BASE);

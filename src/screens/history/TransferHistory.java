@@ -222,7 +222,7 @@ public class TransferHistory extends HistoryPanel
 	@Override
 	public void backButtonPressed() 
 	{
-		Main.changeScreen(new Menu(this.person, true));
+		Main.changeScreen(new Menu(this.person, true), Constants.FRAME_MAIN_MENU);
 	}
 
 	@Override

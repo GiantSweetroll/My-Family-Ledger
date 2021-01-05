@@ -53,14 +53,14 @@ public class SignUpOptions extends CenteredPage implements GUIListener
 				{
 					public void actionPerformed(ActionEvent te)
 					{
-						Main.changeScreen(new SignUp(true));
+						Main.changeScreen(new SignUp(true), Constants.FRAME_SIGNUP);
 					}
 				};
 		this.userListener = new ActionListener()
 				{
 					public void actionPerformed(ActionEvent e)
 					{
-						Main.changeScreen(new SignUp(false));
+						Main.changeScreen(new SignUp(false), Constants.FRAME_SIGNUP);
 					}
 				};
 		this.initCenter();
@@ -108,7 +108,7 @@ public class SignUpOptions extends CenteredPage implements GUIListener
 					@Override
 					public void mouseClicked(MouseEvent e)
 					{
-						Main.changeScreen(new SignIn());
+						Main.changeScreen(new SignIn(), Constants.FRAME_SIGNIN);
 					}	
 				});
 		

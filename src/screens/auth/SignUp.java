@@ -117,7 +117,7 @@ public class SignUp extends CenteredPage implements GUIListener
 				{
 					public void mouseClicked(MouseEvent e)
 					{
-						Main.changeScreen(new SignUpOptions());
+						Main.changeScreen(new SignUpOptions(), Constants.FRAME_SIGNUP);
 					}
 				});
 		this.tfFirstName.getDocument().addDocumentListener(new TextFieldHintListener(this.tfFirstName, "First Name"));
@@ -160,7 +160,7 @@ public class SignUp extends CenteredPage implements GUIListener
 									Constants.DATABASE_SERVICE.insert(a);
 									//Login
 									Globals.activeUser = (Admin) Constants.DATABASE_SERVICE.getLogin(a.getEmail(), a.getPassword());
-									Main.changeScreen(new SignUpAdminConfirm(Globals.activeUser.getID()));
+									Main.changeScreen(new SignUpAdminConfirm(Globals.activeUser.getID()), Constants.FRAME_SIGNUP);
 								}
 								else
 								{
@@ -181,7 +181,7 @@ public class SignUp extends CenteredPage implements GUIListener
 										Constants.DATABASE_SERVICE.insert(user);
 										//Login
 										Globals.activeUser = (User)Constants.DATABASE_SERVICE.getLogin(email, pass);
-										Main.changeScreen(new Menu(Globals.activeUser, false));
+										Main.changeScreen(new Menu(Globals.activeUser, false), Constants.FRAME_MAIN_MENU);
 									}
 								}
 							}

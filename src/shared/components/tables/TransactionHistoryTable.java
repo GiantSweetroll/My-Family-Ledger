@@ -60,7 +60,7 @@ public class TransactionHistoryTable extends HistoryTable
 	@Override
 	protected void onEditPressed(Transaction tr) 
 	{
-		Main.pushScreen(new InputTransactions(Globals.activeUser, tr));
+		Main.pushScreen(new InputTransactions(Globals.activeUser, tr), Constants.FRAME_INPUT_TRANSACTION);
 	}
 
 	@Override

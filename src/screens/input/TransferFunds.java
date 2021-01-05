@@ -191,7 +191,7 @@ public class TransferFunds extends TriplePanelPage implements GUIListener
 					@Override
 					public void mouseClicked(MouseEvent e)
 					{
-						Main.changeScreen(new Menu(Globals.activeUser, true));
+						Main.changeScreen(new Menu(Globals.activeUser, true), Constants.FRAME_MAIN_MENU);
 					}
 				});
 		this.butTf.setBackground(Constants.COLOR_BUTTON_BASE);

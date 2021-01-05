@@ -61,6 +61,16 @@ public class Constants
 	public static final ImageIcon ICON_INPUT = new ImageIcon(ImageManager.scaleImage(ImageManager.getImage(Constants.class.getResource("/resources/input_icon.png")), 64, 64));
 	public static final ImageIcon ICON_CATEGORIES = new ImageIcon(ImageManager.scaleImage(ImageManager.getImage(Constants.class.getResource("/resources/categories_icon.png")), 64, 64));
 	
+	//Frame titles
+	public static final String FRAME_SIGNIN = "Sign In",
+								FRAME_SIGNUP = "Sign Up",
+								FRAME_MAIN_MENU = "Main Menu",
+								FRAME_TRANSFER_FUNDS = "Transfer Funds",
+								FRAME_TRANSFER_HISTORY = "Transfer History",
+								FRAME_REPORT = "Report",
+								FRAME_INPUT_TRANSACTION = "Input Transaction",
+								FRAME_TRANSACTION_HISTORY = "Transaction History";
+	
 	//Renderers
 	public static final IconCellRenderer RENDERER_DELETE = new IconCellRenderer(Constants.ICON_DELETE);
 }

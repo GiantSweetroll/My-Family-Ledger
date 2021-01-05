@@ -166,7 +166,7 @@ public class Menu extends JPanel implements GUIListener
 		this.butTransfer.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
-				Main.changeScreen(new TransferFunds(person));
+				Main.changeScreen(new TransferFunds(person), Constants.FRAME_TRANSFER_FUNDS);
 				
 			}
 		});
@@ -180,7 +180,7 @@ public class Menu extends JPanel implements GUIListener
 		this.butHistory.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
-				Main.changeScreen(new TransferHistory(person));
+				Main.changeScreen(new TransferHistory(person), Constants.FRAME_TRANSFER_HISTORY);
 			}
 		});
 		
@@ -193,7 +193,7 @@ public class Menu extends JPanel implements GUIListener
 		this.butReport.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
-				Main.changeScreen(new ReportPage(person));
+				Main.changeScreen(new ReportPage(person), Constants.FRAME_REPORT);
 			}
 		});
 		
@@ -247,7 +247,7 @@ public class Menu extends JPanel implements GUIListener
 		this.butInput.setForeground(Color.BLACK);
 		this.butInput.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				Main.changeScreen(new InputTransactions(person));
+				Main.changeScreen(new InputTransactions(person), Constants.FRAME_INPUT_TRANSACTION);
 			}
 		});
 		
@@ -259,7 +259,7 @@ public class Menu extends JPanel implements GUIListener
 		this.butHistory.setForeground(Color.BLACK);
 		this.butHistory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				Main.changeScreen(new TransactionHistory(person));
+				Main.changeScreen(new TransactionHistory(person), Constants.FRAME_TRANSACTION_HISTORY);
 			}
 		});
 		

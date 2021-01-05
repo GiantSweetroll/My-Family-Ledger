@@ -215,7 +215,7 @@ public class ReportPage extends ReportPanel{
 	@Override
 	public void BackButtonPressed() {
 		Globals.activeUser = person;
-		Main.changeScreen(new Menu(person,true));
+		Main.changeScreen(new Menu(person,true), Constants.FRAME_MAIN_MENU);
 		
 	}
 

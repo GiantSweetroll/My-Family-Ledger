@@ -47,7 +47,7 @@ public class AccountPanel extends RoundedPanel
 					public void mouseClicked(MouseEvent e)
 					{
 						Globals.activeUser = null;
-						Main.changeScreen(new SignIn());
+						Main.changeScreen(new SignIn(), Constants.FRAME_SIGNIN);
 					}
 				});
 		this.labUsername.setForeground(Color.BLACK);

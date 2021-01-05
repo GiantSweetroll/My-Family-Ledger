@@ -229,7 +229,7 @@ public class InputTransactions extends TriplePanelPage implements GUIListener
 				}
 				else {
 					Globals.activeUser = person;
-					Main.changeScreen(new Menu(person, false));
+					Main.changeScreen(new Menu(person, false), Constants.FRAME_MAIN_MENU);
 				}
 			}
 		});

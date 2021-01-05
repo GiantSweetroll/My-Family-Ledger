@@ -61,7 +61,7 @@ public class TransferHistoryTable extends HistoryTable
 	@Override
 	protected void onEditPressed(Transaction tr) 
 	{
-		Main.pushScreen(new TransferFunds(Globals.activeUser, tr));
+		Main.pushScreen(new TransferFunds(Globals.activeUser, tr), Constants.FRAME_TRANSFER_FUNDS);
 	}
 
 	@Override
