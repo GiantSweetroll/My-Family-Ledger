@@ -2301,6 +2301,127 @@ public final class DatabaseService
 		return adminID;
 	}
 	
+	/**
+	 * Updates the credentials (email and password) for a particular Person
+	 * @param person a Person object
+	 */
+	public void updateCredentials(Person person)
+	{
+		PreparedStatement ps = null;
+		try
+		{
+			if (person instanceof Admin)
+			{
+				ps = this.prepStatement("UPDATE " + TABLE_ADMINS 
+										+ " SET "
+											+ Admin.EMAIL + "=\'" + person.getEmail() + "\', "
+											+ Admin.PASSWORD + "=\'" + SecurityServices.encode(person.getPassword()) + "\'" 
+										+ " WHERE " + Admin.ID + "=" + person.getID());
+			}
+			else
+			{
+				ps = this.prepStatement("UPDATE " + TABLE_USERS 
+										+ " SET "
+											+ User.EMAIL + "=\'" + person.getEmail() + "\', "
+											+ User.PASSWORD + "=\'" + SecurityServices.encode(person.getPassword()) + "\'" 
+										+ " WHERE " + User.ID + "=" + person.getID());
+			}
+			
+			ps.execute();
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch(SQLException ex) {}
+			}
+		}
+	}
+	
+	/**
+	 * Get a Person instance through their email. Will look in Admin table first before going into User.
+	 * @param email
+	 * @return a Person instance. Their password will be encrypted.
+	 */
+	public Person getPerson(String email)
+	{
+		Person p = null;
+		
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try
+		{
+			//Check in admin first
+			ps = this.prepStatement("SELECT * FROM " + TABLE_ADMINS 
+									+ " WHERE " + Admin.EMAIL + " = \'" + email + "\'");
+			rs = ps.executeQuery();
+			//Check if any account in Admin matches the credentials
+			if (rs.next())
+			{
+				//If yes, return it
+				p = new Admin(rs.getInt(Admin.ID),
+								rs.getString(Admin.FIRST_NAME),
+								rs.getString(Admin.LAST_NAME),
+								rs.getString(Admin.EMAIL),
+								rs.getString(Admin.PASSWORD));
+			}
+			else
+			{
+				rs.close();
+				ps.close();
+				//If not check in User table
+				ps = this.prepStatement("SELECT * FROM " + TABLE_USERS 
+										+ " WHERE " + User.EMAIL + " = \'" + email + "\'");
+				rs = ps.executeQuery();
+				
+				if (rs.next())
+				{
+					p = new User(rs.getInt(User.ID),
+									rs.getInt(User.ACCOUNT_ID),
+									rs.getInt(User.ADMIN_ID),
+									rs.getString(User.FIRST_NAME),
+									rs.getString(User.LAST_NAME),
+									rs.getString(User.EMAIL),
+									rs.getString(User.PASSWORD));
+				}
+			}
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch(SQLException ex) {}
+			}
+			
+			if (rs != null)
+			{
+				try
+				{
+					rs.close();
+				}
+				catch(SQLException ex) {}
+			}
+		}
+		
+		return p;
+	}
 	
 	/**
 	 * 
