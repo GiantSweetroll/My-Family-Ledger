@@ -1661,8 +1661,16 @@ public final class DatabaseService
 		
 		try
 		{
-			ps = this.prepStatement("SELECT * FROM " + TABLE_CATEGORIES + " WHERE "
-									+ Category.ADMIN_ID + " = " + adminID);
+			String query = "SELECT * FROM " + TABLE_CATEGORIES + " WHERE ";
+			if (adminID <= 0)
+			{
+				query += Category.ADMIN_ID + " is NULL";
+			}
+			else
+			{
+				query += Category.ADMIN_ID + " = " + adminID;
+			}
+			ps = this.prepStatement(query);
 			rs = ps.executeQuery();
 			
 			//Loop through the result set
@@ -1888,9 +1896,12 @@ public final class DatabaseService
 		Category cat = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String query = "SELECT " + Category.NAME + " FROM " + TABLE_CATEGORIES + " INNER JOIN " + TABLE_TRANSACTIONS 
-						+ " ON " + TABLE_CATEGORIES + "." + Category.ID + " = " + TABLE_TRANSACTIONS + "." 
-						+ Category.ID + " WHERE " + TABLE_CATEGORIES + "." + Category.ID + " = "+ categoryId;
+//		String query = "SELECT " + Category.NAME + " FROM " + TABLE_CATEGORIES + " INNER JOIN " + TABLE_TRANSACTIONS 
+//						+ " ON " + TABLE_CATEGORIES + "." + Category.ID + " = " + TABLE_TRANSACTIONS + "." 
+//						+ Category.ID + " WHERE " + TABLE_CATEGORIES + "." + Category.ID + " = "+ categoryId;
+		
+		String query = "SELECT * FROM " + TABLE_CATEGORIES + " WHERE "
+				 		+ Category.ID + " = " + categoryId;
 		
 		try
 		{
