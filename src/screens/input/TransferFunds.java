@@ -431,9 +431,9 @@ public class TransferFunds extends TriplePanelPage
 		List<Transaction> transactions = Constants.DATABASE_SERVICE.getAllTransactions(this.person.getID(), 1);
 		this.tilesPrevTransfers.clear();
 		//Create tiles
-		for (Transaction tr : transactions)
+		for (int i=0; i<5; i++)
 		{
-			TransactionTile tile = new TransactionTile(tr);
+			TransactionTile tile = new TransactionTile(transactions.get(transactions.size()-1-i));
 			this.tilesPrevTransfers.add(tile);
 		}
 		
