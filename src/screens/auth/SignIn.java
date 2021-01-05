@@ -13,6 +13,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -32,6 +33,7 @@ import shared.components.HintPasswordField;
 import shared.components.HintTextField;
 import shared.components.HyperlinkLabel;
 import shared.components.LogoLabel;
+import shared.components.ResetPasswordPanel;
 import shared.components.WarningLabel;
 import shared.screens.CenteredPage;
 
@@ -143,7 +145,13 @@ public class SignIn extends CenteredPage
 					@Override
 					public void mouseClicked(MouseEvent e)
 					{
-						//TODO: Open reset password screen
+						JDialog dialogResetPassword = new JDialog();
+						dialogResetPassword.add(new ResetPasswordPanel(null));
+						dialogResetPassword.setModal(true);
+						dialogResetPassword.setSize(500, 500);
+//						dialogResetPassword.pack();
+						dialogResetPassword.setLocationRelativeTo(null);
+						dialogResetPassword.setVisible(true);
 					}
 				});
 		
