@@ -39,7 +39,7 @@ import shared.components.WarningLabel;
 import shared.components.listview.ListTile;
 import shared.components.listview.ListView;
 import shared.components.listview.SimpleUserTile;
-import shared.components.listview.TransactionTile;
+import shared.components.listview.TransferTile;
 import shared.screens.AccountPanel;
 import shared.screens.RoundedPanel;
 import shared.screens.TriplePanelPage;
@@ -433,7 +433,7 @@ public class TransferFunds extends TriplePanelPage
 		//Create tiles
 		for (int i=0; i<5; i++)
 		{
-			TransactionTile tile = new TransactionTile(transactions.get(transactions.size()-1-i));
+			TransferTile tile = new TransferTile(transactions.get(transactions.size()-1-i));
 			this.tilesPrevTransfers.add(tile);
 		}
 		
