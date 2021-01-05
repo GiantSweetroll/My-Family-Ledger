@@ -1794,7 +1794,7 @@ public final class DatabaseService
 													rs.getDouble(Transaction.AMOUNT),
 													rs.getString(Transaction.DESC),
 													rs.getString(Transaction.LINK_RECEIPT));
-				transactions.add(tr);
+				this.addTransactionToList(transactions, tr);
 			}
 			
 		}
