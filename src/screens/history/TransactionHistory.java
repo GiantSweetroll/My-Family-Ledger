@@ -24,6 +24,7 @@ import main.Main;
 import models.Category;
 import models.Person;
 import models.Transaction;
+import models.User;
 import screens.menu.Menu;
 import shared.Constants;
 import shared.Globals;
@@ -89,7 +90,8 @@ public class TransactionHistory extends HistoryPanel
 		this.dateTo = new DatePicker();
 		this.cbEquals = new JComboBox<String>(Constants.COMBO_BOX_OPERANDS);
 
-		List <Category> categories = Constants.DATABASE_SERVICE.getAllCategories();
+		List <Category> categories = Constants.DATABASE_SERVICE.getAllCategories(0);	//0 for default categories
+		categories.addAll(Constants.DATABASE_SERVICE.getAllCategories(((User)Globals.activeUser).getAdminID()));
 
 		this.cbCategory = new JComboBox<Category>();
 		for(int i = 0; i < categories.size(); i++) {
