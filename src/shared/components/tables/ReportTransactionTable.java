@@ -19,7 +19,6 @@ public class ReportTransactionTable extends AbstractLedgerTable
 												"Category", 
 												"Amount (Rp.)", 
 												"Notes",
-												"Receipt Link", 
 												"Last Modified"};
 	
 	//Constructor
@@ -60,7 +59,6 @@ public class ReportTransactionTable extends AbstractLedgerTable
 			transactions[i][++j] = Constants.DATABASE_SERVICE.getCategoryName(trans.getCategoryID());
 			transactions[i][++j] = Double.toString(trans.getAmount());
 			transactions[i][++j] = trans.getDesc();
-			transactions[i][++j] = trans.getLinkReceipt();
 			transactions[i][++j] = String.valueOf(trans.getDateEdit());
 		}
 		
