@@ -13,6 +13,7 @@ public abstract class HistoryTable extends AbstractLedgerTable implements MouseL
 	 * 
 	 */
 	private static final long serialVersionUID = 4203762518720892771L;
+	//Fields
 	
 	//Constructors
 	public HistoryTable(List<Transaction> transaction, String[] headers) {
