@@ -433,8 +433,15 @@ public class TransferFunds extends TriplePanelPage
 		//Create tiles
 		for (int i=0; i<5; i++)
 		{
-			TransferTile tile = new TransferTile(transactions.get(transactions.size()-1-i));
-			this.tilesPrevTransfers.add(tile);
+			try
+			{
+				TransferTile tile = new TransferTile(transactions.get(transactions.size()-1-i));
+				this.tilesPrevTransfers.add(tile);
+			}
+			catch(ArrayIndexOutOfBoundsException ex)
+			{
+				break;
+			}
 		}
 		
 		this.lvPrevTransfers.updateData(this.tilesPrevTransfers);
