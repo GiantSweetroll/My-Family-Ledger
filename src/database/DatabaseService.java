@@ -1221,7 +1221,7 @@ public final class DatabaseService
 	 * Performs a select * operation on the Transactions table.
 	 * @return a List containing Transaction objects
 	 */
-	public List<Transaction> getAllTransactions(int max)
+	public List<Transaction> getAllTransactions()
 	{
 		List<Transaction> transactions = new ArrayList<Transaction>();
 		PreparedStatement ps = null;
@@ -1233,8 +1233,7 @@ public final class DatabaseService
 			rs = ps.executeQuery();
 			
 			//Loop through the result set
-			int counter = 0;
-			while (rs.next() || (max >= 0 ? counter < max : true))
+			while (rs.next())
 			{
 				Transaction tr = new Transaction(rs.getInt(Transaction.ID),
 													rs.getInt(Transaction.CATEGORY_ID),
@@ -1246,7 +1245,6 @@ public final class DatabaseService
 													rs.getString(Transaction.DESC),
 													rs.getString(Transaction.LINK_RECEIPT));
 				transactions.add(tr);
-				counter++;
 			}
 			
 		}
@@ -1282,7 +1280,7 @@ public final class DatabaseService
 	 * @param userID - the user ID used to filter the results. Set this to -1 to disable the fitler.
 	 * @return a List containing Transaction objects
 	 */
-	public List<Transaction> getAllTransactions(int userID, int max)
+	public List<Transaction> getAllTransactions(int userID)
 	{
 		if (userID >= 0)
 		{
@@ -1296,8 +1294,7 @@ public final class DatabaseService
 				rs = ps.executeQuery();
 				
 				//Loop through the result set
-				int counter = 0;
-				while (rs.next() || (max >= 0 ? counter < max : true))
+				while (rs.next())
 				{
 					Transaction tr = new Transaction(rs.getInt(Transaction.ID),
 														rs.getInt(Transaction.CATEGORY_ID),
@@ -1309,7 +1306,6 @@ public final class DatabaseService
 														rs.getString(Transaction.DESC),
 														rs.getString(Transaction.LINK_RECEIPT));
 					this.addTransactionToList(transactions, tr);
-					counter++;
 				}
 				
 			}
@@ -1342,7 +1338,7 @@ public final class DatabaseService
 		}
 		else
 		{
-			return this.getAllTransactions(max);
+			return this.getAllTransactions();
 		}
 	}
 	/**
@@ -1352,7 +1348,7 @@ public final class DatabaseService
 	 * @param dateMax - the upper bound Date object
 	 * @return a List containing Transaction objects
 	 */
-	public List<Transaction> getAllTransactions(int userID, Date dateMin, Date dateMax, int max)
+	public List<Transaction> getAllTransactions(int userID, Date dateMin, Date dateMax)
 	{
 		if (userID >= 0)
 		{
@@ -1368,8 +1364,7 @@ public final class DatabaseService
 				rs = ps.executeQuery();
 				
 				//Loop through the result set
-				int counter = 0;
-				while (rs.next() || (max >= 0 ? counter < max : true))
+				while (rs.next())
 				{
 					Transaction tr = new Transaction(rs.getInt(Transaction.ID),
 														rs.getInt(Transaction.CATEGORY_ID),
@@ -1381,7 +1376,6 @@ public final class DatabaseService
 														rs.getString(Transaction.DESC),
 														rs.getString(Transaction.LINK_RECEIPT));
 					this.addTransactionToList(transactions, tr);
-					counter++;
 				}
 				
 			}
@@ -1414,7 +1408,7 @@ public final class DatabaseService
 		}
 		else
 		{
-			return this.getAllTransactions(dateMin, dateMax, max);
+			return this.getAllTransactions(dateMin, dateMax);
 		}
 	}
 	/**
@@ -1425,7 +1419,7 @@ public final class DatabaseService
 	 * @param dateMax - the upper bound Date object
 	 * @return a List containing Transaction objects
 	 */
-	public List<Transaction> getAllTransactionsForAdminReport(int userID, Date dateMin, Date dateMax, int max)
+	public List<Transaction> getAllTransactionsForAdminReport(int userID, Date dateMin, Date dateMax)
 	{
 		List<Transaction> transactions = new ArrayList<Transaction>();
 		PreparedStatement ps = null;
@@ -1444,8 +1438,7 @@ public final class DatabaseService
 			rs = ps.executeQuery();
 			
 			//Loop through the result set
-			int counter = 0;
-			while (rs.next() || (max >= 0 ? counter < max : true))
+			while (rs.next())
 			{
 				Transaction tr = new Transaction(rs.getInt(Transaction.ID),
 													rs.getInt(Transaction.CATEGORY_ID),
@@ -1462,7 +1455,6 @@ public final class DatabaseService
 					if (tr.getCategoryID() != 1 || tr.getCategoryID() == 1 && tr.getAmount() > 0)
 					{
 						transactions.add(tr);
-						counter++;
 					}
 				}
 			}
@@ -1501,7 +1493,7 @@ public final class DatabaseService
 	 * @param dateMax - the upper bound Date object
 	 * @return a List containing Transaction objects
 	 */
-	public List<Transaction> getAllTransactions(Date dateMin, Date dateMax, int max)
+	public List<Transaction> getAllTransactions(Date dateMin, Date dateMax)
 	{
 		List<Transaction> transactions = new ArrayList<Transaction>();
 		PreparedStatement ps = null;
@@ -1515,8 +1507,7 @@ public final class DatabaseService
 			rs = ps.executeQuery();
 			
 			//Loop through the result set
-			int counter = 0;
-			while (rs.next() || (max >= 0 ? counter < max : true))
+			while (rs.next())
 			{
 				Transaction tr = new Transaction(rs.getInt(Transaction.ID),
 													rs.getInt(Transaction.CATEGORY_ID),
@@ -1528,7 +1519,6 @@ public final class DatabaseService
 													rs.getString(Transaction.DESC),
 													rs.getString(Transaction.LINK_RECEIPT));
 				this.addTransactionToList(transactions, tr);
-				counter++;
 			}
 			
 		}
@@ -1569,7 +1559,7 @@ public final class DatabaseService
 	 * @param categoryID - Parse -1 to disable filter by category
 	 * @return
 	 */
-	public List<Transaction> getAllTransactions(int userID, Date dateMin, Date dateMax, int flag, double value, int categoryID, int max)
+	public List<Transaction> getAllTransactions(int userID, Date dateMin, Date dateMax, int flag, double value, int categoryID)
 	{
 		List<Transaction> transactions = new ArrayList<Transaction>();
 		PreparedStatement ps = null;
@@ -1617,8 +1607,7 @@ public final class DatabaseService
 			rs = ps.executeQuery();
 			
 			//Loop through the result set
-			int counter = 0;
-			while (rs.next() || (max >= 0 ? counter < max : true))
+			while (rs.next())
 			{
 				Transaction tr = new Transaction(rs.getInt(Transaction.ID),
 													rs.getInt(Transaction.CATEGORY_ID),
@@ -1630,7 +1619,6 @@ public final class DatabaseService
 													rs.getString(Transaction.DESC),
 													rs.getString(Transaction.LINK_RECEIPT));
 				this.addTransactionToList(transactions, tr);
-				counter++;
 			}
 			
 		}
@@ -1782,7 +1770,7 @@ public final class DatabaseService
 	 * @param int categoryId - the category id used to filter the results
 	 * @return a list of Transaction objects
 	 */
-	public List<Transaction> getAllTransactions(int sourceId, int categoryId, int max)
+	public List<Transaction> getAllTransactions(int sourceId, int categoryId)
 	{
 		List<Transaction> transactions = new ArrayList<Transaction>();
 		PreparedStatement ps = null;
@@ -1795,8 +1783,7 @@ public final class DatabaseService
 			rs = ps.executeQuery();
 			
 			//Loop through the result set
-			int counter = 0;
-			while (rs.next() || (max >= 0 ? counter < max : true))
+			while (rs.next())
 			{
 				Transaction tr = new Transaction(rs.getInt(Transaction.ID),
 													rs.getInt(Transaction.CATEGORY_ID),
@@ -1808,7 +1795,6 @@ public final class DatabaseService
 													rs.getString(Transaction.DESC),
 													rs.getString(Transaction.LINK_RECEIPT));
 				transactions.add(tr);
-				counter++;
 			}
 			
 		}
@@ -2597,7 +2583,7 @@ public final class DatabaseService
 		
 		DatabaseService ds = new DatabaseService();
 		
-		List<Transaction> transactions = ds.getAllTransactions(4, date1, date2, DatabaseService.GREATER_THAN, 70000000, -1, -1);
+		List<Transaction> transactions = ds.getAllTransactions(4, date1, date2, DatabaseService.GREATER_THAN, 70000000, -1);
 		
 		System.out.println(transactions.size());
 	
