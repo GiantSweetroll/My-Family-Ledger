@@ -104,6 +104,21 @@ public class InputTransactions extends TriplePanelPage implements GUIListener
 		this.setCenterPanels(this.panelPrevTrans, this.panelInput, this.panelReceipt);
 		this.setPanelTop(this.panelAcc);
 		panelAcc.setAccount(person);
+		if (this.lastTransaction != null) 
+		{
+			Category cat = Constants.DATABASE_SERVICE.getCategory(this.lastTransaction.getCategoryID());
+			for (int i=0; i<cbCategory.getItemCount(); i++)
+			{
+				Category c = (Category)cbCategory.getModel().getElementAt(i);
+				if (cat.getID() == c.getID())
+				{
+					cbCategory.setSelectedIndex(i);
+					break;
+				}
+			}
+			this.inputItem.setText(this.lastTransaction.getDesc());
+			this.inputPrice.setText(Double.toString(this.lastTransaction.getAmount() * -1d));
+		}
 	}
 		
 		
@@ -171,7 +186,8 @@ public class InputTransactions extends TriplePanelPage implements GUIListener
 
 		//make combo box
 		
-		List <Category> categories = Constants.DATABASE_SERVICE.getAllCategories();
+		List <Category> categories = Constants.DATABASE_SERVICE.getAllCategories(0);	//0 for default categories
+		categories.addAll(Constants.DATABASE_SERVICE.getAllCategories(Globals.activeUser.getID()));
 
 		this.cbCategory = new JComboBox<Category>();
 		for(int i = 0; i < categories.size(); i++) {
@@ -181,22 +197,17 @@ public class InputTransactions extends TriplePanelPage implements GUIListener
 			cbCategory.addItem(categories.get(i));
 			cbCategory.setRenderer(new ComboBoxRenderer(categories.get(i)));
 		}
-		if (this.lastTransaction != null) {
-			cbCategory.setSelectedItem(Constants.DATABASE_SERVICE.getCategoryName(this.lastTransaction.getCategoryID()));
-			this.inputItem.setText(this.lastTransaction.getDesc());
-			this.inputPrice.setText(Double.toString(this.lastTransaction.getAmount()));
-		}
 		
-		cbCategory.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                // Get the source of the component, which is our combo box.
-                JComboBox cbCategory = (JComboBox) event.getSource();
-                // Print the selected items and the action command.
-                Object selected = cbCategory.getSelectedItem();
-                System.out.println("Selected Item  = " + selected);
-            }
-		});
-		
+//		cbCategory.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent event) {
+//                // Get the source of the component, which is our combo box.
+//                JComboBox cbCategory = (JComboBox) event.getSource();
+//                // Print the selected items and the action command.
+//                Object selected = cbCategory.getSelectedItem();
+//                System.out.println("Selected Item  = " + selected);
+//            }
+//		});
+//		
 		//Properties
 		this.panelInput.setLayout(new BorderLayout());
 		this.panelInput.setBackground(Color.WHITE);
@@ -360,6 +371,8 @@ public class InputTransactions extends TriplePanelPage implements GUIListener
 		this.cbCategory.setSelectedIndex(0);
 		this.inputItem.setText("");
 		this.inputPrice.setText("");
+		this.inputItem.setForeground(Color.GRAY);
+		this.inputPrice.setForeground(Color.GRAY);
 		this.labelWarning.setText("");
 		this.panelAcc.setAccount(this.person);
 		this.updateListView();
