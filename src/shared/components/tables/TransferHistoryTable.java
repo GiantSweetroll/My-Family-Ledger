@@ -73,7 +73,8 @@ public class TransferHistoryTable extends HistoryTable
 		{
 			Constants.DATABASE_SERVICE.deleteTransaction(tr.getID());	//Delete Admin transaction
 			Constants.DATABASE_SERVICE.deleteTransaction(tr.getID() + 1);	//Delete User transaction (that receives the transfer)
-			this.updateData(this.data);	//TODO: Refresh table (currently does not work)
+			this.data.remove(index);
+			this.updateData(this.data);
 			Account curAcc = Constants.DATABASE_SERVICE.getAccount(tr.getUserID());
 			curAcc.updateBalance(tr.getAmount());		//Will make use of the negative number to reduce their balance
 			Constants.DATABASE_SERVICE.update(curAcc.getID(), curAcc);
