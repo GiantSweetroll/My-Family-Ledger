@@ -327,9 +327,17 @@ public class InputTransactions extends TriplePanelPage{
 		this.tiles.clear();
 		
 		//Add the data
-		for(int i=0; i < 5; i++) {
-			TransactionTile ttile = new TransactionTile(transactions.get(transactions.size()-1-i));
-			this.tiles.add(ttile);
+		for(int i=0; i < 5; i++) 
+		{
+			try
+			{
+				TransactionTile ttile = new TransactionTile(transactions.get(transactions.size()-1-i));
+				this.tiles.add(ttile);
+			}
+			catch(ArrayIndexOutOfBoundsException ex)
+			{
+				break;
+			}
 		}
 		this.listView.updateData(this.tiles);
 	}
