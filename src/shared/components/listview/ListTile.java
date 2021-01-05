@@ -27,11 +27,13 @@ public class ListTile extends RoundedPanel implements MouseListener
 	private static final long serialVersionUID = 9030748067206404980L;
 	
 	//Fields
-	private JLabel labTitle,
+	protected JLabel labTitle,
 					labSubtitle,
 					labTopRight,
-					labTopLeft;
-	private JPanel panelTop, panelCenter;
+					labTopLeft,
+					labBottomRight,
+					labBottomLeft;
+	private JPanel panelTop, panelCenter, panelBelow;
 	private boolean selected;
 	private ListView listView;
 	
@@ -43,6 +45,7 @@ public class ListTile extends RoundedPanel implements MouseListener
 		this.selected = false;
 		this.initPanelTop();
 		this.initPanelCenter();
+		this.initPanelBelow();
 		
 		//Properties
 		this.setLayout(new BorderLayout());
@@ -52,6 +55,7 @@ public class ListTile extends RoundedPanel implements MouseListener
 		//Add to panel
 		this.add(this.panelTop, BorderLayout.NORTH);
 		this.add(this.panelCenter, BorderLayout.CENTER);
+		this.add(this.panelBelow, BorderLayout.SOUTH);
 	}
 	
 	//Public Methods
@@ -86,6 +90,22 @@ public class ListTile extends RoundedPanel implements MouseListener
 	public void setTopLeftText(String text)
 	{
 		this.labTopLeft.setText(text);
+	}
+	/**
+	 * Set the text in the bottom left section
+	 * @param text
+	 */
+	public void setBottomRightText(String text)
+	{
+		this.labBottomRight.setText(text);
+	}
+	/**
+	 * Set the text in the bottom left section
+	 * @param text
+	 */
+	public void setBottomLeftText(String text)
+	{
+		this.labBottomLeft.setText(text);
 	}
 	/**
 	 * Check whether the tile is selected.
@@ -145,6 +165,31 @@ public class ListTile extends RoundedPanel implements MouseListener
 		//Add to panelTop
 		this.panelTop.add(panelLeft, BorderLayout.WEST);
 		this.panelTop.add(panelRight, BorderLayout.EAST);
+	}
+	private void initPanelBelow()
+	{
+		//Initialization
+		this.panelBelow = new JPanel(new BorderLayout());
+		this.labBottomLeft = new JLabel();
+		this.labBottomRight = new JLabel();
+		JPanel panelLeft = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+		JPanel panelRight = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
+		
+		//Properties
+		this.panelBelow.setOpaque(false);
+		this.labBottomRight.setFont(Constants.FONT_SMALLER);
+		this.labBottomLeft.setFont(Constants.FONT_SMALLER);
+		panelLeft.setOpaque(false);
+		panelRight.setOpaque(false);
+		
+		///Add to panel
+		//Add to panelLeft
+		panelLeft.add(this.labBottomLeft);
+		//Add to panelRight
+		panelRight.add(this.labBottomRight);
+		//Add to panelTop
+		this.panelBelow.add(panelLeft, BorderLayout.WEST);
+		this.panelBelow.add(panelRight, BorderLayout.EAST);
 	}
 	private void initPanelCenter()
 	{
