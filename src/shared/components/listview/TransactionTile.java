@@ -51,8 +51,9 @@ public class TransactionTile extends ListTile
 		this.setTitle(Constants.DATABASE_SERVICE.getCategoryName(this.transaction.getCategoryID()));		//TODO: use DatabaseService to get Category name
 		this.setSubtitle(this.transaction.getDesc());
 		this.setTopLeftText(Constants.DATE_FORMAT.format(this.transaction.getDateInput()));
-		this.setTopRightText("Rp. " + this.transaction.getAmount());
+		double amount = this.transaction.getAmount();
+		this.setTopRightText("Rp. " + (amount < 0 ? amount*-1d : amount));
 		
-		this.labTopRight.setForeground(this.transaction.getAmount() < 0 ? Color.RED : Color.BLUE);
+		this.labTopRight.setForeground(amount < 0 ? Color.RED : Color.BLUE);
 	}
 }
