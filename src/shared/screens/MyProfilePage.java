@@ -159,11 +159,8 @@ public class MyProfilePage extends CenteredPage{
 				}
 				);
 		
-		topPanel.add(closeIconLabel);
-		
-		
-		
-		
+//		topPanel.add(closeIconLabel);
+
 		Gbm.goToOrigin(c);
 		c.insets = new Insets(5, 80, 30, 80);
 		centerPanel.add(this.myProfileLabel, c);		// My Profile
