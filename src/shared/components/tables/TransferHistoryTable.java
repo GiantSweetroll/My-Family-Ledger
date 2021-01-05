@@ -38,7 +38,7 @@ public class TransferHistoryTable extends HistoryTable
 		super(transaction, HEADERS);
 	}
 	
-	public TransferHistoryTable(String[] headers)
+	public TransferHistoryTable()
 	{
 		super(new ArrayList<Transaction>(), HEADERS);
 	}
@@ -55,7 +55,7 @@ public class TransferHistoryTable extends HistoryTable
 			this.getColumnModel().getColumn(1).setCellRenderer(new AmountCellRenderer());
 			this.getColumnModel().getColumn(this.tableData[0].length-1).setCellRenderer(new IconCellRenderer(Constants.ICON_EDIT));
 			this.getColumnModel().getColumn(this.tableData[0].length-2).setCellRenderer(new IconCellRenderer(Constants.ICON_DELETE));
-		}
+		} 
 	}
 	
 	@Override
