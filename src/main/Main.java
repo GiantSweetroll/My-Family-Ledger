@@ -10,6 +10,7 @@ import javax.swing.plaf.FontUIResource;
 
 import screens.auth.SignIn;
 import shared.Constants;
+import shared.GUIListener;
 import shared.Methods;
 
 public class Main 
@@ -17,7 +18,7 @@ public class Main
 	//Fields
 	private static JFrame frame;
 	private static JPanel panel;
-	private static List<JPanel> panels;
+	private static List<GUIListener> panels;
 	
 	//Constructor
 	public Main()
@@ -25,6 +26,8 @@ public class Main
 		//Initialization
 		Main.frame = new JFrame();
 		Main.panels = new ArrayList<>();
+//		Globals.activeUser = new Admin(1, "Gardyan", "Akbar");
+//		Main.panel = new Menu(Globals.activeUser, true);
 		Main.panel = new SignIn();
 		
 		//Properties
@@ -43,15 +46,16 @@ public class Main
 	 * Change the screen that is visible. Will perform direct switching.
 	 * @param panel the JPanel to be displayed on the screen.
 	 */
-	public static void changeScreen(JPanel panel)
+	public static void changeScreen(GUIListener panel)
 	{
 		try
 		{
 			Main.frame.remove(Main.panel);
 		}
 		catch(NullPointerException ex) {}
-		Main.panel = panel;
+		Main.panel = (JPanel)panel;
 		Main.frame.add(Main.panel);
+		panel.onDisplayed();
 		Main.frame.revalidate();
 		Main.frame.repaint();
 	}
@@ -59,11 +63,12 @@ public class Main
 	 * Push the JPanel into the stack and display it.
 	 * @param panel the JPanel to be displayed.
 	 */
-	public static void pushScreen(JPanel panel)
+	public static void pushScreen(GUIListener panel)
 	{
-		Main.panels.add(Main.panel);
-		Main.panels.add(panel);
+		Main.panels.add((GUIListener)Main.panel);
+		Main.panels.add((GUIListener)panel);
 		Main.changeScreen(panel);
+		panel.onDisplayed();
 	}
 	/**
 	 * Pop the screen to display the previous JPanel before being pushed.
@@ -73,7 +78,7 @@ public class Main
 	{
 		try
 		{
-			JPanel popped = Main.panels.remove(Main.panels.size()-1);
+			JPanel popped = (JPanel)Main.panels.remove(Main.panels.size()-1);
 			Main.changeScreen(Main.panels.get(Main.panels.size()-1));
 			return popped;
 		}
