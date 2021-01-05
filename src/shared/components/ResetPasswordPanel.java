@@ -20,7 +20,6 @@ import javax.swing.SwingConstants;
 import javax.swing.plaf.FontUIResource;
 
 import giantsweetroll.gui.swing.Gbm;
-import main.Main;
 import models.Person;
 import shared.Constants;
 import shared.Methods;
@@ -57,6 +56,11 @@ public class ResetPasswordPanel extends JPanel
 		//Properties
 		this.setBackground(Color.WHITE);
 		this.tfEmail.setColumns(10);
+		if (person != null)
+		{
+			this.tfEmail.setText(person.getEmail());
+			this.tfEmail.setEditable(false);
+		}
 		this.button.addActionListener(new ActionListener()
 				{
 					public void actionPerformed(ActionEvent e)
@@ -76,10 +80,29 @@ public class ResetPasswordPanel extends JPanel
 						}
 						else
 						{
-							person.setEmail(email);
-							person.setPassword(pass);
-							Constants.DATABASE_SERVICE.update(person.getID(), person);
-							Main.popScreen();
+							if (person != null)
+							{
+								labWarning.setText("");
+//								person.setEmail(email);
+								person.setPassword(pass);
+								Constants.DATABASE_SERVICE.updateCredentials(person);
+								Methods.closeThisWindow(ResetPasswordPanel.this);
+							}
+							else
+							{
+								Person pers = Constants.DATABASE_SERVICE.getPerson(email);
+								if (pers != null)
+								{
+									labWarning.setText("");
+									pers.setPassword(pass);
+									Constants.DATABASE_SERVICE.updateCredentials(pers);
+									Methods.closeThisWindow(ResetPasswordPanel.this);
+								}
+								else
+								{
+									labWarning.setText("Invalid email");
+								}
+							}
 						}
 					}
 				});
@@ -90,7 +113,7 @@ public class ResetPasswordPanel extends JPanel
 					@Override
 					public void mouseClicked(MouseEvent e)
 					{
-						Main.popScreen();
+						Methods.closeThisWindow(ResetPasswordPanel.this);
 					}
 				});
 		panelTop.setOpaque(false);
@@ -118,7 +141,7 @@ public class ResetPasswordPanel extends JPanel
 		Gbm.newGridLine(c);
 		panelCenter.add(this.labCancel, c);				//cancel label
 		//Add to main panel
-		this.add(panelTop, BorderLayout.NORTH);
+//		this.add(panelTop, BorderLayout.NORTH);
 		this.add(panelCenter, BorderLayout.CENTER);
 	}
 	
