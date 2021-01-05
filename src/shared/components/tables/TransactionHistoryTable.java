@@ -70,8 +70,8 @@ public class TransactionHistoryTable extends HistoryTable
 		int option = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this transaction?", "Delete", JOptionPane.YES_NO_OPTION);
 		if (option == 0) {
 			Constants.DATABASE_SERVICE.deleteTransaction(tr.getID());
-			this.updateData(this.data); // this doesnt really refresh the table + account panel how do i do dat through here plz
-										// for now can only refresh it with the refresh button
+			this.data.remove(index);
+			this.updateData(this.data);
 			Account curAcc = Constants.DATABASE_SERVICE.getAccount(tr.getUserID());
 			curAcc.updateBalance(tr.getAmount() * -1d);
 			Constants.DATABASE_SERVICE.update(curAcc.getID(), curAcc);
@@ -81,7 +81,7 @@ public class TransactionHistoryTable extends HistoryTable
 	@Override
 	protected String[][] convertToTableRowData(List<? extends DatabaseItem> data)
 	{
-		String[][] arr = new String[data.size()][8];
+		String[][] arr = new String[data.size()][HEADERS.length];
 		
 		for (int i=0; i<data.size(); i++)
 		{
@@ -114,7 +114,7 @@ public class TransactionHistoryTable extends HistoryTable
 			{
 				this.onEditPressed((Transaction)this.data.get(selectedIndex));
 			}
-			else if (col == this.tableData[0].length-2)		//If last column is pressed
+			else if (col == this.tableData[0].length-2)		//If second last column is pressed
 			{
 				this.onDeletePressed(selectedIndex);
 			}
