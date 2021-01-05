@@ -34,7 +34,7 @@ public class ListTile extends RoundedPanel implements MouseListener
 					labBottomRight,
 					labBottomLeft;
 	private JPanel panelTop, panelCenter, panelBelow;
-	private boolean selected;
+	private boolean selected, selectable;
 	private ListView listView;
 	
 	//Constructor
@@ -43,6 +43,7 @@ public class ListTile extends RoundedPanel implements MouseListener
 		//Initialization
 		super(false);
 		this.selected = false;
+		this.selectable = true;
 		this.initPanelTop();
 		this.initPanelCenter();
 		this.initPanelBelow();
@@ -121,12 +122,33 @@ public class ListTile extends RoundedPanel implements MouseListener
 	 */
 	public void setSelected(boolean b)
 	{
-		this.selected = b;
-		this.setBackground(this.selected? Constants.COLOR_SELECTED : Color.WHITE);
-		if (this.listView != null)
+		if (this.isSelectable())
 		{
-			this.listView.notifySelection(this);
+			this.selected = b;
+			this.setBackground(this.selected? Constants.COLOR_SELECTED : Color.WHITE);
+			if (this.listView != null)
+			{
+				this.listView.notifySelection(this);
+			}
 		}
+	}
+	
+	/**
+	 * Set if the tile can be selected.
+	 * @param b
+	 */
+	public void setSelectable(boolean b)
+	{
+		this.selectable = b;
+	}
+	
+	/**
+	 * Check if the tile can be selected.
+	 * @return a boolean
+	 */
+	public boolean isSelectable()
+	{
+		return this.selectable;
 	}
 	
 	//Protected methods
@@ -215,7 +237,7 @@ public class ListTile extends RoundedPanel implements MouseListener
 	@Override
 	public void mouseClicked(MouseEvent arg0) 
 	{
-		this.setSelected(!this.selected);	
+		this.setSelected(!this.selected);
 	}
 
 	@Override

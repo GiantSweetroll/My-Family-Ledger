@@ -23,7 +23,7 @@ public class ListView extends JPanel implements GUIListener
 	private static final long serialVersionUID = 7485576765825337951L;
 	//Fields
 	private List<ListTile> tiles;
-	private boolean allowMultipleSelection;
+	private boolean allowMultipleSelection, allowSelection;
 	private ListTile selectedTile;		//Previously selected tile, only to be used when allowMultipleSelection is false
 	
 	//Constructor
@@ -33,6 +33,7 @@ public class ListView extends JPanel implements GUIListener
 		super();
 		this.selectedTile = null;
 		this.allowMultipleSelection = true;
+		this.allowSelection = true;
 		this.tiles = new ArrayList<ListTile>();
 		
 		//Properties
@@ -101,6 +102,27 @@ public class ListView extends JPanel implements GUIListener
 	public void setMultipleSelection(boolean b)
 	{
 		this.allowMultipleSelection = b;
+	}
+	/**
+	 * Set to allow selection or not
+	 * @param b
+	 */
+	public void setAllowSelection(boolean b)
+	{
+		this.allowSelection = b;
+		for (ListTile tile : this.tiles)
+		{
+			tile.setSelectable(b);
+		}
+	}
+	
+	/**
+	 * Check if selection is allowed.
+	 * @return a boolean
+	 */
+	public boolean isSelectionAllowed()
+	{
+		return this.allowSelection;
 	}
 	
 	//Protected Methods
