@@ -52,13 +52,14 @@ public class ReportSummaryTable extends SimpleTable
 			currentData[i][++j] = u.getEmail();
 			
 			//Replace this with total income and total expenditure.
-			totalIncome = Constants.DATABASE_SERVICE.getIncome(u.getID(), adminID);
+			totalIncome = Constants.DATABASE_SERVICE.getIncome(u.getID(), adminID, dateFrom, dateTo);
 			currentData[i][++j] =  Double.toString(totalIncome);
 			amountRendererIndexes[0] = j;
-			totalExpenditure = Constants.DATABASE_SERVICE.getExpenditure(u.getID());
+			totalExpenditure = Constants.DATABASE_SERVICE.getExpenditure(u.getID(), dateFrom, dateTo);
 			currentData[i][++j] = Double.toString(totalExpenditure);
 			amountRendererIndexes[1] = j;
-			totalBalance = Constants.DATABASE_SERVICE.getBalance(u.getAccountID());
+//			totalBalance = Constants.DATABASE_SERVICE.getBalance(u.getAccountID());
+			totalBalance = totalIncome + totalExpenditure;
 			currentData[i][++j] = Double.toString(totalBalance);	
 			amountRendererIndexes[2] = j;
 		}
