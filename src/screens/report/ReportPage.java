@@ -86,8 +86,8 @@ public class ReportPage extends JPanel implements GUIListener
 		this.initPanelTableTop();
 		this.initPanelTableBelow();
 		
-		JPanel panelLeft = new JPanel(new GridLayout(2,0));
-		JPanel panelRight = new JPanel(new GridLayout(2,0));
+		JPanel panelLeft = new JPanel(new GridLayout(2,0, 5, 5));
+		JPanel panelRight = new JPanel(new GridLayout(2,0, 5, 5));
 		JPanel panelBottom = new JPanel(new BorderLayout(10, 0));
 		JPanel panelContent = new JPanel(new BorderLayout());
 		JPanel panelContentBorder = new JPanel(new BorderLayout(10,0));
