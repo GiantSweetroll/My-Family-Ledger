@@ -194,8 +194,6 @@ public class TransferHistory extends HistoryPanel
 		panelTop.add(this.labReceiver, c);			//Receivers
 		Gbm.newGridLine(c);
 		panelTop.add(sep, c);						//Separator
-		Gbm.newGridLine(c);
-		panelTop.add(this.scrollReceiver, c);		//Receiver scroll pane
 		//Add to panelBelow
 //		panelBelow.add(this.labReceiver);
 //		panelBelow.add(sep);
@@ -203,6 +201,7 @@ public class TransferHistory extends HistoryPanel
 //		panelBelow.add(Box.createRigidArea(new Dimension(5, 5)));
 		//Add to panelFilter
 		panelFilter.add(panelTop, BorderLayout.NORTH);
+		panelFilter.add(this.scrollReceiver, BorderLayout.CENTER);
 //		panelFilter.add(panelBelow, BorderLayout.SOUTH);
 		//Display filter panel
 		this.setFilterPanel(panelFilter);
