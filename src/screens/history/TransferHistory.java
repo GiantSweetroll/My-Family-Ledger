@@ -6,9 +6,9 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -155,9 +155,12 @@ public class TransferHistory extends HistoryPanel
 //		JPanel panelBelow = new JPanel();
 		JPanel panelFilter = new JPanel(new BorderLayout());
 		GridBagConstraints c = new GridBagConstraints();
+		Calendar cal = Calendar.getInstance();
 		
 		//Properties
+		cal.add(Calendar.MONTH, -1);
 		this.tfValue.setColumns(10);
+		this.dateFrom.setSelectedDate(new Date(cal.getTimeInMillis()));
 		panelTop.setOpaque(false);
 //		panelBelow.setOpaque(false);
 //		panelBelow.setLayout(new BoxLayout(panelBelow, BoxLayout.Y_AXIS));

@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -80,6 +81,7 @@ public class TransactionHistory extends HistoryPanel
 		BoxLayout boxlayout = new BoxLayout(this.filters, BoxLayout.Y_AXIS);
 		JPanel panelTop = new JPanel(new GridLayout(2,2));
 		JPanel panelCenter = new JPanel(new GridLayout(2,3,0,20));
+		Calendar cal = Calendar.getInstance();
 		this.labelFrom = new JLabel("From");
 		this.labelTo = new JLabel("To");
 		this.labelPrice = new JLabel("Price (Rp.)");
@@ -130,6 +132,9 @@ public class TransactionHistory extends HistoryPanel
 		this.labelTo.setBorder(BorderFactory.createEmptyBorder(0,10,0,0));
 		this.labelPrice.setBorder(BorderFactory.createEmptyBorder(0,10,0,0));
 		this.labelCategory.setBorder(BorderFactory.createEmptyBorder(0,10,0,0));
+		
+		cal.add(Calendar.MONTH, -1);
+		this.dateFrom.setSelectedDate(new Date(cal.getTimeInMillis()));
 		
 		panelTop.setOpaque(false);
 		panelCenter.setOpaque(false);

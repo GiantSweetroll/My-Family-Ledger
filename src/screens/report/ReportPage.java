@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -323,13 +324,16 @@ public class ReportPage extends JPanel implements GUIListener
 		this.butResetDate = new AppButton("Reset");
 		JPanel pbutton = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		GridBagConstraints c = new GridBagConstraints();
+		Calendar cal = Calendar.getInstance();
 		
 		//Properties
+		cal.add(Calendar.MONTH, -1);
 		this.panelDate.setLayout(new BorderLayout(10, 0));
 		this.panelDate.setBackground(Color.WHITE);
 		this.panelDateComp.setOpaque(false);
 		this.dateLabel.setFont(Constants.FONT_GENERAL_BOLD);
 		this.dateLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		this.dateFrom.setSelectedDate(new Date(cal.getTimeInMillis()));
 		this.butResetDate.setBackground(Constants.COLOR_BUTTON_BASE);
 		this.butResetDate.setForeground(Color.WHITE);
 		this.butResetDate.addActionListener(new ActionListener()
