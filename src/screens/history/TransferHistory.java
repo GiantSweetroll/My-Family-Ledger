@@ -8,6 +8,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -215,7 +216,7 @@ public class TransferHistory extends HistoryPanel
 		
 		this.tableTransfer = new TransferHistoryTable(transactions);
 		//{"Date", "Category", "Name", "Amount (Rp.)", "Last Modified"};
-	    
+		
 	    this.setTable(this.tableTransfer);
 	}
 	
