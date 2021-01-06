@@ -2125,7 +2125,6 @@ public final class DatabaseService
 			if (rs.next()) 
 			{
 				exp = rs.getDouble(1);
-				System.out.println(exp);
 			};
 			
 		}
