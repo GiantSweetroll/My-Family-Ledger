@@ -1,6 +1,6 @@
 package shared;
 
-import java.awt.Window; 
+import java.awt.Window;
 import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -88,5 +88,10 @@ public class Methods
 	public static void closeThisWindow(JPanel jpanel) {
 		Window w = SwingUtilities.getWindowAncestor(jpanel);
 		w.dispose();
+	}
+	
+	public static Date convertUtilDateToSQLDate(java.util.Date date)
+	{
+		return new Date(date.getTime());
 	}
 }
