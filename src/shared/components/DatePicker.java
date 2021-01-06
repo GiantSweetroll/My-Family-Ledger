@@ -12,6 +12,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import org.jdatepicker.DateModel;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -96,6 +97,15 @@ public class DatePicker extends JPanel implements GUIListener
 	public Date getSelectedDate()
 	{
 		return new Date(((java.util.Date)this.picker.getModel().getValue()).getTime());
+	}
+	
+	/**
+	 * Set the selected date of the picker
+	 * @param date
+	 */
+	public void setSelectedDate(Date date)
+	{
+		this.picker.getModel().setDate(date.getYear() + 1900, date.getMonth(), date.getDate());
 	}
 	
 	//Overridden Methods
