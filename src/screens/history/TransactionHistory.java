@@ -94,6 +94,7 @@ public class TransactionHistory extends HistoryPanel
 		categories.addAll(Constants.DATABASE_SERVICE.getAllCategories(((User)Globals.activeUser).getAdminID()));
 
 		this.cbCategory = new JComboBox<Category>();
+		this.cbCategory.addItem("--ALL--");
 		for(int i = 0; i < categories.size(); i++) {
 			if(categories.get(i).getID() == 1) {
 				continue;
@@ -209,7 +210,7 @@ public class TransactionHistory extends HistoryPanel
 	@Override
 	public void refreshButtonPressed() {
 		try {
-			Category category = (Category) this.cbCategory.getSelectedItem();
+			int catID = this.cbCategory.getSelectedIndex() == 0 ? -1 : ((Category) this.cbCategory.getSelectedItem()).getID();
 			String operator = (String) this.cbEquals.getSelectedItem();
 			Date dateMin = this.dateFrom.getSelectedDate();
 			Date dateMax = this.dateTo.getSelectedDate();
@@ -217,7 +218,7 @@ public class TransactionHistory extends HistoryPanel
 			int flagStr = this.cbEquals.getSelectedIndex();
 			this.panelAcc.setAccount(this.person);
 			if(price.equals("")) {
-				List<Transaction> transactions = Constants.DATABASE_SERVICE.getAllTransactions(person.getID(), dateMin, dateMax, flagStr, -1, category.getID());
+				List<Transaction> transactions = Constants.DATABASE_SERVICE.getAllTransactions(person.getID(), dateMin, dateMax, flagStr, -1, catID);
 				this.tableTrans.updateData(transactions);
 			}
 			else {
@@ -226,7 +227,7 @@ public class TransactionHistory extends HistoryPanel
 				}
 				else {
 					Double priced = Double.parseDouble(price);
-					List<Transaction> transactions = Constants.DATABASE_SERVICE.getAllTransactions(person.getID(), dateMin, dateMax, flagStr, priced, category.getID());
+					List<Transaction> transactions = Constants.DATABASE_SERVICE.getAllTransactions(person.getID(), dateMin, dateMax, flagStr, priced, catID);
 					this.tableTrans.updateData(transactions);
 					this.warningLabel.setText("");
 				}
