@@ -273,6 +273,7 @@ public abstract class HistoryPanel extends JPanel implements GUIListener
 		this.panelTable.setLayout(new BorderLayout());
 		this.panelTable.setBackground(Color.WHITE);
 		this.scrollTable.setBorder(null);
+		this.scrollTable.getViewport().setBorder(null);
 		this.scrollTable.getViewport().setOpaque(false);
 		this.scrollTable.setOpaque(false);
 		
