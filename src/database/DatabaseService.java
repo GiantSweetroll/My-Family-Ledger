@@ -2067,7 +2067,8 @@ public final class DatabaseService
 		double exp = 0;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String query = "SELECT SUM(amount) FROM OF_Transactions WHERE user_id=? AND source_id IS NULL";
+		String query = "SELECT SUM(amount) FROM OF_Transactions WHERE user_id=? AND source_id IS NULL"
+						+ " AND " + Transaction.AMOUNT + "<=" + 0;
 		try
 		{
 			ps = this.prepStatement(query);
@@ -2077,6 +2078,54 @@ public final class DatabaseService
 			if (rs.next()) 
 			{
 			exp = rs.getDouble(1);
+			};
+			
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch(SQLException ex) {}
+		}
+		
+	}
+		return exp;
+	}
+	
+	/**
+	 * Get the total expenditure of a user within a specific range of date.
+	 * @param userID
+	 * @param dateFrom
+	 * @param dateTo
+	 * @return
+	 */
+	public double getExpenditure(int userID, Date dateFrom, Date dateTo) 
+	{
+		double exp = 0;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String query = "SELECT SUM(amount) FROM OF_Transactions WHERE user_id=? AND source_id IS NULL"
+						+ " AND " + Transaction.DATE_INPUT + " >= \'" + dateFrom + "\'"
+						+ " AND " + Transaction.DATE_INPUT + " <= \'" + dateTo + "\'"
+						+ " AND " + Transaction.AMOUNT + "<=" + 0;
+		try
+		{
+			ps = this.prepStatement(query);
+			ps.setInt(1, userID);
+			rs = ps.executeQuery();
+			
+			if (rs.next()) 
+			{
+				exp = rs.getDouble(1);
+				System.out.println(exp);
 			};
 			
 		}
@@ -2435,7 +2484,7 @@ public final class DatabaseService
 	}
 	
 	/**
-	 * 
+	 * Get the income of a particular user.
 	 * @param user_id
 	 * @param admin_id
 	 * @return 
@@ -2456,6 +2505,52 @@ public final class DatabaseService
 			if(rs.next())
 			{
 			Income = rs.getDouble(1);
+			};
+		
+		}
+		catch(SQLException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+		finally
+		{
+			if (ps != null)
+			{
+				try
+				{
+					ps.close();
+				}
+				catch(SQLException ex) {}
+			}
+		}
+		return Income;	
+	}
+	
+	/**
+	 * Get the income of a particular user within a certain date (inclusive).
+	 * @param user_id
+	 * @param admin_id
+	 * @return 
+	 */
+	public double getIncome(int user_id, int admin_id, Date dateFrom, Date dateTo)
+	{
+		double Income = 0;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String query = "SELECT SUM(amount) FROM OF_Transactions WHERE user_id =? AND source_id =?"
+						+ " AND " + Transaction.DATE_INPUT + " >= \'" + dateFrom + "\'"
+						+ " AND " + Transaction.DATE_INPUT + " <= \'" + dateTo + "\'"
+						+ " AND " + Transaction.AMOUNT + ">=" + 0;
+		try
+		{
+			ps = this.prepStatement(query);
+			ps.setInt(1, user_id);
+			ps.setInt(2, admin_id);
+			rs = ps.executeQuery();
+			
+			if(rs.next())
+			{
+				Income = rs.getDouble(1);
 			};
 		
 		}
