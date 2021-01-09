@@ -446,7 +446,7 @@ public class TransferFunds extends TriplePanelPage implements GUIListener
 				TransferTile tile = new TransferTile(transactions.get(transactions.size()-1-i));
 				this.tilesPrevTransfers.add(tile);
 			}
-			catch(ArrayIndexOutOfBoundsException ex)
+			catch(Exception ex)
 			{
 				break;
 			}

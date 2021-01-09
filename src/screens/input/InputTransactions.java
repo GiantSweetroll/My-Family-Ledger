@@ -354,7 +354,7 @@ public class InputTransactions extends TriplePanelPage implements GUIListener
 				TransactionTile ttile = new TransactionTile(transactions.get(transactions.size()-1-i));
 				this.tiles.add(ttile);
 			}
-			catch(ArrayIndexOutOfBoundsException ex)
+			catch(Exception ex)
 			{
 				break;
 			}
