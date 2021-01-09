@@ -1,26 +1,26 @@
 package screens.history;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
 
+import giantsweetroll.gui.swing.Gbm;
+import giantsweetroll.gui.swing.ScrollPaneManager;
 import main.Main;
 import models.Category;
 import models.Person;
@@ -78,10 +78,6 @@ public class TransactionHistory extends HistoryPanel
 	private void initPanelFilters() {
 		//Initialization
 		this.filters = new JPanel();
-		BoxLayout boxlayout = new BoxLayout(this.filters, BoxLayout.Y_AXIS);
-		JPanel panelTop = new JPanel(new GridLayout(2,2));
-		JPanel panelCenter = new JPanel(new GridLayout(2,3,0,20));
-		Calendar cal = Calendar.getInstance();
 		this.labelFrom = new JLabel("From");
 		this.labelTo = new JLabel("To");
 		this.labelPrice = new JLabel("Price (Rp.)");
@@ -91,6 +87,10 @@ public class TransactionHistory extends HistoryPanel
 		this.dateFrom = new DatePicker();
 		this.dateTo = new DatePicker();
 		this.cbEquals = new JComboBox<String>(Constants.COMBO_BOX_OPERANDS);
+		JPanel panelCenter = new JPanel(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		JScrollPane scroll = ScrollPaneManager.generateDefaultScrollPane(panelCenter, 10, 10);
+		Calendar cal = Calendar.getInstance();
 
 		List <Category> categories = Constants.DATABASE_SERVICE.getAllCategories(0);	//0 for default categories
 		categories.addAll(Constants.DATABASE_SERVICE.getAllCategories(((User)Globals.activeUser).getAdminID()));
@@ -104,19 +104,18 @@ public class TransactionHistory extends HistoryPanel
 			cbCategory.addItem(categories.get(i));
 			cbCategory.setRenderer(new ComboBoxRenderer(categories.get(i)));
 		}
-		cbCategory.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                // Get the source of the component, which is our combo box.
-                JComboBox cbCategory = (JComboBox) event.getSource();
-                // Print the selected items and the action command.
-                Object selected = cbCategory.getSelectedItem();
-                System.out.println("Selected Item  = " + selected);
-            }
-		});
+//		cbCategory.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent event) {
+//                // Get the source of the component, which is our combo box.
+//                JComboBox cbCategory = (JComboBox) event.getSource();
+//                // Print the selected items and the action command.
+//                Object selected = cbCategory.getSelectedItem();
+//                System.out.println("Selected Item  = " + selected);
+//            }
+//		});
 
 		
 		//Properties
-		this.filters.setLayout(boxlayout);
 		this.filters.setBackground(Color.WHITE);
 		this.labelFrom.setFont(Constants.FONT_GENERAL);
 		this.labelTo.setFont(Constants.FONT_GENERAL);
@@ -126,7 +125,7 @@ public class TransactionHistory extends HistoryPanel
 		this.tfValue.setForeground(Constants.COLOR_TEXT_GRAY);
 		this.cbCategory.setFont(Constants.FONT_SMALLER);
 		this.cbEquals.setFont(Constants.FONT_SMALLER);
-		this.warningLabel.setAlignmentX(CENTER_ALIGNMENT);
+		this.warningLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		this.labelFrom.setBorder(BorderFactory.createEmptyBorder(0,10,0,0));
 		this.labelTo.setBorder(BorderFactory.createEmptyBorder(0,10,0,0));
@@ -136,27 +135,41 @@ public class TransactionHistory extends HistoryPanel
 		cal.add(Calendar.MONTH, -1);
 		this.dateFrom.setSelectedDate(new Date(cal.getTimeInMillis()));
 		
-		panelTop.setOpaque(false);
 		panelCenter.setOpaque(false);
+		scroll.setBorder(null);
+		scroll.getViewport().setBorder(null);
 		
 		//Add to Panels
-		panelTop.add(this.labelFrom);
-		panelTop.add(this.dateFrom);
-		panelTop.add(this.labelTo);
-		panelTop.add(this.dateTo);
-		panelCenter.add(this.labelPrice);
-		panelCenter.add(this.cbEquals);
-		panelCenter.add(this.tfValue);
-		panelCenter.add(this.labelCategory);
-		panelCenter.add(this.cbCategory);
-		this.filters.add(Box.createRigidArea(new Dimension(0, 10)));
-		this.filters.add(panelTop);
-		this.filters.add(Box.createRigidArea(new Dimension(0, 10)));
-		this.filters.add(panelCenter);
-		this.filters.add(Box.createRigidArea(new Dimension(0, 5)));
-		this.filters.add(this.warningLabel);
-		this.filters.add(Box.createRigidArea(new Dimension(0, 500)));
+		Gbm.goToOrigin(c);
+		c.insets = Constants.INSETS_GENERAL;
+		c.fill = GridBagConstraints.BOTH;
+		panelCenter.add(this.labelFrom, c);				//From label
+		Gbm.nextGridColumn(c);
+		c.gridwidth = 2;
+		panelCenter.add(this.dateFrom, c);				//From Date
+		c.gridwidth = 1;
+		Gbm.newGridLine(c);
+		panelCenter.add(this.labelTo, c);				//To label
+		Gbm.nextGridColumn(c);
+		c.gridwidth = 2;
+		panelCenter.add(this.dateTo, c);				//To Date
+		Gbm.newGridLine(c);
+		c.gridwidth = 1;
+		panelCenter.add(this.labelPrice, c);			//Price label
+		Gbm.nextGridColumn(c);
+		panelCenter.add(this.cbEquals, c);				//Operand Combo Box
+		Gbm.nextGridColumn(c);
+		panelCenter.add(this.tfValue, c);				//Value Text field
+		Gbm.newGridLine(c);
+		panelCenter.add(this.labelCategory, c);			//Category Label
+		Gbm.nextGridColumn(c);
+		c.gridwidth = 2;
+		panelCenter.add(this.cbCategory, c);			//Category Combo Box
+		Gbm.newGridLine(c);
+		c.gridwidth = 3;
+		panelCenter.add(this.warningLabel, c);			//Warning label
 		
+		this.filters.add(panelCenter);
 	}
 
 	private void initTable(){
