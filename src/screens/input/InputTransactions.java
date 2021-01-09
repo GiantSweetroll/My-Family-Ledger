@@ -64,6 +64,7 @@ public class InputTransactions extends TriplePanelPage implements GUIListener
 					labelLastTs,
 					labelInput,
 					labelReceipt,
+					labWIP,
 					labelBack,
 					labelWarning;
 	private JButton buttonTransfer;
@@ -320,18 +321,25 @@ public class InputTransactions extends TriplePanelPage implements GUIListener
 		//Initialization
 		this.panelReceipt = new RoundedPanel(false);
 		this.labelReceipt = new JLabel("Receipt");
+		this.labWIP = new JLabel("<html><i>To be released soon</i></html>");
 		JPanel panelTop = new JPanel(new BorderLayout());
 		
 		//Properties
 		this.panelReceipt.setBackground(Color.WHITE);
+		this.panelReceipt.setLayout(new BorderLayout());
 		this.labelReceipt.setFont(Constants.FONT_SUB_TITLE);
 		this.labelReceipt.setHorizontalAlignment(SwingConstants.CENTER);
+		this.labWIP.setFont(Constants.FONT_SUB_TITLE);
+		this.labWIP.setForeground(Constants.COLOR_TEXT_GRAY);
+		this.labWIP.setHorizontalAlignment(SwingConstants.CENTER);
+		this.labWIP.setVerticalAlignment(SwingConstants.CENTER);
 		panelTop.setOpaque(false);
 		
 		//Add to panelTop
 		panelTop.add(this.labelReceipt, BorderLayout.NORTH);
 		//Add to panelInput
 		this.panelReceipt.add(panelTop, BorderLayout.NORTH);
+		this.panelReceipt.add(this.labWIP, BorderLayout.CENTER);
 	}
 	
 	private void updateListView() {
