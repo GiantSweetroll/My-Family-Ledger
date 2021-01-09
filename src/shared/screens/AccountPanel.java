@@ -81,7 +81,7 @@ public class AccountPanel extends RoundedPanel
 		this.person = person;
 		this.labUsername.setText(this.person.getFullName());
 		if(!(person instanceof Admin)) {
-			this.labBalance.setText(String.valueOf(Constants.DATABASE_SERVICE.getBalance(this.person.getID())));
+			this.labBalance.setText("(Rp " + String.valueOf(Constants.DATABASE_SERVICE.getBalance(this.person.getID())) + ")");
 		}
 	}
 }
