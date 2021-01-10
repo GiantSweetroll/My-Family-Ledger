@@ -253,7 +253,7 @@ public class TransferFunds extends TriplePanelPage implements GUIListener
 						Constants.DATABASE_SERVICE.update(oldUser.getID(), oldAccount);
 					}
 					Account userAccount = Constants.DATABASE_SERVICE.getAccount(user.getAccountID());
-					userAccount.updateBalance(amount * -1d);		//* -1 to make it positive
+					userAccount.updateBalance(amount);
 					Constants.DATABASE_SERVICE.update(userId, userAccount);
 					
 					if (oldTransaction == null)		//new entry
