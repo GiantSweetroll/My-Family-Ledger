@@ -1574,6 +1574,11 @@ public final class DatabaseService
 		
 		if (value >= 0)
 		{
+			if (Globals.activeUser instanceof Admin)
+			{
+				value *= -1;		//Make it negative
+			}
+			
 			if (flag == LESS_THAN)
 			{
 				query += " AND " + Transaction.AMOUNT + " < " + value;
