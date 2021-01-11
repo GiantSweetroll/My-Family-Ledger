@@ -111,7 +111,6 @@ public class TransferHistory extends HistoryPanel
 	
 	public void initTable(List<Transaction> trans) 
 	{
-		
 		//Initialization
 		List<Transaction> transactions = trans; //harusnya ambil semua transaction sesuai filters
 		
