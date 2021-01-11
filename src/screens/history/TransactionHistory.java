@@ -98,9 +98,9 @@ public class TransactionHistory extends HistoryPanel
 		this.cbCategory = new JComboBox<Category>();
 		this.cbCategory.addItem("--ALL--");
 		for(int i = 0; i < categories.size(); i++) {
-			if(categories.get(i).getID() == 1) {
-				continue;
-			}
+//			if(categories.get(i).getID() == 1) {
+//				continue;
+//			}
 			cbCategory.addItem(categories.get(i));
 			cbCategory.setRenderer(new ComboBoxRenderer(categories.get(i)));
 		}
@@ -215,7 +215,10 @@ public class TransactionHistory extends HistoryPanel
 		this.tfValue.setText("");
 		this.cbCategory.setSelectedIndex(0);
 		this.cbEquals.setSelectedIndex(0);
-		this.dateFrom.resetDefaults();
+		
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MONTH, -1);
+		this.dateFrom.setSelectedDate(new Date(cal.getTimeInMillis()));
 		this.dateTo.resetDefaults();
 	}
 
