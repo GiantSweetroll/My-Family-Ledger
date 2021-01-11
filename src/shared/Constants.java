@@ -47,7 +47,7 @@ public class Constants
 	public static final DateTimeFormatter LOCAL_DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/YYYY");
 	
 	//ComboBox texts
-	public static final String[] COMBO_BOX_OPERANDS = {"=", "<", ">", "<=", ">="};
+	public static final String[] COMBO_BOX_OPERANDS = {"<", ">", "=", "<=", ">="};
 	
 	//Icons
 	public static final ImageIcon ICON_DELETE = new ImageIcon(ImageManager.scaleImage(ImageManager.getImageIcon(Constants.class.getResource("/resources/trash.png")).getImage(), 15, 15));
