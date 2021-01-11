@@ -420,7 +420,7 @@ public class TransferFunds extends TriplePanelPage implements GUIListener
 	}
 	
 	private void updateListViewReceivers() {
-		List<User> users = Constants.DATABASE_SERVICE.getAllUsers();
+		List<User> users = Constants.DATABASE_SERVICE.getAllUsers(Globals.activeUser.getID());
 		List<Account> accounts = Constants.DATABASE_SERVICE.getAllAccounts();
 		this.tilesReceivers.clear();
 		//Create tiles
