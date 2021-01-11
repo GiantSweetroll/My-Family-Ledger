@@ -232,7 +232,9 @@ public class TransferHistory extends HistoryPanel
 	@Override
 	public void resetFilters()
 	{
-		this.dateFrom.resetDefaults();
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MONTH, -1);
+		this.dateFrom.setSelectedDate(new Date(cal.getTimeInMillis()));
 		this.dateTo.resetDefaults();
 		this.comboOperand.setSelectedIndex(0);
 		this.deselectAllReceivers();
