@@ -212,7 +212,6 @@ public class TransactionHistory extends HistoryPanel
 
 	@Override
 	public void resetFilters() {
-		this.tfValue.setText("");
 		this.cbCategory.setSelectedIndex(0);
 		this.cbEquals.setSelectedIndex(0);
 		
@@ -220,6 +219,8 @@ public class TransactionHistory extends HistoryPanel
 		cal.add(Calendar.MONTH, -1);
 		this.dateFrom.setSelectedDate(new Date(cal.getTimeInMillis()));
 		this.dateTo.resetDefaults();
+		
+		this.tfValue.setText("");
 	}
 
 	@Override
@@ -235,10 +236,10 @@ public class TransactionHistory extends HistoryPanel
 			String operator = (String) this.cbEquals.getSelectedItem();
 			Date dateMin = this.dateFrom.getSelectedDate();
 			Date dateMax = this.dateTo.getSelectedDate();
-			String price = this.tfValue.getData().trim();
+			String price = this.tfValue.getText().trim();
 			int flagStr = this.cbEquals.getSelectedIndex();
 			this.panelAcc.setAccount(this.person);
-			if(price.equals("")) {
+			if(price.equals("") || price.equalsIgnoreCase("Value")) {
 				List<Transaction> transactions = Constants.DATABASE_SERVICE.getAllTransactions(person.getID(), dateMin, dateMax, flagStr, -1, catID);
 				this.tableTrans.updateData(transactions);
 			}
