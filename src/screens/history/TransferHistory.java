@@ -262,7 +262,7 @@ public class TransferHistory extends HistoryPanel
 			Date dateStart = this.dateFrom.getSelectedDate();
 			Date dateEnd =  this.dateTo.getSelectedDate();
 			Object operand = this.comboOperand.getSelectedItem();
-			String valueStr = this.tfValue.getText();
+			String valueStr = this.tfValue.getText().trim();
 			double value = -1;
 			if (!valueStr.equals("") && !valueStr.equalsIgnoreCase("value"))
 			{
