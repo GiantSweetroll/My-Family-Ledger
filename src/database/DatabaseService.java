@@ -1589,6 +1589,7 @@ public final class DatabaseService
 					else
 					{
 						query += " AND " + Transaction.AMOUNT + " < " + value;
+						query += " AND " + Transaction.AMOUNT + " > " + (value*-1d);
 					}
 					break;
 					
@@ -1600,6 +1601,7 @@ public final class DatabaseService
 					else
 					{
 						query += " AND " + Transaction.AMOUNT + " > " + value;
+						query += " OR " + Transaction.AMOUNT + " < " + (value*-1d);
 					}
 					break;
 					
@@ -1615,6 +1617,7 @@ public final class DatabaseService
 					else
 					{
 						query += " AND " + Transaction.AMOUNT + " <= " + value;
+						query += " AND " + Transaction.AMOUNT + " >= " + (value*-1d);
 					}
 					break;
 					
@@ -1626,6 +1629,7 @@ public final class DatabaseService
 					else
 					{
 						query += " AND " + Transaction.AMOUNT + " >= " + value;
+						query += " OR " + Transaction.AMOUNT + " <= " + (value*-1d);
 					}
 					break;
 			}
@@ -1640,6 +1644,7 @@ public final class DatabaseService
 		{
 			ps = this.prepStatement(query);
 			rs = ps.executeQuery();
+//			System.out.println(query);
 			
 			//Loop through the result set
 			while (rs.next())
