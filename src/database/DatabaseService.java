@@ -20,18 +20,7 @@ import shared.Globals;
 import shared.Methods;
 import shared.SecurityServices;
 
-/**
- * @author Nicholas
- *
- */
-/**
- * @author Nicholas
- *
- */
-/**
- * @author Nicholas
- *
- */
+
 public final class DatabaseService 
 {
 	private static final String HOST = "jdbc:mysql://localhost:3306/",
@@ -1229,7 +1218,11 @@ public final class DatabaseService
 		
 		try
 		{
-			ps = this.prepStatement("SELECT * FROM " + TABLE_TRANSACTIONS);
+			String query = "SELECT * FROM " + TABLE_TRANSACTIONS;
+			
+			query += this.createUserIDQueryForTransactions(Globals.activeUser.getID());
+			
+			ps = this.prepStatement(query);
 			rs = ps.executeQuery();
 			
 			//Loop through the result set
@@ -1434,6 +1427,10 @@ public final class DatabaseService
 			{
 				query += " AND " + Transaction.USER_ID + " = " + userID;
 			}
+			else
+			{
+				query += this.createUserIDQueryForTransactions(Globals.activeUser.getID());
+			}
 			ps = this.prepStatement(query);
 			rs = ps.executeQuery();
 			
@@ -1501,9 +1498,13 @@ public final class DatabaseService
 		
 		try
 		{
-			ps = this.prepStatement("SELECT * FROM " + TABLE_TRANSACTIONS 
-										+ " WHERE " + Transaction.DATE_INPUT + " >= \'" + dateMin + "\'"
-										+ " AND " + Transaction.DATE_INPUT + " <= \'" + dateMax + "\'");
+			String query = "SELECT * FROM " + TABLE_TRANSACTIONS 
+							+ " WHERE " + Transaction.DATE_INPUT + " >= \'" + dateMin + "\'"
+							+ " AND " + Transaction.DATE_INPUT + " <= \'" + dateMax + "\'";
+			
+			query += this.createUserIDQueryForTransactions(Globals.activeUser.getID());
+			
+			ps = this.prepStatement(query);
 			rs = ps.executeQuery();
 			
 			//Loop through the result set
@@ -1570,6 +1571,10 @@ public final class DatabaseService
 		if (userID >= 0)
 		{
 			query += " AND " + Transaction.USER_ID + " = " + userID;
+		}
+		else
+		{
+			query += this.createUserIDQueryForTransactions(Globals.activeUser.getID());
 		}
 		
 		if (value >= 0)
@@ -2715,6 +2720,37 @@ public final class DatabaseService
 				list.add(tr);
 			}
 		}
+	}
+	
+	/**
+	 * Create query for multiple users under the same Admin ID
+	 * @param adminID
+	 * @return a substring of the query
+	 */
+	private String createUserIDQueryForTransactions(int adminID)
+	{
+		String query = "";
+		
+		List<User> users = this.getAllUsers(adminID);
+		
+		if (users.size() > 0)
+		{
+			query += " AND " + Transaction.USER_ID + " = " + users.get(0).getID();
+		}
+		else
+		{
+			query += " AND " + Transaction.USER_ID + " IS NULL";
+		}
+		
+		for (int i = 1; i<users.size(); i++)
+		{
+			if (users.get(i).getAdminID() == adminID)
+			{
+				query += " OR " + Transaction.USER_ID + " = " + users.get(i).getID();
+			}
+		}
+		
+		return query;
 	}
 	
 	public static void main (String args[])
