@@ -122,7 +122,6 @@ public class InputTransactions extends TriplePanelPage implements GUIListener
 		}
 	}
 		
-		
 	private void initPanelPrevTrans()
 	{
 		//Initialization
@@ -250,8 +249,8 @@ public class InputTransactions extends TriplePanelPage implements GUIListener
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					String item = ((HintTextField) inputItem).getData().trim();
-					String price = ((HintTextField) inputPrice).getData().trim();
+					String item = ((HintTextField) inputItem).getText().trim();
+					String price = ((HintTextField) inputPrice).getText().trim();
 					double dprice = Double.parseDouble(price) * -1d;
 					Category category = (Category) cbCategory.getSelectedItem();
 					long millis = System.currentTimeMillis();
