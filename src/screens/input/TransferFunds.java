@@ -239,8 +239,8 @@ public class TransferFunds extends TriplePanelPage implements GUIListener
 						Transaction trans = new Transaction(oldTransaction.getID(), categoryId, adminId, userId, oldTransaction.getDateInput(), date, amount, notes);
 						Constants.DATABASE_SERVICE.update(trans.getID(), trans);
 						//Update matching transaction
-						amount *= -1;		//Matching transaction is always in opposite value
-						trans = new Transaction(oldTransaction.getID() + 1, categoryId, adminId, userId, oldTransaction.getDateInput(), date, amount, notes);
+						//Matching transaction is always in opposite value (positive)
+						trans = new Transaction(oldTransaction.getID() + 1, categoryId, adminId, userId, oldTransaction.getDateInput(), date, amount * -1d, notes);
 						Constants.DATABASE_SERVICE.update(trans.getID(), trans);
 					}
 					
@@ -249,17 +249,19 @@ public class TransferFunds extends TriplePanelPage implements GUIListener
 					{
 						User oldUser = Constants.DATABASE_SERVICE.getUser(oldTransaction.getUserID());
 						Account oldAccount = Constants.DATABASE_SERVICE.getAccount(oldUser.getAccountID());
-						oldAccount.updateBalance(oldTransaction.getAmount() * -1d);
+						oldAccount.updateBalance(oldTransaction.getAmount());
 						Constants.DATABASE_SERVICE.update(oldUser.getID(), oldAccount);
 					}
 					Account userAccount = Constants.DATABASE_SERVICE.getAccount(user.getAccountID());
 					userAccount.updateBalance(amount * -1d);		//* -1 to make it positive
 					Constants.DATABASE_SERVICE.update(userId, userAccount);
 					
+					updateListViewReceivers();
+					updateListViewPrevTransfers();
+					
 					if (oldTransaction == null)		//new entry
 					{
 						//Reset
-						updateListViewReceivers();
 						resetFields();
 					}
 					else
