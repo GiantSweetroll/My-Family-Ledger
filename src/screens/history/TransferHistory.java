@@ -15,7 +15,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.plaf.FontUIResource;
 
@@ -61,7 +60,7 @@ public class TransferHistory extends HistoryPanel
 	private List<ListTile> tiles;
 	private DatePicker dateFrom, dateTo;
 	private ListView listView;
-	private JTable tableTransfer;
+	private TransferHistoryTable tableTransfer;
 	
 	//Constructor
 	public TransferHistory(Person person)
@@ -110,17 +109,37 @@ public class TransferHistory extends HistoryPanel
 		}
 	}
 	
-	//Overridden Methods
-	@Override
-	public void resetFilters()
+	public void initTable(List<Transaction> trans) 
 	{
-		this.dateFrom.resetDefaults();
-		this.dateTo.resetDefaults();
-		this.comboOperand.setSelectedIndex(0);
-		this.deselectAllReceivers();
-		this.tfValue.setText("");
+		
+		//Initialization
+		List<Transaction> transactions = trans; //harusnya ambil semua transaction sesuai filters
+		
+		this.tableTransfer = new TransferHistoryTable(transactions);
+		this.tableTransfer.setHistoryPage(this);
+		
+	    this.setTable(this.tableTransfer);
 	}
 	
+	public void updateListView() {
+		List<User> users = Constants.DATABASE_SERVICE.getAllUsers(this.person.getID());
+		
+		this.tiles.clear();
+		//Add the data
+		for(int i=0; i<users.size(); i++) {
+			SimpleUserTile sut = new SimpleUserTile(users.get(i));
+			int accountId = users.get(i).getAccountID();
+			Account currentAccount = Constants.DATABASE_SERVICE.getAccount(accountId);
+			sut.setTopRightText("Rp. " + String.valueOf(currentAccount.getBalance()));
+			this.tiles.add(sut);
+		}
+		
+		this.listView.updateData(this.tiles);
+	}
+	
+	@Override
+	public void resetDefaults() {}
+
 	//Private methods
 	private void initPanelReceivers()
 	{
@@ -210,16 +229,22 @@ public class TransferHistory extends HistoryPanel
 		this.setFilterPanel(panelFilter);
 	}
 	
-	public void initTable(List<Transaction> trans) 
+	//Overridden Methods
+	@Override
+	public void resetFilters()
 	{
-		
-		//Initialization
-		List<Transaction> transactions = trans; //harusnya ambil semua transaction sesuai filters
-		
-		this.tableTransfer = new TransferHistoryTable(transactions);
-		//{"Date", "Category", "Name", "Amount (Rp.)", "Last Modified"};
-		
-	    this.setTable(this.tableTransfer);
+		this.dateFrom.resetDefaults();
+		this.dateTo.resetDefaults();
+		this.comboOperand.setSelectedIndex(0);
+		this.deselectAllReceivers();
+		this.tfValue.setText("");
+	}
+	
+	@Override
+	public void onDisplayed()
+	{
+		this.updateListView();
+		this.refreshButtonPressed();
 	}
 	
 	@Override
@@ -297,31 +322,6 @@ public class TransferHistory extends HistoryPanel
 			ex.printStackTrace();
 			this.initTable(new ArrayList<Transaction>());
 		}
-	}
-
-	private void updateListView() {
-		List<User> users = Constants.DATABASE_SERVICE.getAllUsers(this.person.getID());
-		
-		this.tiles.clear();
-		//Add the data
-		for(int i=0; i<users.size(); i++) {
-			SimpleUserTile sut = new SimpleUserTile(users.get(i));
-			int accountId = users.get(i).getAccountID();
-			Account currentAccount = Constants.DATABASE_SERVICE.getAccount(accountId);
-			sut.setTopRightText("Rp. " + String.valueOf(currentAccount.getBalance()));
-			this.tiles.add(sut);
-		}
-		
-		this.listView.updateData(this.tiles);
-	}
-	
-	@Override
-	public void resetDefaults() {}
-
-	@Override
-	public void onDisplayed()
-	{
-		this.refreshButtonPressed();
 	}
 	
 	//Testing

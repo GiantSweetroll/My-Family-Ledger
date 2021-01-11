@@ -10,6 +10,7 @@ import models.Account;
 import models.DatabaseItem;
 import models.Transaction;
 import models.User;
+import screens.history.TransferHistory;
 import screens.input.TransferFunds;
 import shared.Constants;
 import shared.Globals;
@@ -24,6 +25,7 @@ public class TransferHistoryTable extends HistoryTable
 	 */
 	private static final long serialVersionUID = -5443332440387293655L;
 	//Fields
+	private TransferHistory historyPage;
 	private static final String[] HEADERS = {"Date", 
 											"Amount (Rp)", 
 											"Notes", 
@@ -41,6 +43,12 @@ public class TransferHistoryTable extends HistoryTable
 	public TransferHistoryTable()
 	{
 		super(new ArrayList<Transaction>(), HEADERS);
+	}
+	
+	//Public methods
+	public void setHistoryPage(TransferHistory th)
+	{
+		this.historyPage = th;
 	}
 	
 	//Overridden Methods
@@ -78,6 +86,11 @@ public class TransferHistoryTable extends HistoryTable
 			Account curAcc = Constants.DATABASE_SERVICE.getAccount(tr.getUserID());
 			curAcc.updateBalance(tr.getAmount());		//Will make use of the negative number to reduce their balance
 			Constants.DATABASE_SERVICE.update(curAcc.getID(), curAcc);
+			
+			if (this.historyPage != null)
+			{
+				this.historyPage.updateListView();
+			}
 		}
 	}
 
