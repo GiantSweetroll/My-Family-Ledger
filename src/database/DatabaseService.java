@@ -1579,25 +1579,55 @@ public final class DatabaseService
 				value *= -1;		//Make it negative
 			}
 			
-			if (flag == LESS_THAN)
+			switch (flag)
 			{
-				query += " AND " + Transaction.AMOUNT + " < " + value;
-			}
-			else if (flag == GREATER_THAN)
-			{
-				query += " AND " + Transaction.AMOUNT + " > " + value;
-			}
-			else if (flag == EQUAL_TO)
-			{
-				query += " AND " + Transaction.AMOUNT + " = " + value;
-			}
-			else if (flag == LESS_THAN_EQUAL)
-			{
-				query += " AND " + Transaction.AMOUNT + " <= " + value;
-			}
-			else if (flag == GREATER_THAN_EQUAL)
-			{
-				query += " AND " + Transaction.AMOUNT + " >= " + value;
+				case LESS_THAN:
+					if (Globals.activeUser instanceof Admin)
+					{
+						query += " AND " + Transaction.AMOUNT + " > " + value;
+					}
+					else
+					{
+						query += " AND " + Transaction.AMOUNT + " < " + value;
+					}
+					break;
+					
+				case GREATER_THAN:
+					if (Globals.activeUser instanceof Admin)
+					{
+						query += " AND " + Transaction.AMOUNT + " < " + value;
+					}
+					else
+					{
+						query += " AND " + Transaction.AMOUNT + " > " + value;
+					}
+					break;
+					
+				case EQUAL_TO:
+					query += " AND " + Transaction.AMOUNT + " = " + value;
+					break;
+					
+				case LESS_THAN_EQUAL:
+					if (Globals.activeUser instanceof Admin)
+					{
+						query += " AND " + Transaction.AMOUNT + " >= " + value;
+					}
+					else
+					{
+						query += " AND " + Transaction.AMOUNT + " <= " + value;
+					}
+					break;
+					
+				case GREATER_THAN_EQUAL:
+					if (Globals.activeUser instanceof Admin)
+					{
+						query += " AND " + Transaction.AMOUNT + " <= " + value;
+					}
+					else
+					{
+						query += " AND " + Transaction.AMOUNT + " >= " + value;
+					}
+					break;
 			}
 		}
 		
