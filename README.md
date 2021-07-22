@@ -85,7 +85,7 @@ Distributed under the Apache-2.0 License. See `LICENSE` for more information.
 ## Contact
 
 
-Gardyan Priangga Akbar - [LinkedIn](https://www.linkedin.com/in/gardyan-akbar-246a13194/) - gardyanakbar99@gmail.com
+Gardyan Priangga Akbar - [LinkedIn](https://www.linkedin.com/in/gardyan-akbar-246a13194/) - gardyanakbar99@gmail.com <br>
 Jocelyn Thiojaya - jocelynthiojaya@gmail.com
 
 Project Link: [https://github.com/GiantSweetroll/My-Family-Ledger](https://github.com/GiantSweetroll/My-Family-Ledger)
