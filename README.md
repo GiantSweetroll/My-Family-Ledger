@@ -84,7 +84,7 @@ Distributed under the Apache-2.0 License. See `LICENSE` for more information.
 <!-- CONTACT -->
 ## Contact
 
-
+Bryan Putra - bpsuandi@gmail.com <br>
 Gardyan Priangga Akbar - [LinkedIn](https://www.linkedin.com/in/gardyan-akbar-246a13194/) - gardyanakbar99@gmail.com <br>
 Jocelyn Thiojaya - jocelynthiojaya@gmail.com
 
